@@ -1,0 +1,71 @@
+:root {
+    --light: #EEE5DA;
+    --charcoal: #262424; 
+    --gray: #536878;
+    --gray-hover: #465c6c;
+    --pearl: #EAE0C8;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--charcoal);
+    text-align: center;
+}
+
+.text {
+    color: var(--pearl);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    background-color: var(-light);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 100px auto;
+}
+
+h2 {
+    color: var(--charcoal);
+}
+
+input, button {
+    padding: 10px;
+    margin-top: 10px; 
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input {
+    background-color: var(--pearl);
+    color: var(--charcoal);
+    width: 80%;
+}
+input:focus {
+    outline: none;
+}
+
+button {
+    background-color: var(--gray);
+    color: var(--pearl);
+    cursor: pointer;
+    width: 40%;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--gray-hover);
+    color: var(--pearl);
+    animation-duration: 100ms;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}

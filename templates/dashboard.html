@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Список комплектующих</h2>
+        <ul>
+            {% for component in components %}
+                <li>{{ component[1] }}</li> <!-- Предполагаем, что второй столбец - название -->
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('logout') }}"><button>Выйти</button></a>
+    </div>
+</body>
+</html>
