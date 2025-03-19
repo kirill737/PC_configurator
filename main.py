@@ -1,12 +1,10 @@
 from flask import Flask, render_template, request, redirect, session
-# import psycopg2
-import bcrypt
+
 from database.psql import get_psqsl_db_connection
+from controllers.db.user_controller import check_user_data, get_user_id
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-
-
 
 @app.route('/')
 def index():
@@ -19,24 +17,16 @@ def login():
         password = request.form.get('password')
         print(f"Попытка входа: {email}")
 
-        conn = get_psqsl_db_connection()
-        cur = conn.cursor()
+        login_code = check_user_data(email, password)
 
-        # Запрос только хешированного пароля
-        cur.execute("SELECT id, password_hash FROM users WHERE email = %s LIMIT 1", (email,))
-        user = cur.fetchone()
-        cur.close()
-        conn.close()
-
-        if user:
-            user_id, stored_hash = user
-
-            # Проверяем введённый пароль с хешем из БД
-            if bcrypt.checkpw(password.encode(), stored_hash.encode()):
-                session['user'] = user_id
-                return redirect('/dashboard')
-
-        return render_template('login.html', error='Неверные учетные данные')
+        if login_code == 1: # Введён верный пароль
+            user_id = get_user_id(email)
+            session['user'] = user_id
+            return redirect('/dashboard')
+        elif login_code == -1:
+            return render_template('login.html', error='Пользователь не найден')
+        else:
+            return render_template('login.html', error='Неверный пароль')
 
     return render_template('login.html', error=None)
 
