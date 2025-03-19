@@ -6,7 +6,7 @@ CREATE TABLE builds (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-
+DROP TABLE IF EXISTS components;
 -- Таблица комплектующих
 CREATE TABLE components (
     id SERIAL PRIMARY KEY,

@@ -1,5 +1,6 @@
 CREATE TABLE keyboards (
     id SERIAL PRIMARY KEY,
+    component_id INT REFERENCES components(id) ON DELETE CASCADE,
     name VARCHAR NOT NULL,
     brand VARCHAR NULL,
     switch_type VARCHAR NULL,

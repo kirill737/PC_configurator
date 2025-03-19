@@ -1,5 +1,6 @@
 CREATE TABLE cases (
     id SERIAL PRIMARY KEY,
+    component_id INT REFERENCES components(id) ON DELETE CASCADE,
     name VARCHAR NOT NULL,
     brand VARCHAR NULL,
     form_factor VARCHAR NULL,

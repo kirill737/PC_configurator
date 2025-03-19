@@ -1,5 +1,6 @@
 CREATE TABLE motherboards (
     id SERIAL PRIMARY KEY,
+    component_id INT REFERENCES components(id) ON DELETE CASCADE,
     name VARCHAR NOT NULL,
     brand VARCHAR NULL,
     socket VARCHAR NULL,
