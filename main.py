@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 
-from database.psql import get_psqsl_db_connection
+from database.psql import get_psql_db_connection
 from controllers.db.user_controller import check_user_data, get_user_id
 
 app = Flask(__name__)
@@ -20,6 +20,7 @@ def login():
         login_code = check_user_data(email, password)
 
         if login_code == 1: # Введён верный пароль
+            print("Ввели верный пароль")
             user_id = get_user_id(email)
             session['user'] = user_id
             return redirect('/dashboard')
@@ -35,7 +36,7 @@ def dashboard():
     if 'user' not in session:
         return redirect('/login')
 
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM components")
     components = cur.fetchall()

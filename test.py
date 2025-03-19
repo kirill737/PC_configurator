@@ -1,24 +1,3 @@
-import psycopg2
+from controllers.db.user_controller import add_user
 
-PSQL_DB_CONFIG = {
-    'dbname': 'pc_config_db',
-    'user': 'kirill',
-    'password': 'root',
-    'host': 'localhost',
-    'port': '5432'
-}
-
-def get_psqsl_db_connection():
-    return psycopg2.connect(**PSQL_DB_CONFIG)
-
-conn = get_psqsl_db_connection()
-cur = conn.cursor()
-name = ""
-email = "kirill737apple@yandex.ru"
-
-cur.execute(f"SELECT * FROM users WHERE email='{email}'") 
-print(cur.fetchone()[0])
-# user_id = cur.fetchone()[0]                         
-conn.commit()
-cur.close()
-conn.close()
+add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')

@@ -11,10 +11,10 @@ from components.power_supply_controller import insert_power_supply_query
 from components.ram_controller import insert_ram_query
 from components.storage_controller import insert_storage_query
 
-from database.psql import get_psqsl_db_connection
+from database.psql import get_psql_db_connection
 
 def add_component(component_type: str, price: int, info: dict):
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
     
     try:

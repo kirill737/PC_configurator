@@ -1,7 +1,8 @@
-from database.psql import get_psqsl_db_connection
+from database.psql import get_psql_db_connection
 import bcrypt
+import psycopg2
 
-def hash_password(password: str) -> str:
+def hash_password(password: str) -> bytes:
     """Хеширует пароль с использованием bcrypt."""
     salt = bcrypt.gensalt()
     password_hash = bcrypt.hashpw(password.encode(), salt)
@@ -12,7 +13,7 @@ def check_password(password: str, password_hash: bytes) -> bool:
     return bcrypt.checkpw(password.encode(), password_hash.encode())
 
 def is_user_exist(email: str) -> bool:
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
@@ -23,11 +24,11 @@ def is_user_exist(email: str) -> bool:
     return user != None
 
 def is_right_password(email: str, password: str):
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
 
     cur.execute(f"SELECT password_hash FROM users WHERE email='{email}'") 
-    password_hash = cur.fetchone()[0]
+    password_hash = cur.fetchone()[0].tobytes()
 
     cur.close()
     conn.close()
@@ -46,12 +47,12 @@ def check_user_data(email: str, password: str) -> int:
     return 0
 
 def get_user_id(email: str):
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
 
     cur.execute(f"SELECT id FROM users WHERE email='{email}'")
     print(f"Email: {email}")
-    print(cur.fetchone())
+    # print(cur.fetchone())
     user_id = cur.fetchone()[0]
 
     conn.close()
@@ -69,11 +70,11 @@ def add_user(name: str, email: str, password: str, role: str = "user"):
         return None
 
     password_hash = hash_password(password)
-    conn = get_psqsl_db_connection()
+    conn = get_psql_db_connection()
     cur = conn.cursor()
 
     try:
-        cur.execute("INSERT INTO users (name, email, psycopg2.Binary(password_hash), role) VALUES (%s, %s, %s, %s) RETURNING id", 
+        cur.execute("INSERT INTO users (name, email, password_hash, role) VALUES (%s, %s, %s, %s) RETURNING id", 
                     (name, email, password_hash, role))
         user_id = cur.fetchone()[0]                     
         conn.commit()
