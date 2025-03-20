@@ -15,24 +15,33 @@ def check_password(password: str, password_hash: bytes) -> bool:
 def is_user_exist(email: str) -> bool:
     conn = get_psql_db_connection()
     cur = conn.cursor()
-
-    cur.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
-    user = cur.fetchone()
-
-    cur.close()
-    conn.close()
-    return user != None
+    try:
+        cur.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        return user != None
+    except Exception as e:
+        print(f"Ошибка is_user_exist({email}): {e}")
+    finally:
+        cur.close()
+        conn.close()
+    return False
+    
 
 def is_right_password(email: str, password: str):
     conn = get_psql_db_connection()
     cur = conn.cursor()
-
-    cur.execute(f"SELECT password_hash FROM users WHERE email='{email}'") 
-    password_hash = cur.fetchone()[0].tobytes()
-
-    cur.close()
-    conn.close()
-    return bcrypt.checkpw(password.encode(), password_hash)
+    try:
+        cur.execute(f"SELECT password_hash FROM users WHERE email='{email}'") 
+        password_hash = cur.fetchone()[0].tobytes()
+        isCorrectPassword = bcrypt.checkpw(password.encode(), password_hash)
+        return isCorrectPassword
+    except Exception as e:
+        print(f"Ошибка is_right_password({email, password}): {e}")
+    finally:
+        cur.close()
+        conn.close()
+    return False
+    
 
 def check_user_data(email: str, password: str) -> int:
     """
@@ -49,16 +58,18 @@ def check_user_data(email: str, password: str) -> int:
 def get_user_id(email: str):
     conn = get_psql_db_connection()
     cur = conn.cursor()
-
-    cur.execute(f"SELECT id FROM users WHERE email='{email}'")
-    print(f"Email: {email}")
-    # print(cur.fetchone())
-    user_id = cur.fetchone()[0]
-
-    conn.close()
-    cur.close()
-    print(f"Logged user_id: {user_id} {type(user_id)}")
-    return user_id
+    try:
+        cur.execute(f"SELECT id FROM users WHERE email='{email}'")
+        # print(f"Email: {email}")
+        user_id = cur.fetchone()[0]
+        # print(f"Logged user_id: {user_id} {type(user_id)}")
+        return user_id
+    except Exception as e:
+        print(f"Ошибка get_user_id({email}): {e}")
+    finally:
+        conn.close()
+        cur.close()
+    
 
 def add_user(name: str, email: str, password: str, role: str = "user"):
     """
