@@ -20,6 +20,7 @@ add_user('name3',  emails[2], passwords[2])
 # add_user('name4',  emails[3], passwords[3])
 for i in range(4):
     try: 
-        get_user_id(emails[i])
+        user_id = get_user_id(emails[i])
+        print(type(user_id))
     except Exception as e:
         print(f"Ошибка в get_user_id({emails[i]}, {passwords[i]}): {e}")

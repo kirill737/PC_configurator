@@ -1,7 +1,7 @@
 import psycopg2
 
 PSQL_DB_CONFIG = {
-    'dbname': 'pc_configurator_db',
+    'dbname': 'pc_config_db',
     'user': 'kirill',
     'password': 'root',
     'host': 'localhost',

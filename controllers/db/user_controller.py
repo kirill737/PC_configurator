@@ -70,7 +70,6 @@ def get_user_id(email: str):
         conn.close()
         cur.close()
     
-
 def add_user(name: str, email: str, password: str, role: str = "user"):
     """
     Добавляет пользователя, если это возможно.
@@ -97,5 +96,9 @@ def add_user(name: str, email: str, password: str, role: str = "user"):
     finally:
         cur.close()
         conn.close()
+
+
+
+
     
 
