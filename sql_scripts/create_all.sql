@@ -1,6 +1,5 @@
 -- Таблица пользователей
 DROP TABLE IF EXISTS users;
--- CREATE TYPE user_role AS ENUM ('user', 'admin', 'guest');
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,

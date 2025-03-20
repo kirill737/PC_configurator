@@ -1,5 +1,5 @@
 from controllers.db.user_controller import add_user, get_user_id
-
+from controllers.session_controller import create_session, get_session, delete_session
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
 emails = [
@@ -24,3 +24,10 @@ for i in range(4):
         print(type(user_id))
     except Exception as e:
         print(f"Ошибка в get_user_id({emails[i]}, {passwords[i]}): {e}")
+
+user_id = get_user_id(emails[0])
+session_id = create_session(user_id)
+print("Создана сессия:", session_id)
+
+session_data = get_session(session_id)  
+print("Данные сессии:", session_data)  # {'user_id': '123'}

@@ -1,3 +1,4 @@
+CREATE TYPE user_role AS ENUM ('user', 'admin', 'guest');
 CREATE TYPE COMPONENT AS ENUM (
     'cpu',
     'motherboard',

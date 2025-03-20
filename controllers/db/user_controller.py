@@ -69,7 +69,32 @@ def get_user_id(email: str):
     finally:
         conn.close()
         cur.close()
-    
+
+def get_user_data(user_id: int) -> dict:
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute(f"SELECT id, name, email, created_at, role FROM users WHERE id='{user_id}'")
+        user_data = cur.fetchone()
+        # user_id = user_data[0]
+        username = user_data[1]
+        email = user_data[2]
+        created_at = user_data[3]
+        role = user_data[4]
+        result = {
+            'user_id': user_id,
+            'uesrname': username,
+            'email': email,
+            'created_at': created_at,
+            'role': role
+        }
+        # print(f"Logged user_id: {user_id} {type(user_id)}")
+        return result
+    except Exception as e:
+        print(f"Ошибка get_user_id({email}): {e}")
+    finally:
+        conn.close()
+        cur.close()
 def add_user(name: str, email: str, password: str, role: str = "user"):
     """
     Добавляет пользователя, если это возможно.
