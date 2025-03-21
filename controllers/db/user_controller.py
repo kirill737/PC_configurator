@@ -1,12 +1,34 @@
 from database.psql import get_psql_db_connection
 import bcrypt
 import psycopg2
+from enum import StrEnum
+import logging
 
-def hash_password(password: str) -> bytes:
-    """Хеширует пароль с использованием bcrypt."""
-    salt = bcrypt.gensalt()
-    password_hash = bcrypt.hashpw(password.encode(), salt)
-    return password_hash.decode()
+logging.basicConfig(
+    filename="logs/pc_config_users.log",  # Лог в файл
+    level=logging.DEBUG,  # Логируем всё (DEBUG и выше)
+    format="%(asctime)s - %(levelname)s - %(message)s",  # Формат вывода
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+class UserRole(StrEnum):
+    guest = "guest"
+    user = "user"
+    admin = "admin"
+
+class DifferentPasswords(Exception):
+    """Моё кастомное исключение."""
+    def __init__(self, message="Введёные пароли не совпадают"):
+        self.message = message
+        logging.debug(message)
+        super().__init__(self.message)
+
+class EmailTaken(Exception):
+    """Моё кастомное исключение."""
+    def __init__(self, message="Пользователь с таким email уже существует"):
+        self.message = message
+        logging.debug(message)
+        super().__init__(self.message)
 
 def check_password(password: str, password_hash: bytes) -> bool:
     """Проверяет, соответствует ли пароль его хешу."""
@@ -43,7 +65,7 @@ def is_right_password(email: str, password: str):
     return False
     
 
-def check_user_data(email: str, password: str) -> int:
+def check_user_login_data(email: str, password: str) -> int:
     """
     -1 - пользователя с заданной почтой нет
     0 - неверный пароль
@@ -74,18 +96,18 @@ def get_user_data(user_id: int) -> dict:
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute(f"SELECT id, name, email, created_at, role FROM users WHERE id='{user_id}'")
+        cur.execute(f"SELECT id, username, email, created_at, role FROM users WHERE id='{user_id}'")
         user_data = cur.fetchone()
         # user_id = user_data[0]
         username = user_data[1]
         email = user_data[2]
-        created_at = user_data[3]
+        # created_at = user_data[3]
         role = user_data[4]
         result = {
             'user_id': user_id,
-            'uesrname': username,
+            'username': username,
             'email': email,
-            'created_at': created_at,
+            # 'created_at': created_at,
             'role': role
         }
         # print(f"Logged user_id: {user_id} {type(user_id)}")
@@ -95,13 +117,28 @@ def get_user_data(user_id: int) -> dict:
     finally:
         conn.close()
         cur.close()
-def add_user(name: str, email: str, password: str, role: str = "user"):
+        
+def add_user(username: str, email: str, password: str, role: UserRole = UserRole.user) -> int:
+    logging.info(
+        f"Попытка добавить пользователя:\n"
+        f"email: {email}"
+        f"username: {username}"
+        f"passwords: {password}"
+        f"role: {role}"
+    )
     """
     Добавляет пользователя, если это возможно.
     Возвращает id добавленного пользователя
     """
+    def hash_password(password: str) -> bytes:
+        """Хеширует пароль с использованием bcrypt."""
+        salt = bcrypt.gensalt()
+        password_hash = bcrypt.hashpw(password.encode(), salt)
+        return password_hash.decode()
+
     if is_user_exist(email):
         print("Пользователь с таким email уже существует")
+        raise Exception("Пользователь с таким email уже существует")
         return None
 
     password_hash = hash_password(password)
@@ -109,8 +146,11 @@ def add_user(name: str, email: str, password: str, role: str = "user"):
     cur = conn.cursor()
 
     try:
-        cur.execute("INSERT INTO users (name, email, password_hash, role) VALUES (%s, %s, %s, %s) RETURNING id", 
-                    (name, email, password_hash, role))
+        cur.execute(
+            "INSERT INTO users (username, email, password_hash, role)"
+            "VALUES (%s, %s, %s, %s) RETURNING id", 
+            (username, email, password_hash, role)
+        )
         user_id = cur.fetchone()[0]                     
         conn.commit()
         return user_id
@@ -121,6 +161,23 @@ def add_user(name: str, email: str, password: str, role: str = "user"):
     finally:
         cur.close()
         conn.close()
+
+def reg_user(username: str, email: str, password_1: str, password_2: str) -> int:
+    logging.info(
+        f"Попытка регистрации:\n"
+        f"email: {email}"
+        f"username: {username}"
+        f"passwords: {password_1} - {password_2}"
+    )
+    if password_1 != password_2:
+        raise DifferentPasswords
+    else:
+        password = password_2
+
+    if is_user_exist(email):
+        raise EmailTaken
+    
+    return add_user(username, email, password)
 
 
 

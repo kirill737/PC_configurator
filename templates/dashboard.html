@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <!-- Иконка профиля -->
+    <a href="/profile" class="profile-icon">
+        <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль">
+    </a>
+
+    {% block content %}{% endblock %}
     <div class="container">
         <h2>Список комплектующих</h2>
         <ul>

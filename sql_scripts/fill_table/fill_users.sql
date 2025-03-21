@@ -1,4 +1,4 @@
-INSERT INTO users (name, email, password_hash, role) VALUES
+INSERT INTO users (username, email, password_hash, role) VALUES
 ('kirill737', 'kirill737apple@yandex.ru', DECODE('test_hash'), 'admin'),
 ('Петр Петров', 'petr@example.com', 'hashed_password_2', 'user'),
 ('Анна Смирнова', 'anna@example.com', 'hashed_password_3', 'user'),

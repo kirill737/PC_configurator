@@ -5,7 +5,32 @@
     --gray-hover: #465c6c;
     --pearl: #EAE0C8;
 }
+/* Профиль */
+.profile-icon {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    width: 4em;
+    height: 4em;
+}
 
+.profile-icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--gray);
+    background-color: var(--gray);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); */
+}
+.profile-icon:hover img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--pearl);
+    background-color: var(--pearl);
+    transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
+    
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -30,6 +55,18 @@ body {
     border-radius: 1em;
     width: 30em;
     margin: 10em auto;
+}
+
+.second_button {
+    color: var(--pearl);
+    background-color: transparent;
+}
+
+.second_button:hover {
+    transition: decoration-color 0.3s ease-in-out;
+    text-decoration: underline;
+    color: var(--pearl);
+    background-color: transparent;
 }
 
 h2 {
@@ -69,5 +106,5 @@ button:hover {
 
 .error {
     color: red;
-    font-size: 1em;
+    font-size: 1.5em;
 }

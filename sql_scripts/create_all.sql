@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash BYTEA NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
-    role user_role DEFAULT 'user' NOT NULL
+    role USER_ROLE DEFAULT 'user' NOT NULL
 );
 
 CREATE TABLE builds (
