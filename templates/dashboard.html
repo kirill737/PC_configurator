@@ -24,18 +24,13 @@
         <div class="profile-menu" id="profileMenu">
             <a href="/profile">Мой профиль</a>
             <a href="/settings">Настройки</a>
-            <a href="/logout">Выход</a>
+            <a href="{{ url_for('logout') }}">Выход</a>
         </div>
     </div>
     {% block content %}{% endblock %}
     <div class="container">
-        <h2>Список комплектующих</h2>
-        <ul>
-            {% for component in components %}
-                <li>{{ component[1] }}</li> <!-- Предполагаем, что второй столбец - название -->
-            {% endfor %}
-        </ul>
-        <a href="{{ url_for('logout') }}"><button>Выйти</button></a>
+        
+        <!-- <a href="{{ url_for('logout') }}"><button>Выйти</button></a> -->
     </div>
 </body>
 </html>

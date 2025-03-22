@@ -1,50 +1,55 @@
-.profile-icon {
-    position: absolute;
+.profile-container {
+    position: fixed;
     top: 1em;
     right: 1em;
-    width: 4em;
-    height: 4em;
+    width: auto;
+    height: auto;
 }
 
-.profile-icon img {
-    width: 100%;
-    height: 100%;
+.profile-icon img{
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    width: 4em;
+    height: 4em;
     border-radius: 50%;
     border: 2px solid var(--gray);
     background-color: var(--gray);
     transition: background-color 0.2s, border 0.2s;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); */
-} 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
 .profile-icon:hover img {
-    width: 100%;
-    height: 100%;
     border-radius: 50%;
     border: 2px solid var(--pearl);
     background-color: var(--pearl);
-    
 }
 
 .profile-menu {
-    position: absolute;
-    top: 50px; /* Расстояние от иконки */
-    right: 0;
-    background: white;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    
+    position: relative;
+    top: 5em; /* Расстояние от иконки */
+    right: 0.5em;
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+    border: 2px solid var(--pearl);
     border-radius: 8px;
     width: 150px;
+
+    background-color: transparent;
+    color: var(--pearl);
+
     display: none;
     flex-direction: column;
 }
 
 .profile-menu a {
     padding: 10px;
+    color: var(--pearl);
     text-decoration: none;
-    color: black;
     display: block;
     transition: background 0.3s;
 }
 
 .profile-menu a:hover {
-    background: #f0f0f0;
+    text-decoration: underline;
 }
