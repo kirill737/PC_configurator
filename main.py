@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, session
 from controllers.session_controller import create_session, delete_session, delete_session_by_user_id
 from database.psql import get_psql_db_connection
-from controllers.db.user_controller import \
-check_user_login_data, get_user_id, reg_user, DifferentPasswords, EmailTaken
+from controllers.db.user_controller import *
+# check_user_login_data, get_user_id, reg_user, DifferentPasswords, EmailTaken, get_user_data
 import logging
 
 # Настрофка логов
@@ -44,6 +44,7 @@ def login():
             session_id = create_session(user_id)
             logging.info(f"Сессия {session_id} - началась")
             session["user_id"] = get_user_id(email)
+            
             return redirect('/dashboard')
         elif login_code == -1:
             logging.info(f"Пользователь с почтой {email} не найден")
@@ -76,7 +77,7 @@ def register():
 def dashboard():
     if 'user_id' not in session:
         return redirect('/login')
-
+    
     conn = get_psql_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM components")
@@ -84,7 +85,7 @@ def dashboard():
     cur.close()
     conn.close()
 
-    return render_template('dashboard.html', components=components)
+    return render_template('dashboard.html', user_data=get_user_data(session['user_id']))
 
 @app.route('/logout')
 def logout():

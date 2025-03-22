@@ -13,8 +13,8 @@
     width: 4em;
     height: 4em;
     border-radius: 50%;
-    border: 2px solid var(--gray);
-    background-color: var(--gray);
+    border: 2px solid black;
+    background-color: var(--pearl);
     transition: background-color 0.2s, border 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -22,7 +22,7 @@
 .profile-icon:hover img {
     border-radius: 50%;
     border: 2px solid var(--pearl);
-    background-color: var(--pearl);
+    /* background-color: var(--pearl); */
 }
 
 .profile-menu {
@@ -47,9 +47,11 @@
     color: var(--pearl);
     text-decoration: none;
     display: block;
-    transition: background 0.3s;
+    transition: underline    2s;
+    
 }
 
 .profile-menu a:hover {
+    /* background-color: aquamarine; */
     text-decoration: underline;
 }

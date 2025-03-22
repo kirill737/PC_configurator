@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='colors.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/hoodwink.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/colors.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
 
-    
 </head>
 <body>
-    <script src="{{ url_for('static', filename='profileScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
 
     <!-- Иконка профиля -->
     <div class="profile-container">
@@ -19,9 +19,10 @@
             <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
         </a> -->
         <a class="profile-icon">
-            <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
+            <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
         </a>
         <div class="profile-menu" id="profileMenu">
+            <a> {{user_data['username']}}</a>
             <a href="/profile">Мой профиль</a>
             <a href="/settings">Настройки</a>
             <a href="{{ url_for('logout') }}">Выход</a>
