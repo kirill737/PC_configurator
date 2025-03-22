@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colors.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+
+    
 </head>
 <body>
-    <!-- Иконка профиля -->
-    <a href="/profile" class="profile-icon">
-        <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль">
-    </a>
+    <script src="{{ url_for('static', filename='profileScript.js') }}" defer></script>
 
+    <!-- Иконка профиля -->
+    <div class="profile-container">
+        <!-- <a href="/profile" class="profile-icon">
+            <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
+        </a> -->
+        <a class="profile-icon">
+            <img src="{{ url_for('static', filename='profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
+        </a>
+        <div class="profile-menu" id="profileMenu">
+            <a href="/profile">Мой профиль</a>
+            <a href="/settings">Настройки</a>
+            <a href="/logout">Выход</a>
+        </div>
+    </div>
     {% block content %}{% endblock %}
     <div class="container">
         <h2>Список комплектующих</h2>
