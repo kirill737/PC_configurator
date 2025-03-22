@@ -34,26 +34,33 @@ def check_password(password: str, password_hash: bytes) -> bool:
     """Проверяет, соответствует ли пароль его хешу."""
     return bcrypt.checkpw(password.encode(), password_hash.encode())
 
-def is_user_exist(email: str) -> bool:
+def is_email_taken(email: str) -> bool:
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
+        cur.execute(
+            "SELECT id, password_hash"
+            "FROM users WHERE email = %s;",
+            (email,)
+        )
         user = cur.fetchone()
         return user != None
     except Exception as e:
-        print(f"Ошибка is_user_exist({email}): {e}")
+        print(f"Ошибка is_email_taken({email}): {e}")
     finally:
         cur.close()
         conn.close()
     return False
     
-
 def is_right_password(email: str, password: str):
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute(f"SELECT password_hash FROM users WHERE email='{email}'") 
+        cur.execute(
+            "SELECT password_hash"
+            "FROM users WHERE email=%s;",
+            (email,)
+        ) 
         password_hash = cur.fetchone()[0].tobytes()
         isCorrectPassword = bcrypt.checkpw(password.encode(), password_hash)
         return isCorrectPassword
@@ -71,7 +78,7 @@ def check_user_login_data(email: str, password: str) -> int:
     0 - неверный пароль
     1 - верный пароль
     """
-    if not is_user_exist(email):
+    if not is_email_taken(email):
         return -1
     if is_right_password(email, password):
         return 1
@@ -81,7 +88,11 @@ def get_user_id(email: str):
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute(f"SELECT id FROM users WHERE email='{email}'")
+        cur.execute(
+            "SELECT id FROM users"
+            "WHERE email=%s",
+            (email,)
+        )
         # print(f"Email: {email}")
         user_id = cur.fetchone()[0]
         # print(f"Logged user_id: {user_id} {type(user_id)}")
@@ -96,7 +107,11 @@ def get_user_data(user_id: int) -> dict:
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute(f"SELECT id, username, email, created_at, role FROM users WHERE id='{user_id}'")
+        cur.execute(
+            "SELECT id, username, email, created_at, role"
+            "FROM users WHERE id=%s",
+            (user_id,)
+        )
         user_data = cur.fetchone()
         # user_id = user_data[0]
         username = user_data[1]
@@ -136,9 +151,9 @@ def add_user(username: str, email: str, password: str, role: UserRole = UserRole
         password_hash = bcrypt.hashpw(password.encode(), salt)
         return password_hash.decode()
 
-    if is_user_exist(email):
+    if is_email_taken(email):
         print("Пользователь с таким email уже существует")
-        raise Exception("Пользователь с таким email уже существует")
+        raise EmailTaken
         return None
 
     password_hash = hash_password(password)
@@ -174,10 +189,59 @@ def reg_user(username: str, email: str, password_1: str, password_2: str) -> int
     else:
         password = password_2
 
-    if is_user_exist(email):
+    if is_email_taken(email):
         raise EmailTaken
     
     return add_user(username, email, password)
+
+def change_user_data_by_user_id(user_id: int):
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    def change_username(new_username: str, ) -> bool:
+        try: 
+            cur.execute(
+                "UPDATE users"
+                "SET username = %s"
+                "WHERE id = %s;",
+                (new_username, user_id)
+            )
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            print(f"Ошибка при изменении имени: {e}")
+            return None
+        # finally:
+        #     cur.close()
+        #     conn.close()
+    def change_email(new_email: str) -> bool:
+        try: 
+            cur.execute(
+                "UPDATE users"
+                "SET email = %s"
+                "WHERE id = %s;",
+                (new_email, user_id)
+            )
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            print(f"Ошибка при изменении имени: {e}")
+            return None
+        # finally:
+        #     cur.close()
+        #     conn.close()
+
+        
+
+    if is_email_taken():
+        raise EmailTaken
+
+    # cur.execute(
+    #     "UPDATE users"
+    #     "SET ")
+    
+
+
+
 
 
 

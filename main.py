@@ -4,7 +4,7 @@ from database.psql import get_psql_db_connection
 from controllers.db.user_controller import *
 # check_user_login_data, get_user_id, reg_user, DifferentPasswords, EmailTaken, get_user_data
 import logging
-
+from settings import init_settings
 # Настрофка логов
 logging.basicConfig(
     filename="logs/pc_config_main.log",  # Лог в файл
@@ -15,6 +15,7 @@ logging.basicConfig(
 
 # Запуск сервеоа
 app = Flask(__name__)
+init_settings(app)
 app.secret_key = 'supersecretkey'
 
 @app.route('/')
@@ -80,7 +81,7 @@ def dashboard():
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM components")
+    cur.execute("SELECT * FROM components;")
     components = cur.fetchall()
     cur.close()
     conn.close()

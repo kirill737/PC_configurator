@@ -18,7 +18,11 @@ def add_component(component_type: str, price: int, info: dict):
     cur = conn.cursor()
     
     try:
-        cur.execute("INSERT INTO components (type, price) VALUES (%s, %s) RETURNING id", (type, price))
+        cur.execute(
+            "INSERT INTO components (type, price)"
+            "VALUES (%s, %s) RETURNING id;",
+            (component_type, price)
+        )
         component_id = cur.fetchone()[0]                         
         
         insert_queries = {

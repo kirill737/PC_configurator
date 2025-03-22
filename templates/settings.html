@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/hoodwink.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/colors.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+</head>
+<body>
+    <div class="container" id="settings">
+        <h2 class="text_title">Настройки аккаунта</h2>
+        <form action="/save_settings" method="post">
+            <table>
+                <tr>
+                    <td class="text">Имя пользователя</td>
+                    <td>
+                        <input name="username" value="{{ user_data['username']}}" placeholder="Имя пользователя" class="settings" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">Почта</td>
+                    <td>
+                        <input name="email" value="{{ user_data['email']}}" placeholder="Почта" class="settings" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">Пароль</td>
+                    <td>
+                        <input name="password" value="{{ user_data['password']}}" placeholder="Пароль" class="settings" required>
+                    </td>
+                </tr>
+            </table>
+            
+            <button type="submit">Сохранить</button>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </form>
+        <form action="/dashboard">
+            <button type="submit" class="second_button">Назад</button>
+        </form>
+    </div>
+</body>
+</html>

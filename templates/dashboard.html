@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/colors.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
-
 </head>
 <body>
     <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
@@ -22,9 +21,10 @@
             <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggleMenu()">
         </a>
         <div class="profile-menu" id="profileMenu">
-            <a> {{user_data['username']}}</a>
+            <a> {{ user_data['username'] }}</a>
             <a href="/profile">Мой профиль</a>
-            <a href="/settings">Настройки</a>
+            <a href="{{ url_for('open_settings_page')}}" class="second_button">Настройки</a>
+            <a href="{{ url_for('static', filename='settings') }}">Настройки</a>
             <a href="{{ url_for('logout') }}">Выход</a>
         </div>
     </div>
