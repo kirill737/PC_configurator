@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
 
-from controllers.session_controller import
 from controllers.db.user_controller import *
 
 from logger_settings import setup_logger

@@ -7,7 +7,6 @@ from views.settings_view import init_settings
 
 from logger_settings import setup_logger
 
-
 logger = setup_logger("main")
 logger.info("Запуск сайта...")
 
