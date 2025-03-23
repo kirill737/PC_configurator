@@ -20,7 +20,7 @@ def create_session(user_id: int) -> int:
     redis_client.expire(session_key, 3600)  # Сессия истечёт через 1 час (3600 секунд)
     
     redis_client.set(f"user:{user_id}:session", session_id, ex=3600)
-    
+    logging.info(f"Сессии пользователя: {session_id} создана")
     return session_id
 
 def get_session_data(session_id: int) -> dict:

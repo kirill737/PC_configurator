@@ -39,7 +39,7 @@ def is_email_taken(email: str) -> bool:
     cur = conn.cursor()
     try:
         cur.execute(
-            "SELECT id, password_hash"
+            "SELECT id, password_hash "
             "FROM users WHERE email = %s;",
             (email,)
         )
@@ -57,7 +57,7 @@ def is_right_password(email: str, password: str):
     cur = conn.cursor()
     try:
         cur.execute(
-            "SELECT password_hash"
+            "SELECT password_hash "
             "FROM users WHERE email=%s;",
             (email,)
         ) 
@@ -89,13 +89,11 @@ def get_user_id(email: str):
     cur = conn.cursor()
     try:
         cur.execute(
-            "SELECT id FROM users"
+            "SELECT id FROM users "
             "WHERE email=%s",
             (email,)
         )
-        # print(f"Email: {email}")
         user_id = cur.fetchone()[0]
-        # print(f"Logged user_id: {user_id} {type(user_id)}")
         return user_id
     except Exception as e:
         print(f"Ошибка get_user_id({email}): {e}")
@@ -104,31 +102,36 @@ def get_user_id(email: str):
         cur.close()
 
 def get_user_data(user_id: int) -> dict:
+    logging.info(f"Получение информации пользователя {user_id}...")
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
         cur.execute(
-            "SELECT id, username, email, created_at, role"
+            "SELECT id, username, email, created_at, role, password_hash "
             "FROM users WHERE id=%s",
             (user_id,)
         )
         user_data = cur.fetchone()
+        logging.debug(user_data)
         # user_id = user_data[0]
         username = user_data[1]
         email = user_data[2]
         # created_at = user_data[3]
         role = user_data[4]
+        password_hash = user_data[5]
         result = {
             'user_id': user_id,
             'username': username,
             'email': email,
             # 'created_at': created_at,
-            'role': role
+            'role': role,
+            'password_hash': password_hash
         }
         # print(f"Logged user_id: {user_id} {type(user_id)}")
         return result
     except Exception as e:
-        print(f"Ошибка get_user_id({email}): {e}")
+        # print(f"Ошибка get_user_id({email}): {e}")
+        logging.debug(f"Ошибка get_user_id({email}): {e}")
     finally:
         conn.close()
         cur.close()
@@ -194,57 +197,62 @@ def reg_user(username: str, email: str, password_1: str, password_2: str) -> int
     
     return add_user(username, email, password)
 
-def change_user_data_by_user_id(user_id: int):
+def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
     conn = get_psql_db_connection()
     cur = conn.cursor()
-    def change_username(new_username: str, ) -> bool:
-        try: 
-            cur.execute(
-                "UPDATE users"
-                "SET username = %s"
-                "WHERE id = %s;",
-                (new_username, user_id)
-            )
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            print(f"Ошибка при изменении имени: {e}")
-            return None
-        # finally:
-        #     cur.close()
-        #     conn.close()
-    def change_email(new_email: str) -> bool:
-        try: 
-            cur.execute(
-                "UPDATE users"
-                "SET email = %s"
-                "WHERE id = %s;",
-                (new_email, user_id)
-            )
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            print(f"Ошибка при изменении имени: {e}")
-            return None
-        # finally:
-        #     cur.close()
-        #     conn.close()
+    
+    def change_username(new_username: str):
+        cur.execute(
+            "UPDATE users "
+            "SET username = %s "
+            "WHERE id = %s;",
+            (new_username, user_id)
+        )
 
-        
+    def change_email(new_email: str):
+        if is_email_taken():
+            raise EmailTaken
+        cur.execute(
+            "UPDATE users "
+            "SET email = %s "
+            "WHERE id = %s;",
+            (new_email, user_id)
+        )
+    
+    def change_password(new_password: str):
+        cur.execute(
+            "UPDATE users "
+            "SET password_hash = %s "
+            "WHERE id = %s;",
+            (hash_password(new_password), user_id)
+        )
 
-    if is_email_taken():
-        raise EmailTaken
+    def compare_data(old_user_data: dict, new_user_data: dict):
+        if old_user_data['username'] != new_user_data['username']:
+            change_username(new_username)
+            
+        if old_user_data['email'] != new_user_data['email']:
+            change_email(new_email)
+
+        if old_user_data['password_hash'] != new_user_data['password_hash']:
+            change_password(new_password)
+
+    old_user_data = get_user_data(user_id)
+
+    try:
+        compare_data(old_user_data, new_user_data)
+        return new_user_data
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        logging.info(f"Ошибка при изменении данных пользователя {user_id}: {e}")
+
+    finally:
+        cur.close()
+        conn.close()
+        return old_user_data
 
     # cur.execute(
     #     "UPDATE users"
     #     "SET ")
-    
-
-
-
-
-
-
-
-    
 
