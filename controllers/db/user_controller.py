@@ -5,10 +5,10 @@ from enum import StrEnum
 import logging
 
 logging.basicConfig(
-    filename="logs/pc_config_users.log",  # Лог в файл
-    level=logging.DEBUG,  # Логируем всё (DEBUG и выше)
-    format="%(asctime)s - %(levelname)s - %(message)s",  # Формат вывода
-    datefmt="%Y-%m-%d %H:%M:%S"
+    filename="logs/pc_config_users.log",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%H:%M:%S"
 )
 
 class UserRole(StrEnum):
@@ -32,9 +32,15 @@ class EmailTaken(Exception):
 
 def check_password(password: str, password_hash: bytes) -> bool:
     """Проверяет, соответствует ли пароль его хешу."""
+
+    logging.info("Запуск <check_password>")
+    logging.info(f"check_password -> Проверка пароля {password}")
     return bcrypt.checkpw(password.encode(), password_hash.encode())
 
 def is_email_taken(email: str) -> bool:
+    logging.info("Запуск <is_email_taken>")
+    logging.info(f"Проверка почты на занятость: {email}...")
+
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
@@ -44,15 +50,20 @@ def is_email_taken(email: str) -> bool:
             (email,)
         )
         user = cur.fetchone()
-        return user != None
+        is_taken = user is not None
+        logging.info(f"Доступность почты {email}: {is_taken}")
+        return is_taken
     except Exception as e:
-        print(f"Ошибка is_email_taken({email}): {e}")
+        logging.error(f"Ошибка в is_email_taken({email}): {e}")
     finally:
         cur.close()
         conn.close()
     return False
     
 def is_right_password(email: str, password: str):
+    logging.info("Запуск <is_right_password>")
+    logging.info(f"Проверка пароля {password} пользователя с почтой {email}")
+
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
@@ -65,7 +76,8 @@ def is_right_password(email: str, password: str):
         isCorrectPassword = bcrypt.checkpw(password.encode(), password_hash)
         return isCorrectPassword
     except Exception as e:
-        print(f"Ошибка is_right_password({email, password}): {e}")
+        logging.error(f"Ошибка в функции is_right_password({email, password}): {e}")
+        
     finally:
         cur.close()
         conn.close()
@@ -78,6 +90,13 @@ def check_user_login_data(email: str, password: str) -> int:
     0 - неверный пароль
     1 - верный пароль
     """
+    logging.info("Запуск <check_user_login_data>")
+    logging.info(
+        f"Проверка данных для входа:\n"
+        f"email: {email}"
+        f"Пароль: {password}"
+    )
+    
     if not is_email_taken(email):
         return -1
     if is_right_password(email, password):
@@ -85,6 +104,9 @@ def check_user_login_data(email: str, password: str) -> int:
     return 0
 
 def get_user_id(email: str):
+    logging.info("Запуск <get_user_id>")
+    logging.info(f"Получение user_id пользователя {email}...")
+
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
@@ -102,7 +124,9 @@ def get_user_id(email: str):
         cur.close()
 
 def get_user_data(user_id: int) -> dict:
+    logging.info("Запуск <get_user_data>")
     logging.info(f"Получение информации пользователя {user_id}...")
+
     conn = get_psql_db_connection()
     cur = conn.cursor()
     try:
@@ -127,16 +151,27 @@ def get_user_data(user_id: int) -> dict:
             'role': role,
             'password_hash': password_hash
         }
-        # print(f"Logged user_id: {user_id} {type(user_id)}")
         return result
     except Exception as e:
-        # print(f"Ошибка get_user_id({email}): {e}")
-        logging.debug(f"Ошибка get_user_id({email}): {e}")
+        logging.error(f"get_user_id({email}): {e}")
     finally:
         conn.close()
         cur.close()
-        
+
+def hash_password(password: str) -> bytes:
+    """Хеширует пароль с использованием bcrypt."""
+    logging.info("Запуск <hash_password>")
+    logging.info(f"Хеширование пароля {password}...")
+
+    salt = bcrypt.gensalt()
+    password_hash = bcrypt.hashpw(password.encode(), salt)
+    return password_hash.decode()
+
 def add_user(username: str, email: str, password: str, role: UserRole = UserRole.user) -> int:
+    """
+    Добавляет пользователя, если это возможно.
+    Возвращает id добавленного пользователя
+    """
     logging.info(
         f"Попытка добавить пользователя:\n"
         f"email: {email}"
@@ -144,20 +179,10 @@ def add_user(username: str, email: str, password: str, role: UserRole = UserRole
         f"passwords: {password}"
         f"role: {role}"
     )
-    """
-    Добавляет пользователя, если это возможно.
-    Возвращает id добавленного пользователя
-    """
-    def hash_password(password: str) -> bytes:
-        """Хеширует пароль с использованием bcrypt."""
-        salt = bcrypt.gensalt()
-        password_hash = bcrypt.hashpw(password.encode(), salt)
-        return password_hash.decode()
+    logging.info("Запуск <add_user>")
 
     if is_email_taken(email):
-        print("Пользователь с таким email уже существует")
         raise EmailTaken
-        return None
 
     password_hash = hash_password(password)
     conn = get_psql_db_connection()
@@ -174,13 +199,20 @@ def add_user(username: str, email: str, password: str, role: UserRole = UserRole
         return user_id
     except Exception as e:
         conn.rollback()
-        print(f"Ошибка при добавлении пользователя: {e}")
+        logging.error(
+            f"Ошибка при добавлении пользователя: {e}\n"
+            f"email: {email}\n"
+            f"username: {username}\n"
+            f"passwords: {password}\n"
+            f"role: {role}"
+        )
         return None
     finally:
         cur.close()
         conn.close()
 
 def reg_user(username: str, email: str, password_1: str, password_2: str) -> int:
+    logging.info("Запуск <reg_user>")
     logging.info(
         f"Попытка регистрации:\n"
         f"email: {email}"
@@ -198,10 +230,19 @@ def reg_user(username: str, email: str, password_1: str, password_2: str) -> int
     return add_user(username, email, password)
 
 def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
+    logging.info("Запуск <change_user_data_by_user_id>")
+    logging.info(
+        f"Смена данных пользователя {user_id} на\n"
+        f"{new_user_data}"
+    )
+
     conn = get_psql_db_connection()
     cur = conn.cursor()
     
     def change_username(new_username: str):
+        logging.info("Запуск <change_username>")
+        logging.info(f"Смена имени на {new_username}")
+
         cur.execute(
             "UPDATE users "
             "SET username = %s "
@@ -210,6 +251,9 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         )
 
     def change_email(new_email: str):
+        logging.info("Запуск <change_email>")
+        logging.info(f"Смена имени на {new_email}")
+
         if is_email_taken():
             raise EmailTaken
         cur.execute(
@@ -220,6 +264,9 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         )
     
     def change_password(new_password: str):
+        logging.info("Запуск <change_password>")
+        logging.info(f"Смена имени на {new_password}")
+
         cur.execute(
             "UPDATE users "
             "SET password_hash = %s "
@@ -228,31 +275,33 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         )
 
     def compare_data(old_user_data: dict, new_user_data: dict):
+        logging.info("Запуск <compare_data>")
+        logging.info(f"Смена данных с {old_user_data} на {old_user_data}")
+        
         if old_user_data['username'] != new_user_data['username']:
-            change_username(new_username)
+            logging.info("Меняется имя")
+            change_username(new_user_data['username'])
             
         if old_user_data['email'] != new_user_data['email']:
-            change_email(new_email)
+            logging.info("Меняется почта")
+            change_email(new_user_data['email'])
 
         if old_user_data['password_hash'] != new_user_data['password_hash']:
-            change_password(new_password)
+            logging.info("Меняется пароль")
+            change_password(new_user_data['password_hash'])
 
     old_user_data = get_user_data(user_id)
 
     try:
         compare_data(old_user_data, new_user_data)
-        return new_user_data
         conn.commit()
+        return new_user_data
+        
     except Exception as e:
         conn.rollback()
-        logging.info(f"Ошибка при изменении данных пользователя {user_id}: {e}")
+        logging.error(f"Ошибка при изменении данных пользователя {user_id}: {e}")
 
     finally:
         cur.close()
         conn.close()
         return old_user_data
-
-    # cur.execute(
-    #     "UPDATE users"
-    #     "SET ")
-

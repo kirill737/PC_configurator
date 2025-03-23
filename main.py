@@ -10,7 +10,7 @@ logging.basicConfig(
     filename="logs/pc_config_main.log",  # Лог в файл
     level=logging.INFO,  # Логируем всё (DEBUG и выше)
     format="%(asctime)s - %(levelname)s - %(message)s",  # Формат вывода
-    datefmt="%Y-%m-%d %H:%M:%S"
+    datefmt="%H:%M:%S"
 )
 
 # Запуск сервеоа
