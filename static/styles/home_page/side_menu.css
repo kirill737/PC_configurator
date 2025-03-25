@@ -1,0 +1,71 @@
+#side-menu-container {
+    position: absolute;
+    height: 80%;
+    top: 5em;
+    left: 1em;
+    width: 20%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-right: 0.5em solid var(--charcoal-hover);
+    border-radius: 0.5em;
+
+    display: flex;
+    padding-right: 0%;
+    flex-direction: column; /* Элементы выстраиваются сверху вниз */
+    padding: 0.5em;
+}
+
+.side-menu-button {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--pearl);
+    text-decoration: none;
+    font-size: 2em;
+    padding: 0.3em;
+    transition: all 0.2s ease-in-out;
+}
+
+.side-menu-button:hover {
+    border-left: 0.5rem solid var(--light);
+}
+/* Меню выбора сборки */
+.hidden {
+    display: none;
+}
+.side-menu-button.active {
+    background-color: lightblue;
+}
+
+
+/*  Кнопка выбора сборки */
+#select-build-button {
+    font-size: 2em;
+    background-color: transparent;
+    color: var(--pearl);
+    background-color: var(--gray);
+    border: none;
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    padding: 0.5em;
+    transition: all 0.2s ease-in-out;
+}
+
+#select-build-button:hover {
+    background-color: var(--gray-hover);
+}
+
+#builds-menu {
+    position: absolute;
+    /* background: white; */
+    /* border: 1px solid black; */
+    /* padding: 10px;/ */
+}
+
+#builds-list {
+    background-color: aquamarine;
+    width: auto;
+    background-color: transparent;
+    color: var(--pearl);
+    border: solid 0.2em var(--pearl);
+}

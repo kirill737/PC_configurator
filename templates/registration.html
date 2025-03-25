@@ -5,26 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
     <link rel="icon" href="{{ url_for('static', filename='images/hoodwink.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/colors.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/login_register.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h2 class="text_title">Регистрация</h2>
+    <div id="register-container">
+        <h2 class="text-title">Регистрация</h2>
         <form action="/register" method="post">
             <input type="username" name="username" placeholder="Имя пользователя" required>
             <input type="email" name="email" placeholder="Почта" required>
             <input type="password" name="password_1" placeholder="Пароль" required>
             <input type="password" name="password_2" placeholder="Повторный пароль" required>
-            <button type="submit">Зарегистрироваться</button>
+            <button type="submit" class="submit">Зарегистрироваться</button>
             {% if error %}
                 <p class="error">{{ error }}</p>
             {% endif %}
             
         </form>
         <form action="/open_login_page">
-            <button type="submit" class="second_button">Войти</button>
+            <button type="submit" class="redirect">Войти</button>
         </form>
     </div>
 </body>

@@ -7,10 +7,11 @@ CREATE TYPE COMPONENT AS ENUM (
     'storage',
     'power_supply',
     'case',
-    'mice',
+    'mouse',
     'headphones',
     'microphone',
-    'monitor'
+    'monitor',
+    'keyboard'
 );
 
 CREATE TYPE CONNECTION_TYPE AS ENUM ('wireless', 'wired');

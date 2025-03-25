@@ -18,7 +18,6 @@ CREATE TABLE builds (
     -- FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-
 -- Таблица комплектующих
 CREATE TABLE components (
     id SERIAL PRIMARY KEY,

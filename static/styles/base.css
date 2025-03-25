@@ -1,44 +1,48 @@
-@import 'vars';
+@import 'colors.css';
 
 body {
     font-family: Arial, sans-serif;
     background-color: var(--charcoal);
     text-align: center;
+    color: var(--pearl);
 }
 
-.text_title {
+.text-title {
     color: var(--pearl);
     font-size: 4em;
 }
+
 .text {
     color: var(--pearl);
     font-size: 2em;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5em;
-    background-color: var(-light);
-    padding: 2em;
-    font-size: 1em;
-    border-radius: 1em;
-    width: 30em;
-    margin: 5em auto;
+.redirect {
+    color: var(--pearl);
+    text-decoration: none;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
 }
 
-.second_button {
-    color: var(--pearl);
-    background-color: transparent;
+.redirect:hover {
+    color: var(--light);
 }
 
-.second_button:hover {
-    transition: decoration-color 0.3s ease-in-out;
-    text-decoration: underline;
-    color: var(--pearl);
+button.redirect {
     background-color: transparent;
+    padding: 1rem;
+    font-size: 2em;
+    border-radius: 0.5rem;
+    border: none;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: auto;
+
+    transition: all 0.2s ease-in-out;
+}
+
+button.redirect:hover {
+    background-color: var(--charcoal-hover);
 }
 
 h2 {
@@ -46,7 +50,17 @@ h2 {
     width: auto;
 }
 
-input, button {
+input {
+    background-color: var(--pearl);
+    color: var(--charcoal);
+    width: 80%;
+}
+
+input:focus {
+    outline: none;
+}
+
+input, button.submit {
     padding: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem; 
@@ -55,24 +69,15 @@ input, button {
     font-size: 2em;
 }
 
-input {
-    background-color: var(--pearl);
-    color: var(--charcoal);
-    width: 80%;
-}
-input:focus {
-    outline: none;
-}
-
-button {
+button.submit {
     background-color: var(--gray);
     color: var(--pearl);
     cursor: pointer;
     width: auto;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
-button:hover {
+button.submit:hover {
     background-color: var(--gray-hover);
     color: var(--pearl);
     animation-duration: 100ms;

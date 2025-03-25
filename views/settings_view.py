@@ -4,8 +4,6 @@ from controllers.db.user_controller import change_user_data_by_user_id
 
 from logger_settings import setup_logger
 
-
-
 logger = setup_logger("settings")
 logger.info("Загрузка страницы с данными пользователя")
 
@@ -31,7 +29,7 @@ def init_settings(app):
                 logger.info(f"Данные успешно сохранены")
             except Exception as e:
                 logger.error(f"Ошибка при смене данных {e}")
-                render_template('settings.html', user_data=get_user_data(user_id))
+                return render_template('settings.html', user_data=get_user_data(user_id), error=e)
 
             # return render_template('login.html', error='Неверный пароль')
 

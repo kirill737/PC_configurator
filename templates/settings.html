@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Настройки</title>
     <link rel="icon" href="{{ url_for('static', filename='images/hoodwink.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/colors.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
 </head>
 <body>
-    <div class="container" id="settings">
-        <h2 class="text_title">Настройки аккаунта</h2>
+    <div class="container" id="settings-container">
+        <h2 class="text-title">Настройки аккаунта</h2>
         <form action="/save_settings" method="post">
             <table>
                 <tr>
@@ -36,13 +32,13 @@
                 </tr>
             </table>
             
-            <button type="submit">Сохранить</button>
+            <button type="submit" class="submit">Сохранить</button>
             {% if error %}
                 <p class="error">{{ error }}</p>
             {% endif %}
         </form>
         <form action="/home">
-            <button type="submit" class="second_button">Назад</button>
+            <button type="submit" class="redirect">Назад</button>
         </form>
     </div>
 </body>

@@ -1,37 +1,37 @@
-.profile-container {
+@import 'colors.css';
+
+#profile-container {
     position: fixed;
-    top: 1em;
-    right: 1em;
+    top: 0em;
+    right: 0em;
     width: auto;
     height: auto;
 }
 
-.profile-icon img{
+#profile-icon img {
     position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    width: 4em;
-    height: 4em;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
-    border: 2px solid black;
+    border: 0.25rem solid var(--charcoal-hover);
     background-color: var(--pearl);
     transition: background-color 0.2s, border 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.profile-icon:hover img {
+#profile-icon:hover img {
     border-radius: 50%;
-    border: 2px solid var(--pearl);
-    /* background-color: var(--pearl); */
+    border: 0.25rem solid var(--pearl);
 }
 
-.profile-menu {
-    
+#profile-menu {
     position: relative;
-    top: 5em; /* Расстояние от иконки */
+    top: 5.5em;
     right: 0.5em;
-    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
-    border: 2px solid var(--pearl);
+
+    border: 0.2em solid var(--pearl);
     border-radius: 8px;
     width: 150px;
 
@@ -42,16 +42,14 @@
     flex-direction: column;
 }
 
-.profile-menu a {
-    padding: 10px;
+.profile-menu-button {
+    font-size: 1.5em;
+    padding: 1em;
     color: var(--pearl);
     text-decoration: none;
     display: block;
-    transition: underline    2s;
-    
+    transition: all 2s ease-in-out;   
 }
-
-.profile-menu a:hover {
-    /* background-color: aquamarine; */
+.profile-menu-button:hover {
     text-decoration: underline;
 }
