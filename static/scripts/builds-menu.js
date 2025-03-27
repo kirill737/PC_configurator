@@ -1,20 +1,32 @@
 // Добавление меню выбора сборки
 document.getElementById("select-build-button").addEventListener("click", async () => {
-    console.log("Нажали кнопку")
+    // console.log("Нажали кнопку")
     const menu = document.getElementById("builds-menu");
     menu.classList.toggle("hidden");
+    const create_build_button = document.getElementById("create-build-button");
+    // create_build_button.classList.toggle("hidden");
 
     const response = await fetch("/api/builds");
     const builds = await response.json();
 
     const list = document.getElementById("builds-list");
     list.innerHTML = "";
+    create_build_button.dispay ="block";
     builds.forEach(build => {
         const li = document.createElement("li");
-        li.textContent = build.name;
+        li.textContent = build.name + build.id;
         li.addEventListener("click", () => loadBuildComponents(build.id));
         list.appendChild(li);
     });
+});
+
+document.addEventListener("click", function(event) {
+    let menu = document.getElementById("builds-menu");
+    let select_build_button = document.getElementById("select-build-button");
+    if (!menu.contains(event.target) && !select_build_button.contains(event.target)) {
+        // console.log("Клик вне меню");
+        menu.classList.add("hidden");
+    }
 });
 
 

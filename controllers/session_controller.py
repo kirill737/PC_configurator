@@ -10,7 +10,7 @@ logger = setup_logger("sessions")
 logger.info("Запуск логера сессий")
 
 def create_session(user_id: int) -> int:
-    logger.info("Запуск <create_session>")
+    logger.debug("Запуск <create_session>")
     logger.info(f"Создание сессии пользователя: {user_id}")
 
     session_id = str(uuid.uuid4())  # Генерация уникального идентификатора сессии
@@ -24,18 +24,18 @@ def create_session(user_id: int) -> int:
     return session_id
 
 def get_session_data(session_id: int) -> dict:
-    logger.info("Запуск <get_session_data>")
+    logger.debug("Запуск <get_session_data>")
     session_key = f"user_session:{session_id}"
     return redis_client.hgetall(session_key)
 
 def delete_session(session_id: int) -> None:
-    logger.info("Запуск <delete_session>")
+    logger.debug("Запуск <delete_session>")
     session_key = f"user_session:{session_id}"
     redis_client.delete(session_key)
     logger.info(f"Сессия {session_id} - окончена")
 
 def delete_session_by_user_id(user_id: int) -> None:
-    logger.info("Запуск <delete_session_by_user_id>")
+    logger.debug("Запуск <delete_session_by_user_id>")
     session_id = redis_client.get(f"user:{user_id}:session")
     logger.info(f"Попытка удаления сессии: {session_id} пользователя: {user_id}")
     

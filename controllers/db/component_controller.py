@@ -18,6 +18,7 @@ from logger_settings import setup_logger
 from enum import StrEnum
 
 logger = setup_logger("components")
+logger.info("Запуска логов componen_controller")
 
 class ComponentType(StrEnum):
     cpu = 'cpu'
@@ -32,11 +33,70 @@ class ComponentType(StrEnum):
     monitor = 'monitor'
     storage = 'storage'
     power_supply = 'power_supply'
-    
-logger = setup_logger("Запуск component_controller")
 
-def add_component(component_type: ComponentType, price: int, info: dict):
-    logger.info("Запуску <add_component>")
+type2fields_dict = {
+    ComponentType.cpu: [
+        "name", "AMD Ryzen 7 5800X", "brand", 
+        "cores", "threads", "base_clock", 
+        "boost_clock", "socket","tdp"
+        ],
+    ComponentType.gpu: [
+        "name", "brand", "memory_size", 
+        "memory_type", "core_clock", "boost_clock", 
+        "tdp", "interface"
+        ],
+    ComponentType.motherboard: [
+        "name", "brand", "socket", 
+        "chipset", "form_factor", "ram_slots", 
+        "max_ram", "m2_slots"
+        ],
+    ComponentType.ram: [
+        "name", "brand", "capacity", 
+        "type", "speed", "cas_latency"
+        ],
+    ComponentType.storage: [
+        "name", "brand", "type", 
+        "capacity", "interface", 
+        "read_speed", "write_speed"
+        ],
+    ComponentType.power_supply: [
+        "name", "brand", "wattage", 
+        "efficiency_rating", "modular"
+        ],
+    ComponentType.case: [
+        "name", "brand", "form_factor", 
+        "max_gpu_length", "max_cpu_cooler_height", 
+        "max_psu_length"
+        ],
+    ComponentType.headphones: [
+        "name", "brand", "connection_type", 
+        "frequency_range", "microphone", "rgb"
+        ],
+    ComponentType.keyboard: [
+        "name", "brand", "switch_type", 
+        "connection_type", "layout", "rgb", 
+        "num_pad"
+        ],
+    ComponentType.mouse: [
+        "name", "brand", "dpi", 
+        "connection_type", "buttons", 
+        "weight", "rgb"
+        ],
+    ComponentType.microphone: [
+        "name", "brand", "connection_type", 
+        "directionality", "sample_rate", 
+        "bit_depth"
+        ],
+    ComponentType.monitor: [
+        "name", "brand", "screen_size", 
+        "resolution", "refresh_rate", 
+        "panel_type", "response_time", 
+        "g_sync", "freesync"
+        ]
+} 
+
+def add_component(component_type: ComponentType, price: int, info: dict) -> int:
+    logger.debug("Запуску <add_component>")
     logger.info(
         f"Попытка добавить комплектущую\n"
         f"Тип: {component_type}, цена: {price}\n"
@@ -46,13 +106,13 @@ def add_component(component_type: ComponentType, price: int, info: dict):
     cur = conn.cursor()
     
     try:
-        logger.debug(f"Добавляем {component_type}...")
+        logger.debug(f"Добавляем {component_type} в components...")
         cur.execute(
             "INSERT INTO components (type, price)"
             "VALUES (%s, %s) RETURNING id;",
             (component_type, price)
         )
-        logger.debug(f"Добавили в components")
+        logger.debug(f"Добавили {component_type} в components!")
         component_id = cur.fetchone()[0]                         
         
         insert_queries = {
@@ -69,17 +129,18 @@ def add_component(component_type: ComponentType, price: int, info: dict):
             ComponentType.storage: insert_storage_query,
             ComponentType.power_supply: insert_power_supply_query
         }
-        logger.debug(f"Добавляем в {component_type}...")
+        
+        logger.debug(f"Добавляем в таблицу с {component_type}...")
         if component_type in insert_queries:
             query, params = insert_queries[component_type](component_id, info)
             cur.execute(query, params)
-            logger.debug(f"{component_type} добавлена!")
+            logger.debug(f" '{component_type}' добавлена!")
         else:
-            logger.error(f"Неизвестный тип комплектующей: {type}")
-            raise ValueError(f"Неизвестный тип комплектующей: {type}")
+            logger.error(f"Неизвестный тип комплектующей: {component_type}")
+            raise ValueError(f"Неизвестный тип комплектующей: {component_type}")
         
         conn.commit()
-        logger.info(f"{component_type} добавлена")
+        logger.info(f"{component_type} добавлена!")
         return component_id
     except Exception as e:
         conn.rollback()

@@ -1,4 +1,6 @@
 #top-menu-container {
+    position: fixed;
+    z-index: 2000;
     display: flex;
     justify-content: center; /* Центрирование элементов по горизонтали */
     align-items: center;

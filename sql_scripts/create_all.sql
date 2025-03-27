@@ -36,7 +36,7 @@ CREATE TABLE build_components (
 CREATE TABLE cases (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     form_factor VARCHAR NULL,
     max_gpu_length INT,
@@ -47,7 +47,7 @@ CREATE TABLE cases (
 CREATE TABLE cpus (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     cores INT NULL,
     threads INT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE cpus (
 CREATE TABLE gpus (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     memory_size INT NULL,
     memory_type VARCHAR NULL,
@@ -73,7 +73,7 @@ CREATE TABLE gpus (
 CREATE TABLE headphones (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     connection_type CONNECTION_TYPE NOT NULL,
     frequency_range VARCHAR,
@@ -84,7 +84,7 @@ CREATE TABLE headphones (
 CREATE TABLE keyboards (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     switch_type VARCHAR NULL,
     connection_type CONNECTION_TYPE NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE keyboards (
 CREATE TABLE mice (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NOT NULL,
     dpi INT NULL,
     connection_type CONNECTION_TYPE NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE mice (
 CREATE TABLE microphones (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     connection_type CONNECTION_TYPE NOT NULL,
     directionality VARCHAR NULL,
@@ -119,7 +119,7 @@ CREATE TABLE microphones (
 CREATE TABLE monitors (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     screen_size DECIMAL NOT NULL,
     resolution VARCHAR NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE monitors (
 CREATE TABLE motherboards (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     socket VARCHAR NULL,
     chipset VARCHAR NULL,
@@ -146,7 +146,7 @@ CREATE TABLE motherboards (
 CREATE TABLE power_supplies (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     wattage INT NULL,
     efficiency_rating VARCHAR,
@@ -156,7 +156,7 @@ CREATE TABLE power_supplies (
 CREATE TABLE rams (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     capacity INT NULL,
     type VARCHAR NULL,
@@ -167,7 +167,7 @@ CREATE TABLE rams (
 CREATE TABLE storages (
     id SERIAL PRIMARY KEY,
     component_id INT REFERENCES components(id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
+    name VARCHAR UNIQUE NOT NULL,
     brand VARCHAR NULL,
     type VARCHAR CHECK (type IN ('SSD', 'HDD')) NOT NULL,
     capacity INT NOT NULL,

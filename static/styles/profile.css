@@ -1,11 +1,13 @@
 @import 'colors.css';
 
 #profile-container {
+    z-index: 1100;
     position: fixed;
     top: 0em;
     right: 0em;
     width: auto;
     height: auto;
+    
 }
 
 #profile-icon img {
@@ -27,7 +29,7 @@
 }
 
 #profile-menu {
-    position: relative;
+    position: absolute;
     top: 5.5em;
     right: 0.5em;
 
@@ -35,7 +37,7 @@
     border-radius: 8px;
     width: 150px;
 
-    background-color: transparent;
+    background-color: var(--charcoal);
     color: var(--pearl);
 
     display: none;
@@ -43,12 +45,12 @@
 }
 
 .profile-menu-button {
-    font-size: 1.5em;
+    font-size: 1.3em;
     padding: 1em;
     color: var(--pearl);
     text-decoration: none;
     display: block;
-    transition: all 2s ease-in-out;   
+    transition: all 0.2s ease-in-out;   
 }
 .profile-menu-button:hover {
     text-decoration: underline;

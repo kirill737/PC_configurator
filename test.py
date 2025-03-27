@@ -1,42 +1,54 @@
 from controllers.db.user_controller import add_user, get_user_id
 from controllers.session_controller import create_session, get_session_data, delete_session
 from controllers.db.component_controller import add_component, ComponentType as CT
-from controllers.db.build_controller import add_build
-from test_data import all_for_build as build_info
+from controllers.db.build_controller import create_build
+from test_components import components
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
-
+component_types = [
+    CT.cpu,
+    CT.motherboard,
+    CT.gpu,
+    CT.ram,
+    CT.case,
+    CT.headphones,
+    CT.keyboard,
+    CT.mouse,
+    CT.microphone,
+    CT.monitor,
+    CT.storage,
+    CT.power_supply
+]
 # add_component(CT.cpu, 15000, build_info[CT.cpu])
 def create_users():
     emails = [
-        'kirill737apple@yandex.ru',
-        'kirill737apple@gmail.com',
-        'existed_email@test.com',
-        'not_existed_email@test.com'
+        'test1@yandex.ru',
+        'test2@gmail.com',
+        'test3@test.com'
         ]
-    passwords = [
-        'correct_password', 
-        'correct_password',
-        'incorrect_password',
-        'incorrect_password'
-    ]
-    add_user('name1',  emails[0], passwords[0])
-    add_user('name2',  emails[1], passwords[1])
-    add_user('name3',  emails[2], passwords[2])
-    # # add_user('name4',  emails[3], passwords[3])
-    # for i in range(4):
-    #     try: 
-    #         user_id = get_user_id(emails[i])
-    #         # print(type(user_id))
-    #     except Exception as e:
-    #         print(f"Ошибка в get_user_id({emails[i]}, {passwords[i]}): {e}")
 
-    # user_id = get_user_id(emails[0])
-    # session_id = create_session(user_id)
-    # print("Создана сессия:", session_id)
+    add_user('name1',  emails[0], 'root')
+    add_user('name2',  emails[1], 'root')
+    add_user('name3',  emails[2], 'root')
 
-    # session_data = get_session_data(session_id)  
-    # print("Данные сессии:", session_data)
+def create_components(components):
+    for i in range(3):
+        for ct, component_list in components.items():
+            add_component(ct, 1000, component_list[i])
 
+# create_components(components)
 # create_users()
-add_build(1, "Тестовая сборочка", build_info)
+for i in range(3):
+    build = {}
+    num = 0
+    for t in component_types:
+        num += 1
+        build[t] = num
+    print(build)
+    # create_build(1, "Калькулятор", build)
+# print(builds[0][CT.cpu])
+
+# add_build(1, "Калькулятор", builds[0])
+# add_build(1, "Васина ", builds[1])
+# add_build(1, "Симен", builds[2])
+

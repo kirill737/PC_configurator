@@ -29,12 +29,12 @@ class EmailTaken(Exception):
 def check_password(password: str, password_hash: bytes) -> bool:
     """Проверяет, соответствует ли пароль его хешу."""
 
-    logger.info("Запуск <check_password>")
+    logger.debug("Запуск <check_password>")
     logger.info(f"Проверка пароля {password}")
     return bcrypt.checkpw(password.encode(), password_hash.tobytes())
 
 def is_email_taken(email: str) -> bool:
-    logger.info("Запуск <is_email_taken>")
+    logger.debug("Запуск <is_email_taken>")
     logger.info(f"Проверка почты на занятость: {email}...")
 
     conn = get_psql_db_connection()
@@ -57,7 +57,7 @@ def is_email_taken(email: str) -> bool:
     return False
     
 def is_right_password(email: str, password: str) -> bool:
-    logger.info("Запуск <is_right_password>")
+    logger.debug("Запуск <is_right_password>")
     logger.info(f"Проверка пароля {password} пользователя с почтой {email}")
 
     conn = get_psql_db_connection()
@@ -86,7 +86,7 @@ def check_user_login_data(email: str, password: str) -> int:
     0 - неверный пароль
     1 - верный пароль
     """
-    logger.info("Запуск <check_user_login_data>")
+    logger.debug("Запуск <check_user_login_data>")
     logger.info(
         f"Проверка данных для входа:\n"
         f"email: {email}"
@@ -100,7 +100,7 @@ def check_user_login_data(email: str, password: str) -> int:
     return 0
 
 def get_user_id(email: str) -> int:
-    logger.info("Запуск <get_user_id>")
+    logger.debug("Запуск <get_user_id>")
     logger.info(f"Получение user_id пользователя {email}...")
 
     conn = get_psql_db_connection()
@@ -121,7 +121,7 @@ def get_user_id(email: str) -> int:
     return None
 
 def get_user_data(user_id: int) -> dict:
-    logger.info("Запуск <get_user_data>")
+    logger.debug("Запуск <get_user_data>")
     logger.info(f"Получение информации пользователя {user_id}...")
 
     conn = get_psql_db_connection()
@@ -157,7 +157,7 @@ def get_user_data(user_id: int) -> dict:
 
 def hash_password(password: str) -> bytes:
     """Хеширует пароль с использованием bcrypt."""
-    logger.info("Запуск <hash_password>")
+    logger.debug("Запуск <hash_password>")
     logger.info(f"Хеширование пароля {password}...")
 
     salt = bcrypt.gensalt()
@@ -178,7 +178,7 @@ def add_user(username: str, email: str, password: str, role: UserRole = UserRole
         f"passwords: {password}"
         f"role: {role}"
     )
-    logger.info("Запуск <add_user>")
+    logger.debug("Запуск <add_user>")
 
     if is_email_taken(email):
         raise EmailTaken
@@ -211,7 +211,7 @@ def add_user(username: str, email: str, password: str, role: UserRole = UserRole
         conn.close()
 
 def reg_user(username: str, email: str, password_1: str, password_2: str) -> int:
-    logger.info("Запуск <reg_user>")
+    logger.debug("Запуск <reg_user>")
     logger.info(
         f"Попытка регистрации:\n"
         f"email: {email}"
@@ -229,14 +229,14 @@ def reg_user(username: str, email: str, password_1: str, password_2: str) -> int
     return add_user(username, email, password)
 
 def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
-    logger.info("Запуск <change_user_data_by_user_id>")
+    logger.debug("Запуск <change_user_data_by_user_id>")
     logger.info(
         f"Смена данных пользователя {user_id} на\n"
         f"{new_user_data}"
     )
 
     def change_username(new_username: str) -> bool:
-        logger.info("Запуск <change_username>")
+        logger.debug("Запуск <change_username>")
         logger.info(f"Смена имени на {new_username}")
 
         conn = get_psql_db_connection()
@@ -259,7 +259,7 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         return False
 
     def change_email(new_email: str) -> bool:
-        logger.info("Запуск <change_email>")
+        logger.debug("Запуск <change_email>")
         logger.info(f"Смена почты на {new_email}")
 
         conn = get_psql_db_connection()
@@ -285,7 +285,7 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         return False
         
     def change_password(new_password: str) -> bool:
-        logger.info("Запуск <change_password>")
+        logger.debug("Запуск <change_password>")
         logger.info(f"Смена имени на {new_password}")
 
         conn = get_psql_db_connection()
@@ -311,7 +311,7 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
         return False
 
     def compare_data(old_user_data: dict, new_user_data: dict):
-        logger.info("Запуск <compare_data>")
+        logger.debug("Запуск <compare_data>")
         logger.info(f"Смена данных с {old_user_data} на {new_user_data}")
         
         if old_user_data['username'] != new_user_data['username']:
