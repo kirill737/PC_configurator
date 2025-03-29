@@ -29,8 +29,6 @@ document.addEventListener("click", function(event) {
     }
 });
 
-
-
 // Загрузка комплектующих в сборке
 async function loadBuildComponents(buildId) {
     const response = await fetch(`/api/builds/${buildId}/components`);
@@ -41,7 +39,7 @@ async function loadBuildComponents(buildId) {
 
     components.forEach(component => {
         const btn = document.createElement("a");
-        btn.className = "side-menu-button";
+        btn.className = "component-button";
         btn.textContent = component.type;
         btn.href = "#";
         btn.addEventListener("click", () => loadComponentSettings(component.id, component.type));
@@ -76,15 +74,15 @@ async function loadComponentSettings(componentId, type) {
 }
 
 // Выделение активной комплектующей
-document.querySelectorAll(".side-menu-button").forEach(btn => {
+document.querySelectorAll(".component-button").forEach(btn => {
     btn.addEventListener("click", function() {
-        document.querySelectorAll(".side-menu-button").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
         this.classList.add("active");
     });
 });
 
 // Удаление сборки
-document.getElementById("delete-build-btn").addEventListener("click", async () => {
+document.getElementById("delete-build-button").addEventListener("click", async () => {
     const buildId = currentBuildId;  // Сохраняем ID текущей сборки при выборе
     if (!buildId) return;
 

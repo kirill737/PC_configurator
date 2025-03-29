@@ -1,6 +1,6 @@
 from controllers.db.user_controller import add_user, get_user_id
 from controllers.session_controller import create_session, get_session_data, delete_session
-from controllers.db.component_controller import add_component, ComponentType as CT
+from controllers.db.component_controller import add_component, ComponentType as CT, get_component_parameters
 from controllers.db.build_controller import create_build
 from test_components import components
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
@@ -36,19 +36,17 @@ def create_components(components):
         for ct, component_list in components.items():
             add_component(ct, 1000, component_list[i])
 
+def fill_builds():
+    for i in range(3):
+        build = {}
+        num = 0
+        for t in component_types:
+            num += 1
+            build[t] = num
+        print(build)
+parameters = get_component_parameters(1)
+print(parameters)
 # create_components(components)
 # create_users()
-for i in range(3):
-    build = {}
-    num = 0
-    for t in component_types:
-        num += 1
-        build[t] = num
-    print(build)
-    # create_build(1, "Калькулятор", build)
-# print(builds[0][CT.cpu])
 
-# add_build(1, "Калькулятор", builds[0])
-# add_build(1, "Васина ", builds[1])
-# add_build(1, "Симен", builds[2])
 

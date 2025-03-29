@@ -33,10 +33,25 @@ class ComponentType(StrEnum):
     monitor = 'monitor'
     storage = 'storage'
     power_supply = 'power_supply'
+    
+type2table_dict = {
+    ComponentType.cpu: 'cpus',
+    ComponentType.motherboard: 'motherboards',
+    ComponentType.gpu: 'gpus',
+    ComponentType.ram: 'rams',
+    ComponentType.case: 'cases',
+    ComponentType.headphones: 'headphones',
+    ComponentType.keyboard: 'keyboards',
+    ComponentType.mouse: 'mice',
+    ComponentType.microphone: 'microphone',
+    ComponentType.monitor: 'monitors',
+    ComponentType.storage: 'storages',
+    ComponentType.power_supply: 'power_supplies'  
 
+}
 type2fields_dict = {
     ComponentType.cpu: [
-        "name", "AMD Ryzen 7 5800X", "brand", 
+        "name", "brand", 
         "cores", "threads", "base_clock", 
         "boost_clock", "socket","tdp"
         ],
@@ -94,6 +109,38 @@ type2fields_dict = {
         "g_sync", "freesync"
         ]
 } 
+
+def get_component_fields(component_id: int):
+    logger.debug("Запуск функции <get_component_parameters>")
+    logger.info(f"Получение полей комплектующей {component_id}")
+    
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        logger.info(f"Попытка получить поля комплектующей {component_id}...")
+        cur.execute(
+            "SELECT * FROM components "
+            f"WHERE id={component_id};"
+        )
+        component_type = ComponentType(cur.fetchone()[1])
+        component_table = type2table_dict[component_type]
+        cur.execute(
+            f"SELECT * FROM {component_table} "
+            f"WHERE component_id={component_id};"
+        )
+        fields = cur.fetchone()
+        result = {}
+        i = 1
+        for field_name in type2fields_dict[component_type]:
+            result[field_name] = fields[i + 1]
+            i += 1
+        return result
+    except Exception as e:
+        print(f"Ошибка при получении полей {component_id}: {e}")        
+    finally:
+        cur.close()
+        conn.close()
 
 def add_component(component_type: ComponentType, price: int, info: dict) -> int:
     logger.debug("Запуску <add_component>")

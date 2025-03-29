@@ -5,8 +5,7 @@ from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 
 
-from views.side_menu_view import init_side_menu
-from views.component_settings import init_component_settings_menu
+from views.options_menu_view import init_options_menu
 
 from logger_settings import setup_logger
 
@@ -15,8 +14,8 @@ logger = setup_logger("home")
 logger.info("Запуск главное страницы")
 
 def init_home(app):
-    init_side_menu(app)
-    init_component_settings_menu(app)
+    init_options_menu(app)
+    # init_component_settings_menu(app)
     @app.route('/home')
     def home():
         if 'user_id' not in session:

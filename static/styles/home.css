@@ -1,6 +1,5 @@
 @import 'base.css';
-@import 'home_page/side_menu.css';
-@import 'home_page/top_menu.css';
-@import 'home_page/main_menu.css';
+@import 'home_page/menu.css';
+
 @import 'profile.css';
 
