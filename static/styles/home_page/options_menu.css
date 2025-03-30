@@ -1,9 +1,12 @@
+@import '../colors.css';
+
+
 #side-menu-container {
     position: relative;
     display: flex;
     flex-direction: column; /* Элементы выстраиваются сверху вниз */
 
-    height: 80%;
+    height: 100%;
     width: 20%;
 
     margin-top: 0.5rem;
@@ -28,7 +31,7 @@
 .build-button {
     font-size: 2em;
 
-    width: 100%;
+    /* width: 100%;
     color: var(--pearl);
     background-color: var(--gray);
     border: none;
@@ -38,12 +41,12 @@
     margin-top: 0.5em;
     padding: 0.5em;
 
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; */
 }
 
-.build-button:hover {
+/* .build-button:hover {
     background-color: var(--gray-hover);
-}
+} */
 
 #builds-menu {
     z-index: 1000;
@@ -73,22 +76,7 @@
     margin-top: 0.5em;
 }
 
-/* Настройки ползунка */
-#builds-list {
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-#builds-list::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
 
-#builds-menu::-webkit-scrollbar-thumb {
-    background: var(--pearl);
-    border-radius: 4px;
-}
-#builds-menu::-webkit-scrollbar-thumb:hover {
-    background: var(--pearl); /* Цвет при наведении */
-}
 
 #builds-list li {
     list-style-type: none;
@@ -107,6 +95,25 @@
 
     transition: all 0.2s ease-in-out;
 }
+
 #builds-list li:hover {
     background-color: var(--charcoal-hover);
+}
+
+/* Настройки ползунка */
+#builds-list {
+    scrollbar-color: var(--pearl) var(--charcoal);
+}
+
+#builds-list::-webkit-scrollbar {
+    background-color: var(--charcoal);
+    background-color: var(--light);
+}
+
+#builds-menu::-webkit-scrollbar-thumb {
+    background: var(--pearl);
+    border-radius: 4px;
+}
+#builds-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--pearl); /* Цвет при наведении */
 }

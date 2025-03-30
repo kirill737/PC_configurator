@@ -90,6 +90,23 @@ button.submit:hover {
     animation-duration: 100ms;
 }
 
+.base-button {
+    color: var(--pearl);
+    background-color: var(--gray);
+    border: none;
+    border-radius: 0.5em;
+
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    padding: 0.5em;
+
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.base-button:hover {
+    background-color: var(--gray-hover);
+}
+
 .error {
     color: red;
     font-size: 1.5em;

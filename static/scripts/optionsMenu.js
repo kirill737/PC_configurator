@@ -19,6 +19,35 @@
 //     });
 // });
 
+// Открытие меню выбора сборки
+document.getElementById("select-build-button").addEventListener("click", async () => {
+
+    // Передача id выбранной сборки в python (далее в redis)
+    async function selectBuild(buildId) {
+        console.log("Выбралась сборка c id: " + buildId);
+        await fetch(`/select/build/${buildId}`);
+        loadBuildComponents();
+    }
+
+    const menu = document.getElementById("builds-menu");
+    menu.classList.toggle("hidden");
+    const create_build_button = document.getElementById("create-build-button");
+
+    const response = await fetch("/all/builds");
+    const builds = await response.json();
+
+    const list = document.getElementById("builds-list");
+    list.innerHTML = "";
+    create_build_button.dispay ="block";
+    builds.forEach(build => {
+        const li = document.createElement("li");
+        li.textContent = build.name + ": " + build.id;
+        li.addEventListener("click", () => selectBuild(build.id));
+        list.appendChild(li);
+    });
+});
+
+// Кнопка добавления новой детали
 document.getElementById("create-component-button").addEventListener("click", async () => {
     const create_component_button = document.getElementById("create-component-button");
     // create_build_button.classList.toggle("hidden");
@@ -31,7 +60,7 @@ document.getElementById("create-component-button").addEventListener("click", asy
     });
     // const response = a.0wait fetch("/create/component/${cpu}");
     const component_fields = await response.json();
-    console.log(component_fields);
+    // console.log(component_fields);
     const field_list = document.getElementById("fields-list");
     field_list.innerHTML = "";
     component_fields.forEach(field => {
@@ -49,7 +78,31 @@ document.getElementById("create-component-button").addEventListener("click", asy
         
         row.appendChild(name_td)
         row.appendChild(input);
-        // li.addEventListener("click", () => loadBuildComponents(build.id));
+
         field_list.appendChild(row);
     });
+});
+
+// Скрытие меню выбора сборки при нажатии вне него
+document.addEventListener("click", function(event) {
+    let menu = document.getElementById("builds-menu");
+    let select_build_button = document.getElementById("select-build-button");
+    if (!menu.contains(event.target) && !select_build_button.contains(event.target)) {
+        menu.classList.add("hidden");
+    }
+});
+
+// Кнопка удаление сборки
+document.getElementById("delete-build-button").addEventListener("click", async () => {
+    const buildId = currentBuildId;  // Сохраняем ID текущей сборки при выборе
+    if (!buildId) return;
+
+    const response = await fetch(`/api/builds/${buildId}`, { method: "DELETE" });
+
+    if (response.ok) {
+        alert("Сборка удалена!");
+        location.reload();
+    } else {
+        alert("Ошибка при удалении!");
+    }
 });

@@ -1,19 +1,16 @@
 from database.psql import get_psql_db_connection
 
-# from enum import StrEnum
 from logger_settings import setup_logger
-from controllers.db.component_controller import add_component, ComponentType
+from controllers.db.component_controller import prepareType
 from controllers.db.build_component_controller import connect_build_and_component
 
 class AddBuildError(Exception):
-    """Моё кастомное исключение."""
     def __init__(self, message="Ошибка при создании сборки"):
         self.message = message
         logger.debug(message)
         super().__init__(self.message)
 
 class BuildConnectionsError(Exception):
-    """Моё кастомное исключение."""
     def __init__(self, message="Ошибка при связывании сборки и комплектующих"):
         self.message = message
         logger.debug(message)
@@ -23,6 +20,7 @@ logger = setup_logger("build")
 logger.info("Запуск build_controller")
 
 def delete_build(build_id: int) -> None:
+    logger.debug("Запуск <delete_build>")
     conn = get_psql_db_connection()
     cur = conn.cursor()
     
@@ -32,6 +30,35 @@ def delete_build(build_id: int) -> None:
     except Exception as e:
         logger.info(f"Ошибка при удалении сборки: {e}")
         conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+        
+def get_build_info(build_id) -> dict:
+    logger.debug("Запуск <get_build_info>")
+    logger.info(f"Получение комплектующих сборки {build_id}")
+    
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute(
+            "SELECT bc.component_id, c.type "
+            "FROM build_components as bc "
+            "LEFT JOIN components as c ON c.id = bc.component_id "
+            f"WHERE bc.build_id = {build_id}"
+            )
+        
+        raw_components_list = cur.fetchall()
+        components_dict = [{"id": row[0], "type": prepareType(row[1]) } for row in raw_components_list]
+        logger.debug(f"Component id list: {components_dict}")
+        logger.info("Данные сборки получены")
+        
+        return components_dict
+    except Exception as e:
+        logger.error(f"Ошибка при получении деталей сборки: {e}")
+        
+        return None
     finally:
         cur.close()
         conn.close()

@@ -1,7 +1,7 @@
 from controllers.db.user_controller import add_user, get_user_id
 from controllers.session_controller import create_session, get_session_data, delete_session
-from controllers.db.component_controller import add_component, ComponentType as CT, get_component_parameters
-from controllers.db.build_controller import create_build
+from controllers.db.component_controller import add_component, ComponentType as CT, get_component_fields
+from controllers.db.build_controller import *
 from test_components import components
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
@@ -44,8 +44,10 @@ def fill_builds():
             num += 1
             build[t] = num
         print(build)
-parameters = get_component_parameters(1)
-print(parameters)
+print(ComponentType('cpu'))
+# print(get_build_info(4))
+# parameters = get_component_fields(1)
+# print(parameters)
 # create_components(components)
 # create_users()
 

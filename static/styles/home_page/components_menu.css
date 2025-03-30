@@ -1,5 +1,37 @@
-@import 'colors.css';
+@import '../colors.css';
 
+#components-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Элементы выстраиваются сверху вниз */
+    overflow-y: auto;
+
+    height: 100%;
+    width: 20%;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    border-radius: 0.5em;
+}
+
+#components-container {
+    scrollbar-color: var(--pearl) var(--charcoal);
+}
+#components-container::-webkit-scrollbar {
+    background-color: var(--charcoal);
+    background-color: var(--light);
+}
+
+#builds-menu::-webkit-scrollbar-thumb {
+    background: var(--pearl);
+    border-radius: 4px;
+}
+#builds-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--pearl); /* Цвет при наведении */
+}
 .component-button {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -9,7 +41,8 @@
     text-decoration: none;
     
     font-size: 2em;
-    
+    border-left: 0.5rem solid transparent;
+
     transition: all 0.2s ease-in-out;
 }
 

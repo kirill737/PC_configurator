@@ -34,6 +34,20 @@ class ComponentType(StrEnum):
     storage = 'storage'
     power_supply = 'power_supply'
     
+    cpu_rus = 'процессор'
+    motherboard_rus = 'материнская плата'
+    gpu_rus = 'видеокарта'
+    ram_rus = 'оперативная память'
+    case_rus = 'корпус'
+    headphones_rus = 'наушники'
+    keyboard_rus = 'клавиатура'
+    mouse_rus = 'мышь'
+    microphone_rus = 'микрофон'
+    monitor_rus = 'монитор'
+    storage_rus = 'накопитель'
+    power_supply_rus = 'блок питания'
+
+    
 type2table_dict = {
     ComponentType.cpu: 'cpus',
     ComponentType.motherboard: 'motherboards',
@@ -47,8 +61,8 @@ type2table_dict = {
     ComponentType.monitor: 'monitors',
     ComponentType.storage: 'storages',
     ComponentType.power_supply: 'power_supplies'  
-
 }
+
 type2fields_dict = {
     ComponentType.cpu: [
         "name", "brand", 
@@ -110,8 +124,25 @@ type2fields_dict = {
         ]
 } 
 
+type2rus = {
+    ComponentType.cpu: ComponentType.cpu_rus,
+    ComponentType.motherboard: ComponentType.motherboard_rus,
+    ComponentType.gpu: ComponentType.gpu_rus,
+    ComponentType.ram: ComponentType.ram_rus,
+    ComponentType.case: ComponentType.case_rus,
+    ComponentType.headphones: ComponentType.headphones_rus,
+    ComponentType.keyboard: ComponentType.keyboard_rus,
+    ComponentType.mouse: ComponentType.mouse_rus,
+    ComponentType.microphone: ComponentType.microphone_rus,
+    ComponentType.monitor: ComponentType.monitor_rus,
+    ComponentType.storage: ComponentType.storage_rus,
+    ComponentType.power_supply: ComponentType.power_supply_rus
+}
+def prepareType(ct: ComponentType):
+    return type2rus[ComponentType(ct)].capitalize()
+
 def get_component_fields(component_id: int):
-    logger.debug("Запуск функции <get_component_parameters>")
+    logger.debug("Запуск функции <get_component_fields>")
     logger.info(f"Получение полей комплектующей {component_id}")
     
     conn = get_psql_db_connection()

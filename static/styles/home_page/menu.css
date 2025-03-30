@@ -1,4 +1,4 @@
-@import 'colors.css';
+@import '../colors.css';
 @import 'main_menu.css';
 @import 'options_menu.css';
 @import 'top_menu.css';
