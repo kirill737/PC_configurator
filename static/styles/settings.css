@@ -14,11 +14,14 @@ td.text {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 2em;
+
     background-color: var(-light);
+
     padding: 2em;
-    font-size: 1em;
-    border-radius: 1em;
-    width: 80%;
     margin: 2em auto;
+    border-radius: 1em;
+    
+    font-size: 1em;
+    
+    width: 80%;
 }

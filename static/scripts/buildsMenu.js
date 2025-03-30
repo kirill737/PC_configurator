@@ -1,10 +1,8 @@
 // Добавление меню выбора сборки
 document.getElementById("select-build-button").addEventListener("click", async () => {
-    // console.log("Нажали кнопку")
     const menu = document.getElementById("builds-menu");
     menu.classList.toggle("hidden");
     const create_build_button = document.getElementById("create-build-button");
-    // create_build_button.classList.toggle("hidden");
 
     const response = await fetch("/api/builds");
     const builds = await response.json();
@@ -20,40 +18,44 @@ document.getElementById("select-build-button").addEventListener("click", async (
     });
 });
 
+// Скрытие меню при нажатии вне него
 document.addEventListener("click", function(event) {
     let menu = document.getElementById("builds-menu");
     let select_build_button = document.getElementById("select-build-button");
     if (!menu.contains(event.target) && !select_build_button.contains(event.target)) {
-        // console.log("Клик вне меню");
         menu.classList.add("hidden");
     }
 });
 
 // Загрузка комплектующих в сборке
 async function loadBuildComponents(buildId) {
-    const response = await fetch(`/api/builds/${buildId}/components`);
+    const response = await fetch(`/open/builds/${buildId}/components`);
     const components = await response.json();
 
     const container = document.getElementById("components-container");
     container.innerHTML = "";
+ 
+    for (let ct in components) {
+        const component_btn = document.createElement("a");
+        component_btn.className = "component-button";
+        component_btn.textContent = ct;
+        component_btn.href = "#";
+        component_btn.addEventListener("click", () => loadComponentFields(component.id, component.type, buildId));
+        
+        container.appendChild(component_btn);
 
-    components.forEach(component => {
-        const btn = document.createElement("a");
-        btn.className = "component-button";
-        btn.textContent = component.type;
-        btn.href = "#";
-        btn.addEventListener("click", () => loadComponentSettings(component.id, component.type));
-        container.appendChild(btn);
-    });
+        // console.log(`${key}: ${obj[key]}`);
+    }    
+
 }
 
 // Отображение полей для редактирования
-async function loadComponentSettings(componentId, type) {
-    const response = await fetch(`/api/components/${componentId}`);
+async function loadComponentFields(componentId, componentType, buildId) {
+    const response = await fetch(`/open/${componentId}/fields`);
     const data = await response.json();
 
     const container = document.getElementById("components-settings-container");
-    container.innerHTML = `<h3>${type}</h3>`;
+    container.innerHTML = "";
 
     Object.keys(data).forEach(key => {
         const label = document.createElement("label");

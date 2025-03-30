@@ -20,8 +20,6 @@
 // });
 
 document.getElementById("create-component-button").addEventListener("click", async () => {
-    // console.log("Нажали кнопку")
-    // menu.classList.toggle("hidden");
     const create_component_button = document.getElementById("create-component-button");
     // create_build_button.classList.toggle("hidden");
     const ct = "cpu";

@@ -5,6 +5,7 @@
     position: fixed;
     top: 0em;
     right: 0em;
+    
     width: auto;
     height: auto;
     
@@ -14,11 +15,14 @@
     position: absolute;
     top: 0.25rem;
     right: 0.25rem;
+
     width: 4rem;
     height: 4rem;
+
     border-radius: 50%;
     border: 0.25rem solid var(--charcoal-hover);
     background-color: var(--pearl);
+
     transition: background-color 0.2s, border 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -30,6 +34,9 @@
 
 #profile-menu {
     position: absolute;
+    display: none;
+    flex-direction: column;
+
     top: 5.5em;
     right: 0.5em;
 
@@ -40,18 +47,21 @@
     background-color: var(--charcoal);
     color: var(--pearl);
 
-    display: none;
-    flex-direction: column;
+    
 }
 
 .profile-menu-button {
-    font-size: 1.3em;
-    padding: 1em;
-    color: var(--pearl);
     text-decoration: none;
     display: block;
+
+    font-size: 1.3em;
+    padding: 1em;
+    
+    color: var(--pearl);
+    
     transition: all 0.2s ease-in-out;   
 }
+
 .profile-menu-button:hover {
     text-decoration: underline;
 }

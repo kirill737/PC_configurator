@@ -19,8 +19,10 @@ body {
 
 .redirect {
     color: var(--pearl);
+
     text-decoration: none;
     background-color: transparent;
+
     transition: all 0.2s ease-in-out;
 }
 
@@ -30,13 +32,16 @@ body {
 
 button.redirect {
     background-color: transparent;
-    padding: 1rem;
+    width: auto;
+
+    
     font-size: 2em;
     border-radius: 0.5rem;
     border: none;
+
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    width: auto;
+    padding: 1rem;
 
     transition: all 0.2s ease-in-out;
 }
@@ -64,8 +69,10 @@ input, button.submit {
     padding: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem; 
+
     border: none;
     border-radius: 0.5rem;
+
     font-size: 2em;
 }
 
@@ -74,7 +81,7 @@ button.submit {
     color: var(--pearl);
     cursor: pointer;
     width: auto;
-    transition: background-color 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 button.submit:hover {
