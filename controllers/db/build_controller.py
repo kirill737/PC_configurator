@@ -50,7 +50,7 @@ def get_build_info(build_id) -> dict:
             )
         
         raw_components_list = cur.fetchall()
-        components_dict = [{"id": row[0], "type": prepareType(row[1]) } for row in raw_components_list]
+        components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]) } for row in raw_components_list]
         logger.debug(f"Component id list: {components_dict}")
         logger.info("Данные сборки получены")
         

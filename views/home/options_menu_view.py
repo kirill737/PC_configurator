@@ -4,7 +4,7 @@ from database.psql import get_psql_db_connection
 from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 from controllers.db.build_controller import get_user_builds, get_build_info
-from views.component_settings_view import init_component_settings_menu
+from views.home.main_menu import init_component_settings_menu
 
 from logger_settings import setup_logger
 
@@ -46,34 +46,34 @@ def init_options_menu(app):
 
         return jsonify(components)
     
-    @app.route("/api/components/<int:component_id>")
-    def get_component_data(component_id):
-        conn = get_psql_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM components WHERE id = %s", (component_id,))
-        data = cur.fetchone()
-        cur.close()
-        conn.close()
+    # @app.route("/api/components/<int:component_id>")
+    # def get_component_data(component_id):
+    #     conn = get_psql_db_connection()
+    #     cur = conn.cursor()
+    #     cur.execute("SELECT * FROM components WHERE id = %s", (component_id,))
+    #     data = cur.fetchone()
+    #     cur.close()
+    #     conn.close()
         
-        if not data:
-            return jsonify({"error": "Component not found"}), 404
+    #     if not data:
+    #         return jsonify({"error": "Component not found"}), 404
 
-        return jsonify(dict(zip(["id", "type", "name", "brand"], data)))
+    #     return jsonify(dict(zip(["id", "type", "name", "brand"], data)))
     
-    @app.route("/api/builds/<int:build_id>", methods=["DELETE"])
-    def delete_build(build_id): 
-        conn = get_psql_db_connection()
-        cur = conn.cursor()
-        try:
-            cur.execute("DELETE FROM builds WHERE id = %s", (build_id,))
-            conn.commit()
-            return jsonify({"status": "success"})
-        except Exception as e:
-            conn.rollback()
-            return jsonify({"error": str(e)}), 500
-        finally:
-            cur.close()
-            conn.close()
+    # @app.route("/api/builds/<int:build_id>", methods=["DELETE"])
+    # def delete_build(build_id): 
+    #     conn = get_psql_db_connection()
+    #     cur = conn.cursor()
+    #     try:
+    #         cur.execute("DELETE FROM builds WHERE id = %s", (build_id,))
+    #         conn.commit()
+    #         return jsonify({"status": "success"})
+    #     except Exception as e:
+    #         conn.rollback()
+    #         return jsonify({"error": str(e)}), 500
+    #     finally:
+    #         cur.close()
+    #         conn.close()
     
     
 

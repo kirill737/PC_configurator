@@ -47,7 +47,6 @@ class ComponentType(StrEnum):
     storage_rus = 'накопитель'
     power_supply_rus = 'блок питания'
 
-    
 type2table_dict = {
     ComponentType.cpu: 'cpus',
     ComponentType.motherboard: 'motherboards',
@@ -61,6 +60,67 @@ type2table_dict = {
     ComponentType.monitor: 'monitors',
     ComponentType.storage: 'storages',
     ComponentType.power_supply: 'power_supplies'  
+}
+
+type2fields_rus_dict = {
+    ComponentType.cpu: [
+        "название", "бренд", 
+        "ядра", "потоки", "базовая частота", 
+        "турбо частота", "сокет", "теплопакет"
+    ],
+    ComponentType.gpu: [
+        "название", "бренд", "объем памяти", 
+        "тип памяти", "базовая частота", "турбо частота", 
+        "теплопакет", "интерфейс"
+    ],
+    ComponentType.motherboard: [
+        "название", "бренд", "сокет", 
+        "чипсет", "форм-фактор", "слоты оперативной памяти", 
+        "макс память", "слоты m2"
+    ],
+    ComponentType.ram: [
+        "название", "бренд", "объем", 
+        "тип", "частота", "задержка cas"
+    ],
+    ComponentType.storage: [
+        "название", "бренд", "тип", 
+        "объем", "интерфейс", 
+        "скорость чтения", "скорость записи"
+    ],
+    ComponentType.power_supply: [
+        "название", "бренд", "мощность", 
+        "класс эффективности", "модульный"
+    ],
+    ComponentType.case: [
+        "название", "бренд", "форм-фактор", 
+        "макс длина видеокарты", "макс высота кулера", 
+        "макс длина блока питания"
+    ],
+    ComponentType.headphones: [
+        "название", "бренд", "тип подключения", 
+        "диапазон частот", "микрофон", "подсветка"
+    ],
+    ComponentType.keyboard: [
+        "название", "бренд", "тип переключателей", 
+        "тип подключения", "раскладка", "подсветка", 
+        "цифровой блок"
+    ],
+    ComponentType.mouse: [
+        "название", "бренд", "dpi", 
+        "тип подключения", "кнопки", 
+        "вес", "подсветка"
+    ],
+    ComponentType.microphone: [
+        "название", "бренд", "тип подключения", 
+        "направленность", "частота дискретизации", 
+        "глубина битности"
+    ],
+    ComponentType.monitor: [
+        "название", "бренд", "диагональ экрана", 
+        "разрешение", "частота обновления", 
+        "тип матрицы", "время отклика", 
+        "g sync", "freesync"
+    ]
 }
 
 type2fields_dict = {
@@ -138,6 +198,36 @@ type2rus = {
     ComponentType.storage: ComponentType.storage_rus,
     ComponentType.power_supply: ComponentType.power_supply_rus
 }
+
+def get_all_component_by_type(ct: ComponentType):
+    logger.info("Запусу <get_all_component_by_type>")
+    logger.info(f"Получение всех деталей типа {ct}")
+    
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute(
+            f"SELECT name, component_id FROM {type2table_dict[ct]}")
+        raw_components = cur.fetchall()
+        logger.debug(raw_components)
+        result = []
+        for component in raw_components:
+            result.append(
+                {
+                    'name': component[0],
+                    'id': component[1]
+                }
+            )
+        return result
+        
+    except Exception as e:
+        logger.error(f"Ошибка при получении комплектующих: {e}")
+        return []
+    finally:
+        cur.close()
+        conn.close()
+
 def prepareType(ct: ComponentType):
     return type2rus[ComponentType(ct)].capitalize()
 
@@ -160,15 +250,22 @@ def get_component_fields(component_id: int):
             f"SELECT * FROM {component_table} "
             f"WHERE component_id={component_id};"
         )
+        
         fields = cur.fetchone()
-        result = {}
+        result = []
         i = 1
-        for field_name in type2fields_dict[component_type]:
-            result[field_name] = fields[i + 1]
+        for field_name in type2fields_rus_dict[component_type]:
+            result.append (
+                {
+                    'name': field_name.capitalize(),
+                    'value': fields[i + 1]
+                }
+            )
+            
             i += 1
         return result
     except Exception as e:
-        print(f"Ошибка при получении полей {component_id}: {e}")        
+        logger.error(f"Ошибка при получении полей {component_id}: {e}")        
     finally:
         cur.close()
         conn.close()

@@ -1,25 +1,26 @@
 from controllers.db.user_controller import add_user, get_user_id
 from controllers.session_controller import create_session, get_session_data, delete_session
-from controllers.db.component_controller import add_component, ComponentType as CT, get_component_fields
+from controllers.db.component_controller import *
 from controllers.db.build_controller import *
 from test_components import components
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
 component_types = [
-    CT.cpu,
-    CT.motherboard,
-    CT.gpu,
-    CT.ram,
-    CT.case,
-    CT.headphones,
-    CT.keyboard,
-    CT.mouse,
-    CT.microphone,
-    CT.monitor,
-    CT.storage,
-    CT.power_supply
+    ComponentType.cpu,
+    ComponentType.motherboard,
+    ComponentType.gpu,
+    ComponentType.ram,
+    ComponentType.case,
+    ComponentType.headphones,
+    ComponentType.keyboard,
+    ComponentType.mouse,
+    ComponentType.microphone,
+    ComponentType.monitor,
+    ComponentType.storage,
+    ComponentType.power_supply
 ]
-# add_component(CT.cpu, 15000, build_info[CT.cpu])
+
+# add_component(ComponentType.cpu, 15000, build_info[ComponentType.cpu])
 def create_users():
     emails = [
         'test1@yandex.ru',
@@ -44,7 +45,8 @@ def fill_builds():
             num += 1
             build[t] = num
         print(build)
-print(ComponentType('cpu'))
+# print(ComponentType('cpu'))
+get_all_component_by_type(ComponentType('cpu'))
 # print(get_build_info(4))
 # parameters = get_component_fields(1)
 # print(parameters)

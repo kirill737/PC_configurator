@@ -11,7 +11,8 @@
 <body>
     <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/optionsMenu.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/componentsMenu.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/leftMenu.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/selectComponentMenu.js') }}" defer></script>
     <div id="top-menu-container">
         <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
         <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
@@ -43,7 +44,11 @@
             <button id="create-component-button" class="build-button">Добавить комплектующую</button> -->
         </div>
         <div class="border"></div>
-        <div id="components-settings-container">
+        <div id="main-menu-container">
+            
+            <div id="components-menu" class="hidden">
+                <ul id="components-list"></ul>
+            </div>
             <table id="fields-list">
                 
             </table>

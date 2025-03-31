@@ -10,6 +10,11 @@ SELECT bc.component_id, c.type
 FROM build_components as bc
 LEFT JOIN components as c ON c.id = bc.component_id
 WHERE bc.build_id = 4 ;
+
+SELECT c.id 
+FROM components as c
+LEFT JOIN cpus ON c.id = cpus.component_id
+WHERE bc.build_id = 4 ;
 -- SELECT * FROM components;
 -- TRUNCATE TABLE builds;0
 -- DELETE FROM builds WHERE id = 1;

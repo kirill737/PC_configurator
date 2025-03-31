@@ -5,7 +5,7 @@ from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 
 
-from views.options_menu_view import init_options_menu
+from views.home.options_menu_view import init_options_menu
 
 from logger_settings import setup_logger
 

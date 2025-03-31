@@ -1,6 +1,6 @@
 // document.getElementById("open-component-settings-button").addEventListener("click", async () => {
 //     // console.log("Нажали кнопку")
-//     const menu = document.getElementById("components-settings-container");
+//     const menu = document.getElementById("main-menu-container");
 //     menu.classList.toggle("hidden");
 //     const create_build_button = document.getElementById("create-build-button");
 //     // create_build_button.classList.toggle("hidden");
@@ -49,7 +49,7 @@ document.getElementById("select-build-button").addEventListener("click", async (
 
 // Кнопка добавления новой детали
 document.getElementById("create-component-button").addEventListener("click", async () => {
-    const create_component_button = document.getElementById("create-component-button");
+    // const create_component_button = document.getElementById("create-component-button");
     // create_build_button.classList.toggle("hidden");
     const ct = "cpu";
 
