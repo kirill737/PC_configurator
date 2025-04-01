@@ -1,4 +1,5 @@
 @import '../colors.css';
+@import 'component_list.css';
 
 #components-container {
     position: relative;

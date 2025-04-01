@@ -62,25 +62,8 @@ def init_component_settings_menu(app):
         session['ct'] = data['ct']
         logger.info(f"Data changed to {data}")
         return data
-    # @app.route('/get/<component_id>/fields')
-    # def select_component(component_id: int):
-    #     logger.info(f"Выбор детали")
-    #     test_dict = {
-    #         'name': 'test',
-    #         'id': 737,
-    #         'type': 'tt'
-    #     }
-    #     return test_dict
-        
-    # Боковое меню
-    # @app.route("/api/builds")
-    # def get_builds():
-    #     logger.info("Нажали на кнопку выбора сборки")
-    #     builds = get_user_builds(session['user_id'])
-    #     # conn = get_psql_db_connection()
-    #     # cur = conn.cursor()
-    #     # cur.execute("SELECT id, name FROM builds")
-    #     # builds = [{"id": row[0], "name": row[1]} for row in cur.fetchall()]
-    #     # cur.close()
-    #     # conn.close()
-    #     return jsonify(builds)
+
+    @app.route('/get/build/info/<int:build_id>')
+    def build_info(build_id: int):
+        logger.info(f"Получения краткой информации о сборке: {build_id}")
+        data = get_build_info(build_id)

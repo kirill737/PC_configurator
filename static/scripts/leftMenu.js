@@ -1,11 +1,31 @@
+
+async function loadBuildInfo(build_id) {
+    const container = document.getElementById("components-container");
+    container.innerHTML = "";
+
+    const response = await fetch(`/build/info/${build_id}`);
+    const components = await response.json();
+    
+}
+
 // Загрузка комплектующих в сборке
 async function loadBuildComponents() {
     console.log("Загрузка деталей в сборке");
     const response = await fetch(`/all/builds/components`);
     const components = await response.json();
 
+    let data = getCurrentComponentData();
+    build_id = data['build_id'];
+
     const container = document.getElementById("components-container");
     container.innerHTML = "";
+
+    const build_name_label = document.createElement("label");
+    build_name_label.textContent = "Тест";
+    build_name_label.id = "build-name-label";
+    build_name_label.type = "text";
+    build_name_label.addEventListener("click", () => loadBuildInfo(build_id));
+    container.appendChild(build_name_label);
 
     components.forEach(component => {
         const component_btn = document.createElement("a");
@@ -71,13 +91,6 @@ async function loadComponentFields(component) {
 
     const container = document.getElementById("main-menu-container");
     container.innerHTML = "";
-    
-    const select_component_button = document.createElement("button");
-    select_component_button.id = 'select-component-button';
-    select_component_button.classList.add("base-button");
-    select_component_button.textContent = 'Выбрать деталь';
-    select_component_button.onclick = showSelectComponentsMenu;
-    container.appendChild(select_component_button);
 
     const components_menu = document.createElement("div");
     components_menu.id = 'components-menu';
@@ -94,12 +107,19 @@ async function loadComponentFields(component) {
 
     updateField(data);
 
-    const saveBtn = document.createElement("button");
-    saveBtn.textContent = "Сохранить";
-    saveBtn.classList.add("base-button")
-    saveBtn.classList.add("main-menu-button");
-    saveBtn.addEventListener("click", () => saveComponentData(component.id));
-    container.appendChild(saveBtn); 
+    const select_component_button = document.createElement("button");
+    select_component_button.id = 'select-component-button';
+    select_component_button.classList.add("base-button");
+    select_component_button.textContent = 'Выбрать деталь';
+    select_component_button.onclick = showSelectComponentsMenu;
+    container.appendChild(select_component_button);
+
+    // const saveBtn = document.createElement("button");
+    // saveBtn.textContent = "Сохранить";
+    // saveBtn.classList.add("base-button")
+    // saveBtn.classList.add("main-menu-button");
+    // saveBtn.addEventListener("click", () => saveComponentData(component.id));
+    // container.appendChild(saveBtn); 
 }
 
 // // Выделение активной комплектующей

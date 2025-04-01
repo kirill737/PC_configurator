@@ -65,7 +65,7 @@
     background-color: var(--charcoal);
     color: var(--pearl);
 
-    border: solid 0.2em var(--pearl);
+    border: solid 0.3rem var(--pearl);
     border-radius: 0.5em;
     
     padding-left: 0.5em;

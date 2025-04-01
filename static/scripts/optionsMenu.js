@@ -65,18 +65,20 @@ document.getElementById("create-component-button").addEventListener("click", asy
     field_list.innerHTML = "";
     component_fields.forEach(field => {
         const row = document.createElement("tr");
+
         const name_td = document.createElement("td");
         name_td.textContent = field + ":";
         name_td.classList.add("component-field-name");
         name_td.id = field;
+        row.appendChild(name_td)
+
         const input_td = document.createElement("td")
+
         const input = document.createElement("input");
         input.type ="text";
         input.placeholder = field;
         input.classList.add("input-component-field");
         input_td.appendChild(input)
-        
-        row.appendChild(name_td)
         row.appendChild(input);
 
         field_list.appendChild(row);
