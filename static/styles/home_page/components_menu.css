@@ -49,3 +49,6 @@
 .component-button:hover {
     border-left: 0.5rem solid var(--light);
 }
+.component-button.active {
+    border-left: 0.5rem solid var(--light);
+}

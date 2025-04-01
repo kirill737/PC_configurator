@@ -15,6 +15,7 @@ async function setCurrentComponentDataBuildId(build_id) {
         })
     });
 }
+
 async function setCurrentComponentDataCT(ct) {
     console.log("setCurrentComponentDataCT");
     const response = await fetch("/set/current/component/data/ct", {
@@ -26,6 +27,7 @@ async function setCurrentComponentDataCT(ct) {
         })
     });
 }
+
 // Открытие меню выбора детали
 async function showSelectComponentsMenu() {
     console.log("Выбор детали...");

@@ -22,10 +22,6 @@
 .hidden {
     display: none;
 }
-.component-button.active {
-    background-color: lightblue;
-}
-
 
 /*  Кнопка выбора сборки */
 .build-button {
@@ -75,8 +71,6 @@
     padding-left: 0.5em;
     margin-top: 0.5em;
 }
-
-
 
 #builds-list li {
     list-style-type: none;

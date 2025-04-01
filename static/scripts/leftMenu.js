@@ -13,13 +13,22 @@ async function loadBuildComponents() {
         component_btn.textContent = component.rus_type;
         component_btn.href = "#";
         component_btn.addEventListener("click", () => loadComponentFields(component));
-        
+
+        // Назначаем обработчик сразу!
+        component_btn.addEventListener("click", function () {
+            console.log("\t\tКНОПКА АКТИВНА");
+            document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+        });
+
         container.appendChild(component_btn);
         console.log("Добавлена кнопка: " + component.type);
-    })
+    });
+
     let menu = document.getElementById("builds-menu");
     menu.classList.add("hidden");
 }
+
 
 // Заполняет поля в информации о комплектующей
 function updateField(data) {
@@ -54,6 +63,9 @@ function updateField(data) {
 async function loadComponentFields(component) {
     console.log("Setup CT <<<>>>");
     await setCurrentComponentDataCT(component.type);
+
+    
+
     let response = await fetch(`/get/${component.id}/fields`);
     const data = await response.json();
 
@@ -87,14 +99,15 @@ async function loadComponentFields(component) {
     saveBtn.classList.add("base-button")
     saveBtn.classList.add("main-menu-button");
     saveBtn.addEventListener("click", () => saveComponentData(component.id));
-    container.appendChild(saveBtn);
+    container.appendChild(saveBtn); 
 }
 
-// Выделение активной комплектующей
-document.querySelectorAll(".component-button").forEach(btn => {
-    btn.addEventListener("click", function() {
-        document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-    });
-});
+// // Выделение активной комплектующей
+// document.querySelectorAll(".component-button").forEach(btn => {
+//     console.log("\t\tКНОПКА АКТИВНА");
+//     btn.addEventListener("click", function() {
+//         document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
+//         this.classList.add("active");
+//     });
+// });
 

@@ -137,6 +137,7 @@
     background-color: var(--charcoal-hover);
 }
 
+
 /* Настройки ползунка */
 #components-list {
     scrollbar-color: var(--pearl) var(--charcoal);
