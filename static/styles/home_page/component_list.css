@@ -1,4 +1,4 @@
-@import 'colors.css';
+@import '../colors.css';
 
 #select-component-button {
     font-size: 2rem;
@@ -36,6 +36,7 @@
 }
 
 #components-list li {
+    /* position: relative; */
     list-style-type: none;
     text-align: left;
 

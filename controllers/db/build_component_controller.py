@@ -7,7 +7,30 @@ logger = setup_logger("build_components")
 logger.info("Запуск build_component_controller")
 
 
+def update_component(build_id: int, old_id: int, new_id: int):
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
 
+    try:
+        cur.execute(
+            "UPDATE build_components "
+            f"SET component_id = {new_id} "
+            f"WHERE build_id = {build_id} and component_oid = {old_id}" 
+        )
+        
+        conn.commit()
+        logger.info(f"Изменение сборки '{build_id}': Успешная смена комплектующей '{old_id}' на '{new_id}'")
+        return True
+    except Exception as e:
+        conn.rollback()
+        logger.error(
+            f"Ошиюка при изменении сборки '{build_id}': омплектующей '{old_id}' на '{new_id}'.\n"
+            f"{e}"
+        )
+    finally:
+        cur.close()
+        conn.close()
+    return 
 def connect_build_and_component(build_id: int, component_id: int, amount: int = 1):
     conn = get_psql_db_connection()
     cur = conn.cursor()

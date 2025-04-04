@@ -1,4 +1,5 @@
 @import '../colors.css';
+@import "./drop_menu.css";
 
 #main-menu-container {
     z-index: 100;

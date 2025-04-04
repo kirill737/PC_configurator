@@ -1,0 +1,62 @@
+@import "./colors.css";
+
+.drop-btn {
+    font-size: 1.5rem;
+    width: 20rem;
+
+    background-color: var(--charcoal);
+    color: var(--pearl);
+
+    border: 0.2rem solid var(--pearl);
+    border-radius: 0.4rem;
+
+    padding: 0.2rem;
+    margin: 0.2rem;
+}
+
+
+.drop-container {
+    position: relative;
+}
+
+.drop-content {
+    position: absolute;
+    background-color: var(--charcoal);
+    overflow-y: auto;
+
+    width: 20rem;
+    max-height: 8rem;
+
+    border: solid 0.2rem var(--gray);
+    border-radius: 0.4rem;
+    
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 2000;
+}
+
+.drop-content a {
+    border: none;
+    border-radius: 0.4rem;
+    color: var(--gray);
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    text-decoration: none;
+    display: block;
+}
+ 
+.drop-container a:hover {
+    background-color: var(--charcoal-hover);
+    color: var(--pearl);
+}
+
+/* Настройки ползунка */
+.drop-content {
+    scrollbar-color: var(--pearl) var(--charcoal);
+}
+
+.drop-content::-webkit-scrollbar {
+    background-color: var(--charcoal);
+    background-color: var(--light);
+}
+
+  

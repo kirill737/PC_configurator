@@ -22,6 +22,9 @@
 .hidden {
     display: none;
 }
+.visible {
+    display: block;
+}
 
 /*  Кнопка выбора сборки */
 .build-button {

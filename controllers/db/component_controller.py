@@ -56,7 +56,7 @@ type2table_dict = {
     ComponentType.headphones: 'headphones',
     ComponentType.keyboard: 'keyboards',
     ComponentType.mouse: 'mice',
-    ComponentType.microphone: 'microphone',
+    ComponentType.microphone: 'microphones',
     ComponentType.monitor: 'monitors',
     ComponentType.storage: 'storages',
     ComponentType.power_supply: 'power_supplies'  
@@ -199,6 +199,41 @@ type2rus = {
     ComponentType.power_supply: ComponentType.power_supply_rus
 }
 
+def get_component_data(component_id):
+    logger.info("Запуск <get_component_data>")
+    logger.info(f"Получение данные детали с id: {component_id}")
+    
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        logger.info(f"Попытка получить поля комплектующей {component_id}...")
+        cur.execute(
+            "SELECT type FROM components "
+            f"WHERE id={component_id};"
+        )
+        component_type = ComponentType(cur.fetchone()[0])
+        component_table = type2table_dict[component_type]
+        cur.execute(
+            f"SELECT * FROM {component_table} "
+            f"WHERE component_id={component_id} "
+            "LIMIT 1;"
+        )
+        
+        fields = cur.fetchone()
+        result = {}
+        i = 1
+        for field_name in type2fields_dict[component_type]:
+            result[field_name] = fields[i + 1] 
+            
+            i += 1
+        return result
+    except Exception as e:
+        logger.error(f"Ошибка при получении данных {component_id}: {e}")        
+    finally:
+        cur.close()
+        conn.close()
+    
 def get_all_component_by_type(ct: ComponentType):
     logger.info("Запусу <get_all_component_by_type>")
     logger.info(f"Получение всех деталей типа {ct}")
@@ -231,8 +266,8 @@ def get_all_component_by_type(ct: ComponentType):
 def prepareType(ct: ComponentType):
     return type2rus[ComponentType(ct)].capitalize()
 
-def get_component_fields(component_id: int):
-    logger.debug("Запуск функции <get_component_fields>")
+def get_components_fields(component_id: int):
+    logger.debug("Запуск функции <get_components_fields>")
     logger.info(f"Получение полей комплектующей {component_id}")
     
     conn = get_psql_db_connection()

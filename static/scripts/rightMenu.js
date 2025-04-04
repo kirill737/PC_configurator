@@ -1,30 +1,11 @@
-// document.getElementById("open-component-settings-button").addEventListener("click", async () => {
-//     // console.log("Нажали кнопку")
-//     const menu = document.getElementById("main-menu-container");
-//     menu.classList.toggle("hidden");
-//     const create_build_button = document.getElementById("create-build-button");
-//     // create_build_button.classList.toggle("hidden");
 
-//     const response = await fetch("/create/component/<ct>");
-//     const component_fields = await response.json();
-//     console.log(component_fields)
-//     const list = document.getElementById("fields-list");
-//     list.innerHTML = "";
-//     create_build_button.dispay ="block";
-//     builds.forEach(build => {
-//         const li = document.createElement("li");
-//         li.textContent = build.name + build.id;
-//         li.addEventListener("click", () => loadBuildComponents(build.id));
-//         list.appendChild(li);
-//     });
-// });
+import { loadBuildComponents } from "./leftMenu.js";
 
 // Открытие меню выбора сборки
 document.getElementById("select-build-button").addEventListener("click", async () => {
 
     // Передача id выбранной сборки в python (далее в redis)
     async function selectBuild(buildId) {
-        console.log("Выбралась сборка c id: " + buildId);
         await fetch(`/select/build/${buildId}`);
         loadBuildComponents();
     }
@@ -49,8 +30,6 @@ document.getElementById("select-build-button").addEventListener("click", async (
 
 // Кнопка добавления новой детали
 document.getElementById("create-component-button").addEventListener("click", async () => {
-    // const create_component_button = document.getElementById("create-component-button");
-    // create_build_button.classList.toggle("hidden");
     const ct = "cpu";
 
     const response = await fetch("/create/component", {
@@ -58,7 +37,7 @@ document.getElementById("create-component-button").addEventListener("click", asy
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ct })
     });
-    // const response = a.0wait fetch("/create/component/${cpu}");
+
     const component_fields = await response.json();
     // console.log(component_fields);
     const field_list = document.getElementById("fields-list");

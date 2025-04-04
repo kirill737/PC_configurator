@@ -46,9 +46,10 @@ def fill_builds():
             build[t] = num
         print(build)
 # print(ComponentType('cpu'))
-get_all_component_by_type(ComponentType('cpu'))
+# get_all_component_by_type(ComponentType('cpu'))
+print(get_component_data(1))
 # print(get_build_info(4))
-# parameters = get_component_fields(1)
+# parameters = get_components_fields(1)
 # print(parameters)
 # create_components(components)
 # create_users()

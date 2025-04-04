@@ -1,27 +1,97 @@
+import {getCurrentComponentData, setCurrentComponentDataCT} from "./help.js";
+import {showSelectComponentsMenu} from "./selectComponentMenu.js";
 
-async function loadBuildInfo(build_id) {
-    const container = document.getElementById("components-container");
-    container.innerHTML = "";
-
-    const response = await fetch(`/build/info/${build_id}`);
-    const components = await response.json();
+// Краткая информацию о сборке
+async function loadBuildInfo() {
+    let response = await fetch(`/all/builds/components`);
+    const current_components = await response.json();
+    console.log(current_components);
     
+    const main_menu = document.getElementById("main-menu-container");
+    main_menu.innerHTML = "";
+
+    const components_drop_menu = document.createElement("table");
+    components_drop_menu.id = "components-drop-menu";
+    
+    for (const current_component of current_components) {
+        let response = await fetch(`/get/component/data/${current_component.id}`);
+        let data = await response.json();
+        
+        const row = document.createElement("tr");
+        row.classList.add("drop-container");
+
+        const name_td = document.createElement("td"); 
+        name_td.textContent = current_component.type;
+        row.appendChild(name_td);
+
+        // Кнопка выпадающего меню
+        const component_drop_td = document.createElement("td");
+
+        const drop_btn = document.createElement("button"); // Кнопка
+        drop_btn.textContent = data["name"]; // Тут имя детали
+        drop_btn.classList.add("drop-btn");
+        component_drop_td.appendChild(drop_btn);
+
+        const drop_menu = document.createElement("div"); // Список
+        drop_menu.classList.add("drop-content", "hidden");
+        component_drop_td.appendChild(drop_menu);
+
+        // При нажатии на кнопку закрываются все другие меню и открывается текущее
+        drop_btn.addEventListener("click", function () {
+            document.querySelectorAll(".drop-content").forEach(menu => {
+                if (menu !== drop_menu) {
+                    menu.classList.add("hidden");
+                }
+            });
+            drop_menu.classList.toggle("hidden");
+        });
+
+        // Заполняем список доступных деталей
+        response = await fetch(`/get/all/components/type/${current_component.type}`);
+        const components_list_data = await response.json();
+
+        components_list_data.forEach(component => {
+            const a = document.createElement("a");
+            a.href = "#";
+            a.textContent = component.name;
+            a.addEventListener("click", function () {
+                drop_btn.textContent = component.name;
+                drop_menu.classList.add("hidden"); // Закрываем меню после выбора
+            });
+            drop_menu.appendChild(a);
+        });
+
+        row.appendChild(component_drop_td);
+        components_drop_menu.appendChild(row);
+    }
+    document.addEventListener("click", function(event) {
+        let drop_menu = document.getElementById("components-drop-menu");
+        
+        
+        if (!drop_menu.contains(event.target)) {
+            document.querySelectorAll(".drop-content").forEach(menu => {
+                if (menu !== drop_menu) {
+                    menu.classList.add("hidden");
+                }
+            });
+        }
+    })
+    main_menu.appendChild(components_drop_menu);
 }
 
-// Загрузка комплектующих в сборке
-async function loadBuildComponents() {
-    console.log("Загрузка деталей в сборке");
+// Загрузка видов всех комплектующих в левое меню
+export async function loadBuildComponents() {
     const response = await fetch(`/all/builds/components`);
     const components = await response.json();
 
     let data = getCurrentComponentData();
-    build_id = data['build_id'];
+    let build_id = data['build_id'];
 
     const container = document.getElementById("components-container");
     container.innerHTML = "";
 
     const build_name_label = document.createElement("label");
-    build_name_label.textContent = "Тест";
+    build_name_label.textContent = "Название сборки";
     build_name_label.id = "build-name-label";
     build_name_label.type = "text";
     build_name_label.addEventListener("click", () => loadBuildInfo(build_id));
@@ -34,24 +104,20 @@ async function loadBuildComponents() {
         component_btn.href = "#";
         component_btn.addEventListener("click", () => loadComponentFields(component));
 
-        // Назначаем обработчик сразу!
         component_btn.addEventListener("click", function () {
-            console.log("\t\tКНОПКА АКТИВНА");
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
             this.classList.add("active");
         });
 
         container.appendChild(component_btn);
-        console.log("Добавлена кнопка: " + component.type);
     });
 
     let menu = document.getElementById("builds-menu");
     menu.classList.add("hidden");
 }
 
-
 // Заполняет поля в информации о комплектующей
-function updateField(data) {
+export function updateField(data) {
     const field_list = document.getElementById("fields-list");
     field_list.innerHTML = "";
     data.forEach(field => {
@@ -81,10 +147,7 @@ function updateField(data) {
 
 // Открыть меню настройки детали
 async function loadComponentFields(component) {
-    console.log("Setup CT <<<>>>");
     await setCurrentComponentDataCT(component.type);
-
-    
 
     let response = await fetch(`/get/${component.id}/fields`);
     const data = await response.json();
@@ -111,7 +174,11 @@ async function loadComponentFields(component) {
     select_component_button.id = 'select-component-button';
     select_component_button.classList.add("base-button");
     select_component_button.textContent = 'Выбрать деталь';
-    select_component_button.onclick = showSelectComponentsMenu;
+
+    const ct = component.type;
+    select_component_button.addEventListener("click", function () {
+        showSelectComponentsMenu(ct);
+    });
     container.appendChild(select_component_button);
 
     // const saveBtn = document.createElement("button");
@@ -121,13 +188,3 @@ async function loadComponentFields(component) {
     // saveBtn.addEventListener("click", () => saveComponentData(component.id));
     // container.appendChild(saveBtn); 
 }
-
-// // Выделение активной комплектующей
-// document.querySelectorAll(".component-button").forEach(btn => {
-//     console.log("\t\tКНОПКА АКТИВНА");
-//     btn.addEventListener("click", function() {
-//         document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
-//         this.classList.add("active");
-//     });
-// });
-

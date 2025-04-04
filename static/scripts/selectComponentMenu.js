@@ -1,52 +1,26 @@
-
-async function getCurrentComponentData() {
-    const response = await fetch(`/get/current/component/data`);
-    const data = await response.json();
-    console.log("Данные получен");
-    return data;
-}
-
-async function setCurrentComponentDataBuildId(build_id) {
-    const response = await fetch("/set/current/component/data/build_id", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            'build_id': build_id
-        })
-    });
-}
-
-async function setCurrentComponentDataCT(ct) {
-    console.log("setCurrentComponentDataCT");
-    const response = await fetch("/set/current/component/data/ct", {
-        
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            'ct': ct
-        })
-    });
-}
-
 // Открытие меню выбора детали
-async function showSelectComponentsMenu() {
-    console.log("Выбор детали...");
-    // const button = document.getElementById("select-component-button");
+import { getCurrentComponentData } from "./help.js";
+import { updateField } from "./leftMenu.js";
+
+export async function showSelectComponentsMenu(ct) {
 
     const menu = document.getElementById("components-menu");
-    if (!menu) return; // Проверяем, что меню есть
-
+    if (!menu) {
+        console.log("components menu не существует");
+        return; // Проверяем, что меню есть
+    }
+    
     menu.classList.toggle("hidden");
     const data = await getCurrentComponentData();
     console.log(data);
-    const ct = data['ct'];
+    
+    // const ct = data['ct'];
     const response = await fetch(`/get/all/components/type/${ct}`);
     const components = await response.json();
 
     const list = document.getElementById("components-list");
     if (!list) return; // Проверяем, что список есть
     
-    console.log("Заполняем список деталей...");
     list.innerHTML = "";
 
     components.forEach(component => {

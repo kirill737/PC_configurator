@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
 </head>
 <body>
-    <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/optionsMenu.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/mainMenu.js') }}" defer></script>
+    <!-- <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/rightMenu.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/leftMenu.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/selectComponentMenu.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/selectComponentMenu.js') }}" defer></script> -->
     <div id="top-menu-container">
         <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
         <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
@@ -32,7 +33,7 @@
         <div id="components-container">
             
         </div>
-        <div class="border"></div>
+        <div class="border-vert"></div>
         <div id="main-menu-container">
             
             <div id="components-menu" class="hidden">
@@ -43,7 +44,7 @@
             </table>
             <!-- <button id="save-settings-button" class="hidden build-button">Добавить комплектующую</button> -->
         </div>
-        <div class="border"></div>
+        <div class="border-vert"></div>
         <div id="side-menu-container">
             <button id="select-build-button" class="base-button build-button">Выбрать сборку</button>
             <div id="builds-menu" class="hidden">

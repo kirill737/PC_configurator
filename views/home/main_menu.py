@@ -5,6 +5,7 @@ from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 
 from controllers.db.component_controller import *
+from controllers.db.build_component_controller import update_component
 
 from logger_settings import setup_logger
 
@@ -17,7 +18,7 @@ def init_component_settings_menu(app):
     @app.route('/get/<int:component_id>/fields')
     def component_fields(component_id: int):
         logger.info(f"Открытие настроек коплектующей{component_id}")
-        component_fields = get_component_fields(component_id)
+        component_fields = get_components_fields(component_id)
         return component_fields
     
     @app.route('/create/component', methods=['POST'])
@@ -42,6 +43,16 @@ def init_component_settings_menu(app):
         }
         return data
     
+    @app.route('/update/build/compnent', methods=['POST'])
+    def update_component_view():
+        dataJson = request.json
+        data = {
+            'build_id': dataJson.get('build_id'),
+            'old_id': dataJson.get('old_id'),
+            'new_id': dataJson.get('new_id')
+        }
+        update_component(data['build_id'], data['old_id'], data['new_id'])
+        return '', 204
     @app.route('/set/current/component/data/build_id', methods=['POST'])
     def set_current_component_build_id():
         logger.info("Попытк установить данные (build_id)...")
@@ -52,6 +63,7 @@ def init_component_settings_menu(app):
         session['build_id'] = data['build_id']
         logger.info(f"Data changed to {data}")
         return data
+    
     @app.route('/set/current/component/data/ct', methods=['POST'])
     def set_current_component_type():
         logger.info("Попытка установить данные (ct)...")
@@ -63,7 +75,11 @@ def init_component_settings_menu(app):
         logger.info(f"Data changed to {data}")
         return data
 
-    @app.route('/get/build/info/<int:build_id>')
-    def build_info(build_id: int):
-        logger.info(f"Получения краткой информации о сборке: {build_id}")
-        data = get_build_info(build_id)
+    @app.route('/get/component/data/<int:component_id>')
+    def component_data(component_id: int):
+        logger.info(f"Получения информации о комплектующей: {component_id}")
+        data_dict = get_component_data(component_id)
+        
+        
+        
+        return data_dict
