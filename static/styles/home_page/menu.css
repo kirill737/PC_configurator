@@ -1,0 +1,32 @@
+@import '../colors.css';
+@import 'main_menu.css';
+@import 'options_menu.css';
+@import 'top_menu.css';
+@import 'components_drop_menu.css';
+
+
+#menu-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; /* Растягиваем по высоте */
+    flex-wrap: nowrap;   /* Запрещаем перенос строк */
+
+    top: 5rem;
+    left: 0;
+
+    outline: none;
+    width: 100%;
+    height: 85%;
+}
+
+.border-vert {
+    position: relative;
+    height: 100%;
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
+    border: solid 0.3rem var(--charcoal-hover);
+    border-radius: 0.5rem;
+}

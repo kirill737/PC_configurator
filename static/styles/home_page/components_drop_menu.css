@@ -1,0 +1,40 @@
+@import '../colors.css';
+@import 'component_list.css';
+
+#left-menu-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Элементы выстраиваются сверху вниз */
+    overflow-y: auto;
+
+    height: 100%;
+    width: 20%;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    border-radius: 0.5em;
+}
+
+.component-button {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.3em;
+
+    color: var(--pearl);
+    text-decoration: none;
+    
+    font-size: 2em;
+    border-left: 0.5rem solid transparent;
+
+    transition: all 0.2s ease-in-out;
+}
+
+.component-button:hover {
+    border-left: 0.5rem solid var(--light);
+}
+.component-button.active {
+    border-left: 0.5rem solid var(--light);
+}
