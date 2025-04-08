@@ -1,0 +1,40 @@
+@import "../colors.css";
+
+#select-type-button {
+    width: 20rem;
+    font-size: 2rem;
+
+    color: var(--pearl);
+    background-color: transparent;
+
+    border: 0.3rem solid var(--pearl);
+    border-radius: 0.5em;
+
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#select-type-drop-menu.drop-content a:hover {
+    background-color: var(--charcoal-hover);
+    color: var(--pearl);
+}
+
+#select-type-drop-menu.drop-content {
+    position: absolute;
+    width: 20rem;
+    max-height: 8rem;
+}
+
+#select-type-drop-menu.drop-content a {
+    font-size: 1.5rem;
+}
+
+
+#select-type-fields-list-container {
+    position: relative;
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+
+

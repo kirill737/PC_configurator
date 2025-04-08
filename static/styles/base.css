@@ -111,3 +111,19 @@ button.submit:hover {
     color: red;
     font-size: 1.5em;
 }
+
+body {
+    scrollbar-color: var(--pearl) var(--charcoal);
+}
+::-webkit-scrollbar {
+    background-color: var(--charcoal);
+    background-color: var(--light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--pearl);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--pearl); /* Цвет при наведении */
+}

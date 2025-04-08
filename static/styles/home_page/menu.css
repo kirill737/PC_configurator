@@ -2,7 +2,8 @@
 @import 'main_menu.css';
 @import 'options_menu.css';
 @import 'top_menu.css';
-@import 'components_menu.css';
+@import 'components_drop_menu.css';
+
 
 #menu-container {
     position: absolute;

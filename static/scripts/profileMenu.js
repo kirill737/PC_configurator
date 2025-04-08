@@ -1,4 +1,4 @@
-export function toggle_menu() {
+function toggle_menu() {
     let menu = document.getElementById("profile-menu");
     menu.style.display = (menu.style.display === "block") ? "none" : "block";
     console.log("Нажалось")

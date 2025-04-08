@@ -3,6 +3,7 @@ from controllers.session_controller import create_session, get_session_data, del
 from controllers.db.component_controller import *
 from controllers.db.build_controller import *
 from test_components import components
+from controllers.db.build_component_controller import *
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
 component_types = [
@@ -24,8 +25,8 @@ component_types = [
 def create_users():
     emails = [
         'test1@yandex.ru',
-        'test2@gmail.com',
-        'test3@test.com'
+        'test2@yandex.ru',
+        'test3@yandex.ru'
         ]
 
     add_user('name1',  emails[0], 'root')
@@ -38,20 +39,24 @@ def create_components(components):
             add_component(ct, 1000, component_list[i])
 
 def fill_builds():
+    build_names = ['Мой сетап', 'Тарахтелка Коляна', 'Ноут']
     for i in range(3):
         build = {}
         num = 0
         for t in component_types:
             num += 1
             build[t] = num
-        print(build)
-# print(ComponentType('cpu'))
-# get_all_component_by_type(ComponentType('cpu'))
-print(get_component_data(1))
+        # print(build
+        create_build(i + 1, build_names[i], build)
+
+# fill_builds()
 # print(get_build_info(4))
-# parameters = get_components_fields(1)
-# print(parameters)
-# create_components(components)
+
 # create_users()
+# create_components(components)
+# fill_builds()
+# print(get_build_info(1))
+# change_component(1, 13, 1) 
+# print(get_build_info(1))
 
 

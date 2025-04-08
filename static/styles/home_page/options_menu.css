@@ -97,20 +97,7 @@
     background-color: var(--charcoal-hover);
 }
 
-/* Настройки ползунка */
-#builds-list {
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-
-#builds-list::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
-
-#builds-menu::-webkit-scrollbar-thumb {
-    background: var(--pearl);
-    border-radius: 4px;
-}
-#builds-menu::-webkit-scrollbar-thumb:hover {
-    background: var(--pearl); /* Цвет при наведении */
+#save-component-button {
+    font-size: 2rem;
+    width: auto;
 }

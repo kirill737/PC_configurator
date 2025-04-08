@@ -1,5 +1,7 @@
 @import '../colors.css';
 @import "./drop_menu.css";
+@import "./create_component.css";
+@import "./change_component_menu.css";
 
 #main-menu-container {
     z-index: 100;
@@ -20,7 +22,11 @@
     border: 0.3rem solid var(--pearl);
     border-radius: 0.5em;
 
-    font-size: 1.5em;
+    font-size: 1.5rem;
+}
+
+#main-menu-container tr {
+    font-size: 2rem;
 }
 
 #fields-list {
@@ -29,21 +35,6 @@
     overflow-y: auto;
     border-collapse: collapse;
     justify-items: center;
-
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-#fields-list::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
-
-
-#fields-list::-webkit-scrollbar-thumb {
-    background: var(--pearl);
-    border-radius: 4px;
-}
-#fields-list::-webkit-scrollbar-thumb:hover {
-    background: var(--pearl); /* Цвет при наведении */
 }
 
 #fields-list tr {
@@ -75,7 +66,7 @@
 }
 
 .component-field-name {
-    font-size: 1.5em;
+    font-size: 2rem;
 }
 
 .main-menu-button {
@@ -84,7 +75,7 @@
     width: auto;
 }
 
-#build-name-label {
+#build-name-label, #select-component-type-label {
     font-size: 2rem;
     
     border: 0.3rem solid var(--pearl);
@@ -92,4 +83,5 @@
 
     padding: 0.5rem;
 }
+
 

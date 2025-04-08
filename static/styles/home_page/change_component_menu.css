@@ -1,0 +1,41 @@
+@import "../colors.css";
+
+#components_container {
+    height: 100%;
+    background-color: aquamarine;
+}
+
+#components-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Элементы выстраиваются сверху вниз */
+    overflow-y: auto;
+
+    height: 100%;
+    width: 100%;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    border-radius: 0.5em;
+}
+
+
+#fields-container {
+    position: relative;
+    overflow-y: auto;
+    max-height: 50rem;
+}
+
+#button-container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+#button-container button {
+    font-size: 2rem;
+    margin: 0.5rem;
+}

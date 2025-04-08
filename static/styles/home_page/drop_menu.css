@@ -1,4 +1,4 @@
-@import "./colors.css";
+@import "../colors.css";
 
 .drop-btn {
     font-size: 1.5rem;
@@ -42,6 +42,7 @@
     padding-bottom: 0.2rem;
     text-decoration: none;
     display: block;
+    font-size: 1.5rem;
 }
  
 .drop-container a:hover {
@@ -49,14 +50,5 @@
     color: var(--pearl);
 }
 
-/* Настройки ползунка */
-.drop-content {
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-
-.drop-content::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
 
   

@@ -5,14 +5,13 @@
     width: auto;
 }
 
-#components-menu {
+#components-drop-menu {
     z-index: 1000;
     position: absolute;
 
     width: calc(100% - 2em);
     width: auto;
     top: 6rem;
-    /* right: 40rem; */
 }
 
 #components-list {
@@ -59,20 +58,3 @@
 }
 
 
-/* Настройки ползунка */
-#components-list {
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-
-#components-list::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
-
-#components-menu::-webkit-scrollbar-thumb {
-    background: var(--pearl);
-    border-radius: 4px;
-}
-#components-menu::-webkit-scrollbar-thumb:hover {
-    background: var(--pearl); /* Цвет при наведении */
-}

@@ -1,7 +1,7 @@
 @import '../colors.css';
 @import 'component_list.css';
 
-#components-container {
+#left-menu-container {
     position: relative;
     display: flex;
     flex-direction: column; /* Элементы выстраиваются сверху вниз */
@@ -18,21 +18,6 @@
     border-radius: 0.5em;
 }
 
-#components-container {
-    scrollbar-color: var(--pearl) var(--charcoal);
-}
-#components-container::-webkit-scrollbar {
-    background-color: var(--charcoal);
-    background-color: var(--light);
-}
-
-#builds-menu::-webkit-scrollbar-thumb {
-    background: var(--pearl);
-    border-radius: 4px;
-}
-#builds-menu::-webkit-scrollbar-thumb:hover {
-    background: var(--pearl); /* Цвет при наведении */
-}
 .component-button {
     margin-top: 0.5em;
     margin-bottom: 0.5em;

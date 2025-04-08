@@ -5,8 +5,8 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "pc_kirill",
-            "database": "pc_configurator_db",
+            "name": "pc_config",
+            "database": "pc_config_db",
             "username": "kirill",
             "password": "root"
         }

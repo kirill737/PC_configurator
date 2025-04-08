@@ -10,8 +10,8 @@
 </head>
 <body>
     <script type="module" src="{{ url_for('static', filename='scripts/mainMenu.js') }}" defer></script>
-    <!-- <script src="{{ url_for('static', filename='scripts/profileScript.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/rightMenu.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
+    <!-- <script src="{{ url_for('static', filename='scripts/rightMenu.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/leftMenu.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/selectComponentMenu.js') }}" defer></script> -->
     <div id="top-menu-container">
@@ -30,19 +30,13 @@
         </div>
     </div>
     <div id="menu-container">
-        <div id="components-container">
+        <div id="left-menu-container">
             
         </div>
         <div class="border-vert"></div>
         <div id="main-menu-container">
             
-            <div id="components-menu" class="hidden">
-                <ul id="components-list"></ul>
-            </div>
-            <table id="fields-list">
-                
-            </table>
-            <!-- <button id="save-settings-button" class="hidden build-button">Добавить комплектующую</button> -->
+            
         </div>
         <div class="border-vert"></div>
         <div id="side-menu-container">
@@ -53,6 +47,7 @@
             <button id="create-build-button" class="base-button build-button">Создать сборку</button>
             <button id="delete-build-button" class="hidden base-button build-button">Удалить сборку</button>
             <button id="create-component-button" class="base-button build-button">Добавить комплектующую</button>
+            <button id="change-component-button" class="base-button build-button">Изменить комплектующие</button>
         </div>
         {% block content %}{% endblock %}
     </div>

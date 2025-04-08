@@ -46,7 +46,8 @@ def get_build_info(build_id) -> dict:
             "SELECT bc.component_id, c.type "
             "FROM build_components as bc "
             "LEFT JOIN components as c ON c.id = bc.component_id "
-            f"WHERE bc.build_id = {build_id}"
+            f"WHERE bc.build_id = {build_id} "
+            "ORDER BY bc.id"
             )
         
         raw_components_list = cur.fetchall()

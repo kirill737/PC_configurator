@@ -1,17 +1,17 @@
 // Открытие меню выбора детали
-import { getCurrentComponentData } from "./help.js";
+import { getCurrentData, translate } from "./help.js";
 import { updateField } from "./leftMenu.js";
 
 export async function showSelectComponentsMenu(ct) {
 
-    const menu = document.getElementById("components-menu");
+    const menu = document.getElementById("components-drop-menu");
     if (!menu) {
         console.log("components menu не существует");
         return; // Проверяем, что меню есть
     }
     
     menu.classList.toggle("hidden");
-    const data = await getCurrentComponentData();
+    const data = await getCurrentData();
     console.log(data);
     
     // const ct = data['ct'];
@@ -25,7 +25,7 @@ export async function showSelectComponentsMenu(ct) {
 
     components.forEach(component => {
         const li = document.createElement("li");
-        li.textContent = component.name + ": " + component.id;
+        li.textContent = component.name;
         li.addEventListener("click", async () => {
             console.log("Выбралась деталь c id: " + component.id);
             
@@ -43,7 +43,7 @@ export async function showSelectComponentsMenu(ct) {
 
 // Функция для закрытия меню выбора детали при клике вне его
 function closeMenuOnClickOutside(event) {
-    let menu = document.getElementById("components-menu");
+    let menu = document.getElementById("components-drop-menu");
     let button = document.getElementById("select-component-button");
 
     if (!menu || !button) return; // Проверяем, что элементы существуют

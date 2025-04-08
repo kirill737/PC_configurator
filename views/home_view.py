@@ -4,7 +4,7 @@ from database.psql import get_psql_db_connection
 from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 
-
+from controllers.db.component_controller import translate
 from views.home.options_menu_view import init_options_menu
 
 from logger_settings import setup_logger
@@ -39,4 +39,8 @@ def init_home(app):
         # session.pop('user', None)
         return redirect('/login')
 
-   
+    @app.route('/translate', methods=['POST'])
+    def translate_view():
+        data = request.json
+        result = translate(data.get('name'), data.get('capitalize'))
+        return jsonify({"result": result})   

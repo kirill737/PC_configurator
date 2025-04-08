@@ -198,9 +198,21 @@ type2rus = {
     ComponentType.storage: ComponentType.storage_rus,
     ComponentType.power_supply: ComponentType.power_supply_rus
 }
+def translate(name: str, capitalize = True):
+    logger.debug("Запуск <translate>")
+    logger.info(f"Перевод {name}")
+    
+    result = name
+    if name in type2rus:
+        result =  type2rus[name]
 
-def get_component_data(component_id):
-    logger.info("Запуск <get_component_data>")
+    logger.info(f"{name} переведено на {result}")
+    if capitalize:
+        result = result.capitalize()
+    return result
+
+def get_component_data(component_id: int):
+    logger.debug("Запуск <get_component_data>")
     logger.info(f"Получение данные детали с id: {component_id}")
     
     conn = get_psql_db_connection()
@@ -235,7 +247,7 @@ def get_component_data(component_id):
         conn.close()
     
 def get_all_component_by_type(ct: ComponentType):
-    logger.info("Запусу <get_all_component_by_type>")
+    logger.debug("Запуск <get_all_component_by_type>")
     logger.info(f"Получение всех деталей типа {ct}")
     
     conn = get_psql_db_connection()
@@ -263,11 +275,18 @@ def get_all_component_by_type(ct: ComponentType):
         cur.close()
         conn.close()
 
+def get_all_component_types():
+    all_types = []
+    
+    for ct, _ in type2rus.items():
+        all_types.append(ct)
+    return all_types
+
 def prepareType(ct: ComponentType):
     return type2rus[ComponentType(ct)].capitalize()
 
 def get_components_fields(component_id: int):
-    logger.debug("Запуск функции <get_components_fields>")
+    logger.debug("Запуск <get_components_fields>")
     logger.info(f"Получение полей комплектующей {component_id}")
     
     conn = get_psql_db_connection()
@@ -306,7 +325,7 @@ def get_components_fields(component_id: int):
         conn.close()
 
 def add_component(component_type: ComponentType, price: int, info: dict) -> int:
-    logger.debug("Запуску <add_component>")
+    logger.debug("Запуск <add_component>")
     logger.info(
         f"Попытка добавить комплектущую\n"
         f"Тип: {component_type}, цена: {price}\n"

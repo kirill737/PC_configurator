@@ -1,6 +1,6 @@
-import {getCurrentComponentData, setCurrentComponentDataCT} from "./help.js";
-import {showSelectComponentsMenu} from "./selectComponentMenu.js";
-
+import { getCurrentData, setCurrentComponentDataCT} from "./help.js";
+import { showSelectComponentsMenu } from "./selectComponentMenu.js";
+import { updateBuildComponent } from "./help.js";
 // Краткая информацию о сборке
 async function loadBuildInfo() {
     let response = await fetch(`/all/builds/components`);
@@ -54,7 +54,10 @@ async function loadBuildInfo() {
             const a = document.createElement("a");
             a.href = "#";
             a.textContent = component.name;
-            a.addEventListener("click", function () {
+            a.addEventListener("click", async function () {
+                let current_data = await getCurrentData();
+
+                updateBuildComponent(current_data['build_id'], current_component.id, component.id);
                 drop_btn.textContent = component.name;
                 drop_menu.classList.add("hidden"); // Закрываем меню после выбора
             });
@@ -64,9 +67,11 @@ async function loadBuildInfo() {
         row.appendChild(component_drop_td);
         components_drop_menu.appendChild(row);
     }
+    
+    main_menu.appendChild(components_drop_menu);
+    
     document.addEventListener("click", function(event) {
         let drop_menu = document.getElementById("components-drop-menu");
-        
         
         if (!drop_menu.contains(event.target)) {
             document.querySelectorAll(".drop-content").forEach(menu => {
@@ -76,22 +81,21 @@ async function loadBuildInfo() {
             });
         }
     })
-    main_menu.appendChild(components_drop_menu);
 }
 
 // Загрузка видов всех комплектующих в левое меню
-export async function loadBuildComponents() {
+export async function loadBuildComponents(buildName) {
     const response = await fetch(`/all/builds/components`);
     const components = await response.json();
 
-    let data = getCurrentComponentData();
+    let data = getCurrentData();
     let build_id = data['build_id'];
 
-    const container = document.getElementById("components-container");
+    const container = document.getElementById("left-menu-container");
     container.innerHTML = "";
 
     const build_name_label = document.createElement("label");
-    build_name_label.textContent = "Название сборки";
+    build_name_label.textContent = buildName;
     build_name_label.id = "build-name-label";
     build_name_label.type = "text";
     build_name_label.addEventListener("click", () => loadBuildInfo(build_id));
@@ -124,7 +128,7 @@ export function updateField(data) {
         const row = document.createElement("tr");
 
         const name_td = document.createElement("td");
-        name_td.textContent = field.name + ":";
+        name_td.textContent = field.name;
         name_td.classList.add("component-field-name");
         name_td.id = field.value;
 
@@ -155,14 +159,14 @@ async function loadComponentFields(component) {
     const container = document.getElementById("main-menu-container");
     container.innerHTML = "";
 
-    const components_menu = document.createElement("div");
-    components_menu.id = 'components-menu';
-    components_menu.classList.add("hidden");
+    const components_drop_menu = document.createElement("div");
+    components_drop_menu.id = 'components-drop-menu';
+    components_drop_menu.classList.add("hidden");
 
     const components_list = document.createElement("ul");
     components_list.id = 'components-list';
-    components_menu.appendChild(components_list);
-    container.appendChild(components_menu);
+    components_drop_menu.appendChild(components_list);
+    container.appendChild(components_drop_menu);
 
     const field_list = document.createElement("table");
     field_list.id = 'fields-list';
