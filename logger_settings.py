@@ -8,7 +8,7 @@ def setup_logger(logs_name: str):
 
     # Настраиваем логгер
     logger = logging.getLogger(f"{logs_name}_logger")
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     file_handler = logging.FileHandler(log_file, mode="w")
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%H:%M:%S")

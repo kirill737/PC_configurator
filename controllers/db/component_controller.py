@@ -201,16 +201,44 @@ type2rus = {
 def translate(name: str, capitalize = True):
     logger.debug("Запуск <translate>")
     logger.info(f"Перевод {name}")
-    
+
     result = name
     if name in type2rus:
         result =  type2rus[name]
+    else:
+        for ct in type2fields_dict:
+            fields_eng = type2fields_dict[ct]
+            fields_rus = type2fields_rus_dict.get(ct)
+
+            if name in fields_eng and fields_rus:
+                index = fields_eng.index(name)
+                result = fields_rus[index]
+                break
 
     logger.info(f"{name} переведено на {result}")
     if capitalize:
         result = result.capitalize()
     return result
+def get_type(component_id: int) -> ComponentType:
+    logger.debug("Запуск <get_type>")
+    logger.info(f"Получение данные детали с id: {component_id}")
+    
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
 
+    try:
+        cur.execute(
+            "SELECT type FROM components "
+            f"WHERE id={component_id};"
+        )
+        component_type = ComponentType(cur.fetchone()[0])
+        return component_type
+    except Exception as e:
+        logger.error(f"Ошибка при получение типа комплектующей: {e}")
+    finally:
+        cur.close()
+        conn.close()
+    return None
 def get_component_data(component_id: int):
     logger.debug("Запуск <get_component_data>")
     logger.info(f"Получение данные детали с id: {component_id}")
@@ -220,11 +248,7 @@ def get_component_data(component_id: int):
     
     try:
         logger.info(f"Попытка получить поля комплектующей {component_id}...")
-        cur.execute(
-            "SELECT type FROM components "
-            f"WHERE id={component_id};"
-        )
-        component_type = ComponentType(cur.fetchone()[0])
+        component_type = get_type(component_id)
         component_table = type2table_dict[component_type]
         cur.execute(
             f"SELECT * FROM {component_table} "
@@ -308,10 +332,10 @@ def get_components_fields(component_id: int):
         fields = cur.fetchone()
         result = []
         i = 1
-        for field_name in type2fields_rus_dict[component_type]:
+        for field_name in type2fields_dict[component_type]:
             result.append (
                 {
-                    'name': field_name.capitalize(),
+                    'name': field_name,
                     'value': fields[i + 1]
                 }
             )
@@ -378,3 +402,44 @@ def add_component(component_type: ComponentType, price: int, info: dict) -> int:
     finally:
         cur.close()
         conn.close()
+
+def change_component(component_id: int, price: int, info: dict):
+    logger.debug("Запуск <change_component>")
+    logger.info(f"Попытка изменить характеристики у {component_id}")
+
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    def change_field(component_id: int, field, value):
+        logger.debug("Запуск <change_field>")
+        ct = get_type(component_id)
+        cur.execute(
+            f"UPDATE {type2table_dict[ct]} "
+            f"SET {field} = '{value}' "
+            f"WHERE component_id = {component_id}" 
+        )
+
+    try:
+        ct = get_type(component_id)
+        for field, value in info.items():
+            change_field(component_id, field, value)
+
+        cur.execute(
+            "UPDATE components "
+            f"SET price = {price} "
+            f"WHERE id = {component_id}" 
+        )
+        
+        conn.commit()
+        logger.info(f"Успешное изменение комплектующей '{component_id}'")
+        return True
+    except Exception as e:
+        conn.rollback()
+        logger.error(
+            f"Ошибка при изменении комплектующей '{component_id}'\n"
+            f"{e}"
+        )
+    finally:
+        cur.close()
+        conn.close()
+    return False

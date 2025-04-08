@@ -26,7 +26,7 @@ export async function setCurrentComponentDataCT(ct) {
 }
 
 export async function updateBuildComponent(build_id, old_componment_id, new_component_id) {
-    const response = await fetch("/update/build/component", {
+    const response = await fetch("/change/build/component", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

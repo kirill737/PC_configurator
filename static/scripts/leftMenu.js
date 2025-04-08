@@ -1,6 +1,6 @@
 import { getCurrentData, setCurrentComponentDataCT} from "./help.js";
 import { showSelectComponentsMenu } from "./selectComponentMenu.js";
-import { updateBuildComponent } from "./help.js";
+import { updateBuildComponent, translate } from "./help.js";
 // Краткая информацию о сборке
 async function loadBuildInfo() {
     let response = await fetch(`/all/builds/components`);
@@ -21,14 +21,14 @@ async function loadBuildInfo() {
         row.classList.add("drop-container");
 
         const name_td = document.createElement("td"); 
-        name_td.textContent = current_component.type;
+        name_td.textContent = translate(current_component.type);
         row.appendChild(name_td);
 
         // Кнопка выпадающего меню
         const component_drop_td = document.createElement("td");
 
         const drop_btn = document.createElement("button"); // Кнопка
-        drop_btn.textContent = data["name"]; // Тут имя детали
+        drop_btn.textContent = translate(data["name"]); // Тут имя детали
         drop_btn.classList.add("drop-btn");
         component_drop_td.appendChild(drop_btn);
 
@@ -50,15 +50,15 @@ async function loadBuildInfo() {
         response = await fetch(`/get/all/components/type/${current_component.type}`);
         const components_list_data = await response.json();
 
-        components_list_data.forEach(component => {
+        components_list_data.forEach(async component => {
             const a = document.createElement("a");
             a.href = "#";
-            a.textContent = component.name;
+            a.textContent = await translate(component.name);
             a.addEventListener("click", async function () {
                 let current_data = await getCurrentData();
 
                 updateBuildComponent(current_data['build_id'], current_component.id, component.id);
-                drop_btn.textContent = component.name;
+                drop_btn.textContent = await translate(component.name);
                 drop_menu.classList.add("hidden"); // Закрываем меню после выбора
             });
             drop_menu.appendChild(a);
@@ -124,17 +124,17 @@ export async function loadBuildComponents(buildName) {
 export function updateField(data) {
     const field_list = document.getElementById("fields-list");
     field_list.innerHTML = "";
-    data.forEach(field => {
+    data.forEach(async field => {
         const row = document.createElement("tr");
 
         const name_td = document.createElement("td");
-        name_td.textContent = field.name;
+        name_td.textContent = await translate(field.name);
         name_td.classList.add("component-field-name");
-        name_td.id = field.value;
+        name_td.id = field.name;
 
         const input = document.createElement("input");
         input.type ="text";
-        input.placeholder = field.name;
+        input.placeholder = await translate(field.name);
         input.value = field.value;
         input.setAttribute("data-key", field.name);
         input.classList.add("input-component-field");
@@ -143,7 +143,7 @@ export function updateField(data) {
         input_td.appendChild(input)
         
         row.appendChild(name_td)
-        row.appendChild(input);
+        row.appendChild(input_td);
         
         field_list.appendChild(row);
     });

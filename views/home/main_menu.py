@@ -5,7 +5,7 @@ from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 
 from controllers.db.component_controller import *
-from controllers.db.build_component_controller import change_component
+from controllers.db.build_component_controller import change_build_component
 
 from logger_settings import setup_logger
 
@@ -57,15 +57,15 @@ def init_component_settings_menu(app):
         }
         return data
     
-    @app.route('/update/build/component', methods=['POST'])
-    def change_component_view():
+    @app.route('/change/build/component', methods=['POST'])
+    def change_build_component_view():
         dataJson = request.json
         data = {
             'build_id': dataJson.get('build_id'),
             'old_id': dataJson.get('old_id'),
             'new_id': dataJson.get('new_id')
         }
-        change_component(
+        change_build_component(
             build_id=data['build_id'], 
             old_id=data['old_id'],
             new_id=data['new_id']
@@ -99,3 +99,13 @@ def init_component_settings_menu(app):
         data_dict = get_component_data(component_id)
         
         return data_dict
+    
+    @app.route('/change/component',  methods=['POST'])
+    def change_component_view():
+        logger.info("Попытка изменить данные...")
+        data = request.json
+        
+        if change_component(data.get('id'), data.get('price'), data.get('info')):
+            return jsonify({"status": "success"})
+        return jsonify({"status": "error", "message": "Failed to edit component"})
+    

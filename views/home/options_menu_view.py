@@ -13,7 +13,6 @@ logger = setup_logger("options_menu")
 
 def init_options_menu(app):
     init_component_settings_menu(app)
-    # init_build_menu(app)
     @app.route('/open_builds')
     def open_builds():
         return redirect('/home')

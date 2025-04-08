@@ -25,5 +25,4 @@
 -- SELECT * FROM components
 -- WHERE id in (1, 2);
 
-SELECT * FROM build_components
-WHERE build_id = 1;
+UPDATE motherboards SET name = y WHERE component_id = 95;

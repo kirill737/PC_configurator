@@ -1,4 +1,3 @@
-
 import { loadBuildComponents } from "./leftMenu.js";
 import { loadAllComponentsMenu } from "./changeComponentMenu.js";
 import { translate } from "./help.js";
@@ -24,7 +23,7 @@ document.getElementById("select-build-button").addEventListener("click", async (
     create_build_button.dispay ="block";
     builds.forEach(build => {
         const li = document.createElement("li");
-        li.textContent = build.name + ": " + build.id;
+        li.textContent = build.name;
         li.addEventListener("click", () => selectBuild(build.id, build.name));
         list.appendChild(li);
     });
@@ -66,6 +65,7 @@ async function saveComponentBtnFunction(ct) {
     component_data['ct'] = ct;
     component_data['price'] = 0; // TODO: добавить цену детали
     component_data['info'] = {};
+
     const inputs = document.querySelectorAll(".input-component-field");
     inputs.forEach(input => {
         const fieldName = input.parentElement.previousElementSibling.id;
@@ -159,7 +159,7 @@ document.getElementById("create-component-button").addEventListener("click", asy
 
     main_menu.appendChild(create_component_button);
 
-    create_component_button.addEventListener("click", async () => saveComponentBtnFunction(current_ct))
+    create_component_button.addEventListener("click", async () => saveComponentBtnFunction(current_ct));
     // let field_list = document.createElement("table");
     // field_list.id = "fields-list";
 

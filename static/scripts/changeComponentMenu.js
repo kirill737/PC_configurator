@@ -1,5 +1,5 @@
 import { updateField } from "./leftMenu.js";
-import { translate } from "./help.js";
+import { translate, getCurrentData, setCurrentComponentDataCT } from "./help.js";
 // Загрузка видов всех комплектующих в левое меню
 export async function loadAllComponentsMenu() {
     
@@ -52,6 +52,8 @@ export async function loadAllComponentsMenu() {
 }
 
 async function loadAllComponentWithType(ct) {
+    await setCurrentComponentDataCT(ct);
+    console.log("Обновляем поля");
     const components_container = document.getElementById("components-container");
     components_container.innerHTML = "";
 
@@ -94,9 +96,11 @@ export async function showSelectComponentsMenu(component_id) {
 
     const buttons_container = document.createElement("div");
     buttons_container.id = "button-container";
+
     const save_fields_button = document.createElement("button");
     save_fields_button.classList.add("base-button");
     save_fields_button.textContent = "Сохранить";
+    save_fields_button.addEventListener("click", async () => saveComponentButton(component_id));
     buttons_container.appendChild(save_fields_button);
 
     const delete_component_button = document.createElement("button");
@@ -105,4 +109,34 @@ export async function showSelectComponentsMenu(component_id) {
     buttons_container.appendChild(delete_component_button);
 
     main_container.appendChild(buttons_container);
+};
+
+async function saveComponentButton(id) {
+    const component_data = {};
+    component_data['id'] = id;
+    component_data['price'] = 0; // TODO: добавить цену детали
+    component_data['info'] = {};
+
+    const inputs = document.querySelectorAll(".input-component-field");
+    inputs.forEach(input => {
+        const fieldName = input.parentElement.previousElementSibling.id;
+        component_data['info'][fieldName] = input.value;
+        console.log(fieldName, input.value);
+    });
+
+    const response = await fetch("/change/component", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(component_data)
+    });
+
+    const result = await response.json();
+    console.log(result);
+    if (result.status == "success") {
+        alert("Деталь изменена!");
+        const ct = await getCurrentData()['ct'];
+        await loadAllComponentWithType(ct);
+    } else {
+        alert(result.message);
+    }
 };
