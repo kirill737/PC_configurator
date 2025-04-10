@@ -1,9 +1,11 @@
 // Открытие меню выбора детали
-import { getCurrentData, translate } from "./help.js";
+import { getCurrentData, updateBuildComponent } from "./help.js";
 import { updateField } from "./leftMenu.js";
 
-export async function showSelectComponentsMenu(ct) {
 
+export async function showSelectComponentsMenu(current_component_id) {
+    const current_data = await getCurrentData();
+    const current_ct = current_data['ct'];
     const menu = document.getElementById("components-drop-menu");
     if (!menu) {
         console.log("components menu не существует");
@@ -11,15 +13,12 @@ export async function showSelectComponentsMenu(ct) {
     }
     
     menu.classList.toggle("hidden");
-    const data = await getCurrentData();
-    console.log(data);
-    
-    // const ct = data['ct'];
-    const response = await fetch(`/get/all/components/type/${ct}`);
+
+    const response = await fetch(`/get/all/components/type/${current_ct}`);
     const components = await response.json();
 
     const list = document.getElementById("components-list");
-    if (!list) return; // Проверяем, что список есть
+    if (!list) return;
     
     list.innerHTML = "";
 
@@ -32,7 +31,7 @@ export async function showSelectComponentsMenu(ct) {
             const response = await fetch(`/get/${component.id}/fields`)
             const data = await response.json();
             updateField(data);
-            
+            updateBuildComponent(current_data['build_id'], current_component_id, component.id);
             menu.classList.toggle('hidden'); // Закрываем меню после выбора
         });
         list.appendChild(li);

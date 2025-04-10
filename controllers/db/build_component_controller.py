@@ -7,7 +7,6 @@ from controllers.db.component_controller import ComponentType as CT
 logger = setup_logger("build_components")
 logger.info("Запуск build_component_controller")
 
-
 def change_build_component(build_id: int, old_id: int, new_id: int):
     def compare_components_type(component_id_1: int, component_id_2: int) -> bool:
         logger.info(f"Сравнение типов деталей '{component_id_1}' и '{component_id_2}'")

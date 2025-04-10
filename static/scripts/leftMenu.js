@@ -196,7 +196,7 @@ async function loadComponentFields(ct, build_id) {
     select_component_button.textContent = 'Выбрать деталь';
 
     select_component_button.addEventListener("click", function () {
-        showSelectComponentsMenu(ct);
+        showSelectComponentsMenu(component_id);
     });
     container.appendChild(select_component_button);
 
