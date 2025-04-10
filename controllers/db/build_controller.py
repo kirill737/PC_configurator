@@ -36,7 +36,7 @@ def delete_build(build_id: int) -> None:
         
 def get_build_info(build_id) -> dict:
     logger.debug("Запуск <get_build_info>")
-    logger.info(f"Получение комплектующих сборки {build_id}")
+    logger.info(f"Получение комплектующих сборки '{build_id}'")
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
@@ -53,7 +53,7 @@ def get_build_info(build_id) -> dict:
         raw_components_list = cur.fetchall()
         # cur.execute("SELECT name FROM")
         components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": ""  } for row in raw_components_list]
-        logger.debug(f"Component id list: {components_dict}")
+        logger.debug(f"Component id list: '{components_dict}'")
         logger.info("Данные сборки получены")
         
         return components_dict
@@ -108,7 +108,7 @@ def create_build(user_id: int, name: str, build_info: dict) -> int:
         try:
             for _, component_id in all_components.items():
                 if not connect_build_and_component(build_id, component_id):
-                    raise Exception(f"Сборка {build_id} не связана с {component_id}")
+                    raise Exception(f"Сборка '{build_id}' не связана с '{component_id}'")
             logger.info(f"Комплектующие связаны")
             conn.commit()
         except Exception as e:
@@ -152,8 +152,8 @@ def get_user_builds(user_id: int) -> list:
         cur.execute(f"SELECT id, name FROM builds WHERE user_id={user_id}")
         builds = [{"id": row[0], "name": row[1]} for row in cur.fetchall()]
         logger.info(
-            f"Сборки пользователя {user_id} получены\n"
-            f"{builds}"
+            f"Сборки пользователя '{user_id}' получены\n"
+            f"'{builds}'"
         )
         return builds
     except Exception as e:

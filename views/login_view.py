@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import render_template, request, redirect, session
 
 from controllers.session_controller import create_session
 from controllers.db.user_controller import *
@@ -29,6 +29,7 @@ def init_login(app):
                 user_id = get_user_id(email)
                 
                 session_id = create_session(user_id)
+                
                 logger.info(f"Сессия {session_id} - началась")
                 session["user_id"] = get_user_id(email)
                 

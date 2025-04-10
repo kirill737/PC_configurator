@@ -17,12 +17,14 @@
 -- WHERE bc.build_id = 4 ;
 
 -- SELECT * FROM components;
--- TRUNCATE TABLE builds;0
+-- TRUNCATE TABLE builds;
 -- DELETE FROM builds WHERE id = 1;
 -- SELECT * FROM builds;
 
 
 -- SELECT * FROM components
 -- WHERE id in (1, 2);
-
-UPDATE motherboards SET name = y WHERE component_id = 95;
+SELECT c.id AS component_id
+FROM build_components bc
+JOIN components c ON bc.component_id = c.id
+WHERE bc.build_id = 1 AND c.type = 'cpu';

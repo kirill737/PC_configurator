@@ -1,13 +1,13 @@
 import { loadBuildComponents } from "./leftMenu.js";
 import { loadAllComponentsMenu } from "./changeComponentMenu.js";
-import { translate } from "./help.js";
+import { translate, setCurrentBuildId } from "./help.js";
 
 // Открытие меню выбора сборки
 document.getElementById("select-build-button").addEventListener("click", async () => {
 
     // Передача id выбранной сборки в python (далее в redis)
     async function selectBuild(buildId, buildName) {
-        await fetch(`/select/build/${buildId}`);
+        await setCurrentBuildId(buildId);
         loadBuildComponents(buildName);
     }
 
@@ -29,7 +29,8 @@ document.getElementById("select-build-button").addEventListener("click", async (
     });
 });
 
-// Функия созддания меню создания комплектующей
+
+// Функия создания меню создания комплектующей
 async function updateFieldList(data) {
     const field_list = document.getElementById("select-type-fields-list");
     field_list.innerHTML = "";

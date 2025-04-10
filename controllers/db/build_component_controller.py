@@ -10,7 +10,7 @@ logger.info("Запуск build_component_controller")
 
 def change_build_component(build_id: int, old_id: int, new_id: int):
     def compare_components_type(component_id_1: int, component_id_2: int) -> bool:
-        logger.info(f"Сравнение типов деталей {component_id_1} и {component_id_2}")
+        logger.info(f"Сравнение типов деталей '{component_id_1}' и '{component_id_2}'")
         
         conn = get_psql_db_connection()
         cur = conn.cursor()
@@ -36,9 +36,12 @@ def change_build_component(build_id: int, old_id: int, new_id: int):
     cur = conn.cursor()
 
     try:
+        if old_id == new_id:
+            logger.info(f"Выбрана текущая деталь")
+            return True
         if not compare_components_type(old_id, new_id):
             raise Exception(f"Типы деталей с id {old_id} и {new_id} не совпадают")
-        
+
         cur.execute(
             "UPDATE build_components "
             f"SET component_id = {new_id} "
@@ -84,3 +87,29 @@ def connect_build_and_component(build_id: int, component_id: int, amount: int = 
         conn.close()
     return False
     
+def get_component_id(build_id: int, ct: CT):
+    logger.info(f"Попытка получить component_id в сборке '{build_id}' с типом {ct}")
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(
+            "SELECT c.id AS component_id "
+            "FROM build_components bc "
+            "JOIN components c ON bc.component_id = c.id "
+            f"WHERE bc.build_id = {build_id} AND c.type = '{ct}'"
+        )
+        component_id = cur.fetchone()[0]
+        logger.info(f"Получен component_id в сборке '{build_id}' с типом {ct}")
+        return component_id
+    except Exception as e:
+        conn.rollback()
+        logger.error(
+            f"Ошибка при получении component_id в сборке '{build_id}' с типом {ct}:\n"
+            f"{e}"
+        )
+    finally:
+        cur.close()
+        conn.close()
+    
+    return None

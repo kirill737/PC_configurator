@@ -20,6 +20,12 @@ from enum import StrEnum
 logger = setup_logger("components")
 logger.info("Запуска логов componen_controller")
 
+class UsedInBuild(Exception):
+    def __init__(self, message="Деталь не может быть удалена, так как используется в сборках"):
+        self.message = message
+        logger.debug(message)
+        super().__init__(self.message)
+
 class ComponentType(StrEnum):
     cpu = 'cpu'
     motherboard = 'motherboard'
@@ -198,9 +204,10 @@ type2rus = {
     ComponentType.storage: ComponentType.storage_rus,
     ComponentType.power_supply: ComponentType.power_supply_rus
 }
+
 def translate(name: str, capitalize = True):
     logger.debug("Запуск <translate>")
-    logger.info(f"Перевод {name}")
+    logger.info(f"Перевод '{name}'")
 
     result = name
     if name in type2rus:
@@ -215,13 +222,14 @@ def translate(name: str, capitalize = True):
                 result = fields_rus[index]
                 break
 
-    logger.info(f"{name} переведено на {result}")
+    logger.info(f"'{name}' переведено на '{result}'")
     if capitalize:
         result = result.capitalize()
     return result
+
 def get_type(component_id: int) -> ComponentType:
     logger.debug("Запуск <get_type>")
-    logger.info(f"Получение данные детали с id: {component_id}")
+    logger.info(f"Получение данные детали с id: '{component_id}'")
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
@@ -239,15 +247,16 @@ def get_type(component_id: int) -> ComponentType:
         cur.close()
         conn.close()
     return None
+
 def get_component_data(component_id: int):
     logger.debug("Запуск <get_component_data>")
-    logger.info(f"Получение данные детали с id: {component_id}")
+    logger.info(f"Получение данные детали с id: '{component_id}'")
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
     
     try:
-        logger.info(f"Попытка получить поля комплектующей {component_id}...")
+        logger.info(f"Попытка получить поля комплектующей '{component_id}'...")
         component_type = get_type(component_id)
         component_table = type2table_dict[component_type]
         cur.execute(
@@ -272,7 +281,7 @@ def get_component_data(component_id: int):
     
 def get_all_component_by_type(ct: ComponentType):
     logger.debug("Запуск <get_all_component_by_type>")
-    logger.info(f"Получение всех деталей типа {ct}")
+    logger.info(f"Получение всех деталей типа '{ct}'")
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
@@ -300,6 +309,8 @@ def get_all_component_by_type(ct: ComponentType):
         conn.close()
 
 def get_all_component_types():
+    logger.debug("Запуск <get_all_component_types>")
+    logger.info(f"Получение всех типов комплектующих")
     all_types = []
     
     for ct, _ in type2rus.items():
@@ -307,17 +318,18 @@ def get_all_component_types():
     return all_types
 
 def prepareType(ct: ComponentType):
+    logger.debug("Запуск <prepareType>")
     return type2rus[ComponentType(ct)].capitalize()
 
 def get_components_fields(component_id: int):
     logger.debug("Запуск <get_components_fields>")
-    logger.info(f"Получение полей комплектующей {component_id}")
+    logger.info(f"Получение полей комплектующей '{component_id}'")
     
     conn = get_psql_db_connection()
     cur = conn.cursor()
     
     try:
-        logger.info(f"Попытка получить поля комплектующей {component_id}...")
+        logger.info(f"Попытка получить поля комплектующей '{component_id}'...")
         cur.execute(
             "SELECT * FROM components "
             f"WHERE id={component_id};"
@@ -343,7 +355,7 @@ def get_components_fields(component_id: int):
             i += 1
         return result
     except Exception as e:
-        logger.error(f"Ошибка при получении полей {component_id}: {e}")        
+        logger.error(f"Ошибка при получении полей '{component_id}': {e}")        
     finally:
         cur.close()
         conn.close()
@@ -352,20 +364,20 @@ def add_component(component_type: ComponentType, price: int, info: dict) -> int:
     logger.debug("Запуск <add_component>")
     logger.info(
         f"Попытка добавить комплектущую\n"
-        f"Тип: {component_type}, цена: {price}\n"
+        f"Тип: '{component_type}', цена: '{price}'\n"
         f"Данные:\n {info}"
     )
     conn = get_psql_db_connection()
     cur = conn.cursor()
     
     try:
-        logger.debug(f"Добавляем {component_type} в components...")
+        logger.debug(f"Добавляем '{component_type}' в components...")
         cur.execute(
             "INSERT INTO components (type, price)"
             "VALUES (%s, %s) RETURNING id;",
             (component_type, price)
         )
-        logger.debug(f"Добавили {component_type} в components!")
+        logger.debug(f"Добавили '{component_type}' в components!")
         component_id = cur.fetchone()[0]                         
         
         insert_queries = {
@@ -383,14 +395,14 @@ def add_component(component_type: ComponentType, price: int, info: dict) -> int:
             ComponentType.power_supply: insert_power_supply_query
         }
         
-        logger.debug(f"Добавляем в таблицу с {component_type}...")
+        logger.debug(f"Добавляем в таблицу с '{component_type}'...")
         if component_type in insert_queries:
             query, params = insert_queries[component_type](component_id, info)
             cur.execute(query, params)
             logger.debug(f" '{component_type}' добавлена!")
         else:
-            logger.error(f"Неизвестный тип комплектующей: {component_type}")
-            raise ValueError(f"Неизвестный тип комплектующей: {component_type}")
+            logger.error(f"Неизвестный тип комплектующей: '{component_type}'")
+            raise ValueError(f"Неизвестный тип комплектующей: '{component_type}'")
         
         conn.commit()
         logger.info(f"{component_type} добавлена!")
@@ -405,7 +417,7 @@ def add_component(component_type: ComponentType, price: int, info: dict) -> int:
 
 def change_component(component_id: int, price: int, info: dict):
     logger.debug("Запуск <change_component>")
-    logger.info(f"Попытка изменить характеристики у {component_id}")
+    logger.info(f"Попытка изменить характеристики у '{component_id}'")
 
     conn = get_psql_db_connection()
     cur = conn.cursor()
@@ -420,7 +432,7 @@ def change_component(component_id: int, price: int, info: dict):
         )
 
     try:
-        ct = get_type(component_id)
+        # ct = get_type(component_id)
         for field, value in info.items():
             change_field(component_id, field, value)
 
@@ -443,3 +455,45 @@ def change_component(component_id: int, price: int, info: dict):
         cur.close()
         conn.close()
     return False
+
+def delete_component(component_id: int):
+    logger.debug("Запуск <delete_component>")
+    logger.info(f"Попытка удалить комплектующую '{component_id}'")
+
+    conn = get_psql_db_connection()
+    cur = conn.cursor()
+    
+    def check_in_builds(component_id: int):
+        logger.debug("Запуск <check_in_builds>")
+        cur.execute(
+            f"SELECT * FROM build_components "
+            f"WHERE component_id = {component_id}" 
+        )
+
+    def delete_from_components(component_id: int):
+        logger.debug("Запуск <delete_from_components>")
+        cur.execute(
+            f"DELETE FROM components "
+            f"WHERE id={component_id}"
+        )
+
+    try:
+        if check_in_builds(component_id=component_id):
+            logger.info(f"{UsedInBuild}")
+            raise UsedInBuild
+        
+        delete_from_components(component_id=component_id)
+        
+        conn.commit()
+        logger.info(f"Успешное удалена комплектующая с id = '{component_id}'")
+        return None
+    except Exception as e:
+        conn.rollback()
+        logger.error(
+            f"Ошибка при изменении комплектующей '{component_id}'\n"
+            f"{e}"
+        )
+        return e
+    finally:
+        cur.close()
+        conn.close()

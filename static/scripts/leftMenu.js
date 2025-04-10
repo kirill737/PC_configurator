@@ -1,10 +1,10 @@
-import { getCurrentData, setCurrentComponentDataCT} from "./help.js";
+import { getCurrentBuildId, setCurrentCT} from "./help.js";
 import { showSelectComponentsMenu } from "./selectComponentMenu.js";
 import { updateBuildComponent, translate } from "./help.js";
 // Краткая информацию о сборке
 async function loadBuildInfo() {
     let response = await fetch(`/all/builds/components`);
-    const current_components = await response.json();
+    let current_components = await response.json();
     console.log(current_components);
     
     const main_menu = document.getElementById("main-menu-container");
@@ -13,7 +13,7 @@ async function loadBuildInfo() {
     const components_drop_menu = document.createElement("table");
     components_drop_menu.id = "components-drop-menu";
     
-    for (const current_component of current_components) {
+    for (let current_component of current_components) {
         let response = await fetch(`/get/component/data/${current_component.id}`);
         let data = await response.json();
         
@@ -21,14 +21,14 @@ async function loadBuildInfo() {
         row.classList.add("drop-container");
 
         const name_td = document.createElement("td"); 
-        name_td.textContent = translate(current_component.type);
+        name_td.textContent = await translate(current_component.type);
         row.appendChild(name_td);
 
         // Кнопка выпадающего меню
         const component_drop_td = document.createElement("td");
 
         const drop_btn = document.createElement("button"); // Кнопка
-        drop_btn.textContent = translate(data["name"]); // Тут имя детали
+        drop_btn.textContent = await translate(data["name"]); // Тут имя детали
         drop_btn.classList.add("drop-btn");
         component_drop_td.appendChild(drop_btn);
 
@@ -53,12 +53,13 @@ async function loadBuildInfo() {
         components_list_data.forEach(async component => {
             const a = document.createElement("a");
             a.href = "#";
-            a.textContent = await translate(component.name);
+            a.textContent = component.name;
             a.addEventListener("click", async function () {
-                let current_data = await getCurrentData();
+                let current_data = await getCurrentBuildId();
 
                 updateBuildComponent(current_data['build_id'], current_component.id, component.id);
-                drop_btn.textContent = await translate(component.name);
+                current_component.id = component.id
+                drop_btn.textContent = component.name;
                 drop_menu.classList.add("hidden"); // Закрываем меню после выбора
             });
             drop_menu.appendChild(a);
@@ -85,11 +86,9 @@ async function loadBuildInfo() {
 
 // Загрузка видов всех комплектующих в левое меню
 export async function loadBuildComponents(buildName) {
-    const response = await fetch(`/all/builds/components`);
-    const components = await response.json();
-
-    let data = getCurrentData();
+    let data = await getCurrentBuildId();
     let build_id = data['build_id'];
+    console.log("build_id в load: " + build_id)
 
     const container = document.getElementById("left-menu-container");
     container.innerHTML = "";
@@ -101,12 +100,17 @@ export async function loadBuildComponents(buildName) {
     build_name_label.addEventListener("click", () => loadBuildInfo(build_id));
     container.appendChild(build_name_label);
 
-    components.forEach(component => {
+
+    let response = await fetch(`/all/component/types`); // NOW
+    const types = await response.json();
+
+    types.forEach(async ct => {
+        
         const component_btn = document.createElement("a");
         component_btn.className = "component-button";
-        component_btn.textContent = component.rus_type;
+        component_btn.textContent = await translate(ct);
         component_btn.href = "#";
-        component_btn.addEventListener("click", () => loadComponentFields(component));
+        component_btn.addEventListener("click", () => loadComponentFields(ct, build_id));
 
         component_btn.addEventListener("click", function () {
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
@@ -150,11 +154,23 @@ export function updateField(data) {
 }
 
 // Открыть меню настройки детали
-async function loadComponentFields(component) {
-    await setCurrentComponentDataCT(component.type);
-
-    let response = await fetch(`/get/${component.id}/fields`);
-    const data = await response.json();
+async function loadComponentFields(ct, build_id) {
+    await setCurrentCT(ct);
+    console.log("build_id: " + build_id)
+    console.log("ct: " + ct)
+    let response = await fetch("/get/component_id", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            'build_id': build_id,
+            'ct': ct
+        })
+    });
+    let data = await response.json();
+    let component_id = data['component_id'];
+    console.log("component_id: " + component_id)
+    response = await fetch(`/get/${component_id}/fields`);
+    data = await response.json();
 
     const container = document.getElementById("main-menu-container");
     container.innerHTML = "";
@@ -179,7 +195,6 @@ async function loadComponentFields(component) {
     select_component_button.classList.add("base-button");
     select_component_button.textContent = 'Выбрать деталь';
 
-    const ct = component.type;
     select_component_button.addEventListener("click", function () {
         showSelectComponentsMenu(ct);
     });

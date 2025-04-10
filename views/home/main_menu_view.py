@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
-from database.psql import get_psql_db_connection
 
-from controllers.session_controller import delete_session_by_user_id
+
+
 from controllers.db.user_controller import *
 
 from controllers.db.component_controller import *
-from controllers.db.build_component_controller import change_build_component
+from controllers.db.build_component_controller import change_build_component, get_component_id
 
 from logger_settings import setup_logger
 
@@ -42,20 +42,7 @@ def init_component_settings_menu(app):
             return jsonify({"status": "success"})
         return jsonify({"status": "error", "message": "Failed to create component"})
     
-    @app.route('/get/all/components/type/<ct>')
-    def get_all_components(ct: ComponentType):
-        logger.info(f"Получение всех деталей типа {ct}")
-        components_list = get_all_component_by_type(ct)
-        return components_list
     
-    @app.route('/get/current/component/data')
-    def current_component_data():
-        logger.info("Попытка получить данные")
-        data = {
-            'ct': session['ct'],
-            'build_id': session['build_id']
-        }
-        return data
     
     @app.route('/change/build/component', methods=['POST'])
     def change_build_component_view():
@@ -71,41 +58,23 @@ def init_component_settings_menu(app):
             new_id=data['new_id']
         )
         return '', 204
-    @app.route('/set/current/component/data/build_id', methods=['POST'])
-    def set_current_component_build_id():
-        logger.info("Попытк установить данные (build_id)...")
-        dataJson = request.json
-        data = {
-            'build_id': dataJson.get('build_id')
-        }
-        session['build_id'] = data['build_id']
-        logger.info(f"Data changed to {data}")
-        return data
     
-    @app.route('/set/current/component/data/ct', methods=['POST'])
-    def set_current_component_type():
-        logger.info("Попытка установить данные (ct)...")
+    @app.route('/get/component_id', methods=['POST'])
+    def get_component_id_view():
         dataJson = request.json
         data = {
+            'build_id': dataJson.get('build_id'),
             'ct': dataJson.get('ct')
         }
-        session['ct'] = data['ct']
-        logger.info(f"Data changed to {data}")
-        return data
+        component_id = get_component_id(
+            build_id=data['build_id'], 
+            ct=data['ct']
+        )
+        return jsonify({"component_id": component_id})
 
-    @app.route('/get/component/data/<int:component_id>')
-    def component_data(component_id: int):
-        logger.info(f"Получения информации о комплектующей: {component_id}")
-        data_dict = get_component_data(component_id)
-        
-        return data_dict
     
-    @app.route('/change/component',  methods=['POST'])
-    def change_component_view():
-        logger.info("Попытка изменить данные...")
-        data = request.json
-        
-        if change_component(data.get('id'), data.get('price'), data.get('info')):
-            return jsonify({"status": "success"})
-        return jsonify({"status": "error", "message": "Failed to edit component"})
+    
+    
+    
+    
     

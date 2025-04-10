@@ -7,3 +7,5 @@ import "./profileMenu.js";
 import "./selectComponentMenu.js";
 
 import "./changeComponentMenu.js";
+
+import "./createBuild.js";

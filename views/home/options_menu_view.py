@@ -1,11 +1,9 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
-from database.psql import get_psql_db_connection
+from flask import redirect, session, jsonify
 
-from controllers.session_controller import delete_session_by_user_id
 from controllers.db.user_controller import *
 from controllers.db.build_controller import get_user_builds, get_build_info
 from controllers.db.component_controller import *
-from views.home.main_menu import init_component_settings_menu
+from views.home.main_menu_view import init_component_settings_menu
 
 from logger_settings import setup_logger
 
@@ -13,6 +11,7 @@ logger = setup_logger("options_menu")
 
 def init_options_menu(app):
     init_component_settings_menu(app)
+
     @app.route('/open_builds')
     def open_builds():
         return redirect('/home')
@@ -29,13 +28,13 @@ def init_options_menu(app):
         builds = get_user_builds(session['user_id'])
         return jsonify(builds)
     
-    @app.route("/select/build/<int:build_id>")
-    def select_build(build_id):
-        session['build_id'] = build_id
-        logger.info(f"Сборка {build_id} выбрана")
-        return '', 204
+    # @app.route("/select/build/<int:build_id>")
+    # def select_build(build_id):
+    #     session['build_id'] = build_id
+    #     logger.info(f"Сборка {build_id} выбрана")
+    #     return '', 204
     
-    # Выдаёт список всех клмпдектующих
+    # Выдаёт список всех комплектующих
     @app.route("/all/builds/components")
     def get_build_components() -> dict:
         build_id = session['build_id']
@@ -55,37 +54,12 @@ def init_options_menu(app):
 
         return jsonify(all_types)
     
-    
+    @app.route("/create/new/build")
+    def create_new_build_view():
+        logger.info(f"Создание новой сборки")
 
+        return jsonify({"build_id": 100})
     
-    # @app.route("/api/components/<int:component_id>")
-    # def get_component_data(component_id):
-    #     conn = get_psql_db_connection()
-    #     cur = conn.cursor()
-    #     cur.execute("SELECT * FROM components WHERE id = %s", (component_id,))
-    #     data = cur.fetchone()
-    #     cur.close()
-    #     conn.close()
-        
-    #     if not data:
-    #         return jsonify({"error": "Component not found"}), 404
-
-    #     return jsonify(dict(zip(["id", "type", "name", "brand"], data)))
-    
-    # @app.route("/api/builds/<int:build_id>", methods=["DELETE"])
-    # def delete_build(build_id): 
-    #     conn = get_psql_db_connection()
-    #     cur = conn.cursor()
-    #     try:
-    #         cur.execute("DELETE FROM builds WHERE id = %s", (build_id,))
-    #         conn.commit()
-    #         return jsonify({"status": "success"})
-    #     except Exception as e:
-    #         conn.rollback()
-    #         return jsonify({"error": str(e)}), 500
-    #     finally:
-    #         cur.close()
-    #         conn.close()
     
     
 
