@@ -55,8 +55,8 @@ async function loadNewBuildInfo() {
     components_drop_menu.id = "components-drop-menu";
     
     for (let current_component of current_components) {
-        let response = await fetch(`/get/component/data/${current_component.id}`);
-        let data = await response.json();
+        // let response = await fetch(`/get/component/data/${current_component.id}`);
+        // let data = await response.json();
         
         const row = document.createElement("tr");
         row.classList.add("drop-container");
@@ -69,7 +69,7 @@ async function loadNewBuildInfo() {
         const component_drop_td = document.createElement("td");
 
         const drop_btn = document.createElement("button"); // Кнопка
-        drop_btn.textContent = translate(data["name"]); // Тут имя детали
+        drop_btn.textContent = translate(current_component.name); // Тут имя детали
         drop_btn.classList.add("drop-btn");
         component_drop_td.appendChild(drop_btn);
 

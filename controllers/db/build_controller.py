@@ -1,7 +1,7 @@
 from database.psql import get_psql_db_connection
 
 from logger_settings import setup_logger
-from controllers.db.component_controller import prepareType
+from controllers.db.component_controller import prepareType, get_component_data
 from controllers.db.build_component_controller import connect_build_and_component
 
 class AddBuildError(Exception):
@@ -52,7 +52,7 @@ def get_build_info(build_id) -> dict:
         
         raw_components_list = cur.fetchall()
         # cur.execute("SELECT name FROM")
-        components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": ""  } for row in raw_components_list]
+        components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": get_component_data(row[0])['name']  } for row in raw_components_list]
         logger.debug(f"Component id list: '{components_dict}'")
         logger.info("Данные сборки получены")
         

@@ -1,8 +1,11 @@
-import { loadBuildComponents } from "./leftMenu.js";
+
 import { loadAllComponentsMenu } from "./changeComponentMenu.js";
 import { translate, setCurrentBuildId } from "./help.js";
+import { updateFieldList, saveComponentButtonFunction, loadBuildComponents } from "./rightMenuFunctions.js";
 
-// Открытие меню выбора сборки
+
+// Кнопка выбора сборки
+// Открывает меню выбора сборки
 document.getElementById("select-build-button").addEventListener("click", async () => {
 
     // Передача id выбранной сборки в python (далее в redis)
@@ -29,66 +32,17 @@ document.getElementById("select-build-button").addEventListener("click", async (
     });
 });
 
-
-// Функия создания меню создания комплектующей
-async function updateFieldList(data) {
-    const field_list = document.getElementById("select-type-fields-list");
-    field_list.innerHTML = "";
-    const field_list_container = document.getElementById("select-type-fields-list-container");
-    field_list_container.classList.remove("hidden");
-
-    console.log(data);
-    for (let i = 0; i < data.fields.length; i++) {
-        const row = document.createElement("tr");
-
-        const name_td = document.createElement("td");
-        name_td.textContent = data.fields_rus[i];
-        name_td.classList.add("component-field-name");
-        name_td.id = data.fields[i];
-        row.appendChild(name_td)
-
-        const input_td = document.createElement("td")
-
-        const input = document.createElement("input");
-        input.type ="text";
-        input.placeholder = data.fields_rus[i];
-        input.classList.add("input-component-field");
-        input_td.appendChild(input)
-        row.appendChild(input_td);
-
-        field_list.appendChild(row);
-    };
-}
-
-// Функция создания списка 
-async function saveComponentBtnFunction(ct) {
-    const component_data = {};
-    component_data['ct'] = ct;
-    component_data['price'] = 0; // TODO: добавить цену детали
-    component_data['info'] = {};
-
-    const inputs = document.querySelectorAll(".input-component-field");
-    inputs.forEach(input => {
-        const fieldName = input.parentElement.previousElementSibling.id;
-        component_data['info'][fieldName] = input.value;
-        console.log(fieldName, input.value);
-    });
-
-    const response = await fetch("/create/component", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(component_data)
-    });
-    const result = await response.json();
-    console.log(result);
-    if (result.status == "success") {
-        alert("Деталь создана!");
-        // location.reload();
-    } else {
-        alert(result.message);
+// Скрытие меню выбора сборки при нажатии вне него
+document.addEventListener("click", function(event) {
+    let menu = document.getElementById("builds-menu");
+    let select_build_button = document.getElementById("select-build-button");
+    if (!menu.contains(event.target) && !select_build_button.contains(event.target)) {
+        menu.classList.add("hidden");
     }
-};
- 
+});
+
+// Кнопка создания сборки
+
 // Кнопка добавления новой детали
 document.getElementById("create-component-button").addEventListener("click", async () => {
     const main_menu = document.getElementById("main-menu-container");
@@ -126,14 +80,14 @@ document.getElementById("create-component-button").addEventListener("click", asy
     main_menu.appendChild(field_list_container);
 
     let current_ct = null;
-    types_list.forEach(async ct => {
+    types_list.forEach(async ct_dict => {
         const a = document.createElement("a");
         a.href = "#";
-        a.textContent = await translate(ct);
+        a.textContent = ct_dict.ct_rus;
         a.addEventListener("click", async function () {
             // вот сюда фунукцию загрузки TODO
-            select_type_button.textContent = await translate(ct);
-            current_ct = ct;
+            select_type_button.textContent = ct_dict.ct_rus;
+            current_ct = ct_dict.ct;
             types_drop_menu.classList.add("hidden"); // Закрываем меню после выбора
 
             // Запрос на получение типов деталей
@@ -151,7 +105,6 @@ document.getElementById("create-component-button").addEventListener("click", asy
         types_drop_menu.appendChild(a);
     });
     
-    
     // Кнопка создания детали
     const create_component_button = document.createElement("button");
     create_component_button.id = "save-component-button";
@@ -160,19 +113,7 @@ document.getElementById("create-component-button").addEventListener("click", asy
 
     main_menu.appendChild(create_component_button);
 
-    create_component_button.addEventListener("click", async () => saveComponentBtnFunction(current_ct));
-    // let field_list = document.createElement("table");
-    // field_list.id = "fields-list";
-
-});
-
-// Скрытие меню выбора сборки при нажатии вне него
-document.addEventListener("click", function(event) {
-    let menu = document.getElementById("builds-menu");
-    let select_build_button = document.getElementById("select-build-button");
-    if (!menu.contains(event.target) && !select_build_button.contains(event.target)) {
-        menu.classList.add("hidden");
-    }
+    create_component_button.addEventListener("click", async () => saveComponentButtonFunction(current_ct));
 });
 
 // Кнопка удаление сборки
@@ -190,6 +131,7 @@ document.getElementById("delete-build-button").addEventListener("click", async (
     }
 });
 
+// Кнопка изменения деталей
 document.getElementById("change-component-button").addEventListener("click", async () => {
     await loadAllComponentsMenu();
 });

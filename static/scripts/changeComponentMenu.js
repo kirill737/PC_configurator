@@ -1,8 +1,8 @@
 import { updateField } from "./leftMenu.js";
 import { translate, getCurrentCT, setCurrentCT } from "./help.js";
+
 // Загрузка видов всех комплектующих в левое меню
 export async function loadAllComponentsMenu() {
-    
     const response = await fetch(`/all/component/types`);
     const all_types = await response.json();
 
@@ -27,20 +27,19 @@ export async function loadAllComponentsMenu() {
     types_drop_menu_container.appendChild(types_drop_menu);
     container.appendChild(types_drop_menu_container);
 
-    let current_ct = null;
-    all_types.forEach(async ct => {
+    all_types.forEach(async ct_dict => {
         const a = document.createElement("a");
         a.href = "#";
-        a.textContent = await translate(ct);
+        a.textContent = ct_dict.ct_rus;
         a.addEventListener("click", async function () {
-            current_ct = ct;
-            select_component_type_label.textContent = await translate(ct);
+            // current_ct = ct;
+            select_component_type_label.textContent = ct_dict.ct_rus;
             types_drop_menu.classList.add("hidden"); // Закрываем меню после выбора
             
             const main_container = document.getElementById("main-menu-container");
             main_container.innerHTML = "";
             console.log("<loadAllComponentsMenu>")
-            await loadAllComponentWithType(ct);
+            await loadAllComponentWithType(ct_dict.ct);
         });
         types_drop_menu.appendChild(a);
     });

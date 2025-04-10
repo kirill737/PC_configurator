@@ -313,8 +313,12 @@ def get_all_component_types():
     logger.info(f"Получение всех типов комплектующих")
     all_types = []
     
-    for ct, _ in type2rus.items():
-        all_types.append(ct)
+    for ct, ct_rus in type2rus.items():
+        all_types.append({
+            'ct': ct,
+            'ct_rus': ct_rus
+        })
+
     return all_types
 
 def prepareType(ct: ComponentType):
