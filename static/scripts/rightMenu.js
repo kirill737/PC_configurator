@@ -42,6 +42,10 @@ document.addEventListener("click", function(event) {
 });
 
 // Кнопка создания сборки
+document.getElementById("create-build-button").addEventListener("click", async () => {
+    await setCurrentBuildId(buildId);
+    loadBuildComponents(buildName);
+});
 
 // Кнопка добавления новой детали
 document.getElementById("create-component-button").addEventListener("click", async () => {

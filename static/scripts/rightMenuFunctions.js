@@ -21,7 +21,7 @@ export async function updateFieldList(data) {
 
         const input_td = document.createElement("td")
 
-        const input = document.createElement("input");
+        const input = document.createElement("a");
         input.type ="text";
         input.placeholder = data.fields_rus[i];
         input.classList.add("input-component-field");
@@ -99,3 +99,5 @@ export async function loadBuildComponents(buildName) {
     let menu = document.getElementById("builds-menu");
     menu.classList.add("hidden");
 }
+
+// Фу

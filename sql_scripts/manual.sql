@@ -24,7 +24,4 @@
 
 -- SELECT * FROM components
 -- WHERE id in (1, 2);
-SELECT c.id AS component_id
-FROM build_components bc
-JOIN components c ON bc.component_id = c.id
-WHERE bc.build_id = 1 AND c.type = 'cpu';
+SELECT * FROM builds;
