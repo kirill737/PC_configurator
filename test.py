@@ -38,25 +38,19 @@ def create_components(components):
         for ct, component_list in components.items():
             add_component(ct, 1000, component_list[i])
 
-def fill_builds():
+def create_builds():
     build_names = ['Мой сетап', 'Тарахтелка Коляна', 'Ноут']
     for i in range(3):
         build = {}
         num = 0
-        for t in component_types:
+        for ct in component_types:
             num += 1
-            build[t] = num
+            build[ct] = num
         # print(build
         create_build(i + 1, build_names[i], build)
 
-# fill_builds()
-# print(get_build_info(4))
-
-# create_users()
-# create_components(components)
-# fill_builds()
-# print(get_build_info(1))
-# change_component(1, 13, 1) 
-# print(get_build_info(1))
+create_users()
+create_components()
+create_builds()
 
 
