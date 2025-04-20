@@ -7,6 +7,7 @@ from controllers.db.component_controller import translate
 from views.home.options_menu_view import init_options_menu
 from views.home.edit_component_view import init_edit_component_menu
 from views.home.help_view import init_help
+from views.post_view import init_post
 from logger_settings import setup_logger
 
 # Настрофка логов
@@ -17,6 +18,7 @@ def init_home(app):
     init_help(app)
     init_options_menu(app)
     init_edit_component_menu(app)
+    init_post(app)
 
     @app.route('/home')
     def home():
