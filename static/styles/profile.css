@@ -1,4 +1,5 @@
 @import 'colors.css';
+@import 'base.css';
 
 #profile-container {
     z-index: 1100;

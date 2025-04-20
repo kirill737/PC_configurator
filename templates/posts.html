@@ -2,6 +2,9 @@
 <html lang="ru">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
+
+    
     <meta charset="UTF-8">
     <title>Лента записей</title>
     <style>
@@ -13,55 +16,72 @@
         .pagination a { margin: 0 5px; text-decoration: none; }
     </style>
 </head>
-<body>
-    
-    {% for post in posts %}
-    <div class="post" data-id="{{ post._id }}">
-        <strong>{{ post.title }}</strong>
-        <div class="comment-count">{{ post.comments|length }} комментариев</div>
-    
-        {% if post.can_edit %}
-            <div class="post-controls">
-                <button class="delete-post">🗑️ Удалить</button>
+    <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
+    <div id="top-menu-container">
+        <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
+        <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
+        <a href="/main_post_page" class="top-menu-button">Посты</a>
+        <div id="profile-container">
+            <a id="profile-icon">
+                <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggle_menu()">
+            </a>
+            <div id="profile-menu">
+                <a class="profile-menu-button"> {{ user_data['username'] }}</a>
+                <a href="/profile" class="profile-menu-button">Профиль</a>
+                <a href="{{ url_for('open_settings_page') }}" class="profile-menu-button">Настройки</a>
+                <a href="{{ url_for('logout') }}" class="profile-menu-button">Выход</a>
             </div>
-        {% endif %}
-        {% if post.content %}
-            <div>{{ post.content|safe }}</div>
-        {% endif %}
-        {% if post.setup %}
-            <div class="content">{{ post.setup|safe }}</div>
-        {% endif %}
-        <div class="comments">
-            {% for comment in post.comments %}
-                <div class="comment-box" data-id="{{ comment._id }}">
-                    <div class="comment-header">
-                        <span class="comment-user">{{ comment.user }}</span>
-                        <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
-                        {% if comment.can_delete %}
-                            <button class="delete-comment">🗑️</button>
-                        {% endif %}
-                    </div>
-                    <div class="comment-text">{{ comment.text }}</div>
+        </div>
+    </div>
+    <div id="posts-container">
+        {% for post in posts %}
+        <div class="post" data-id="{{ post._id }}">
+            <strong>{{ post.title }}</strong>
+            <div class="comment-count">{{ post.comments|length }} комментариев</div>
+        
+            {% if post.can_edit %}
+                <div class="post-controls">
+                    <button class="delete-post">🗑️ Удалить</button>
                 </div>
+            {% endif %}
+            {% if post.content %}
+                <div>{{ post.content|safe }}</div>
+            {% endif %}
+            {% if post.setup %}
+                <div class="content">{{ post.setup|safe }}</div>
+            {% endif %}
+            <div class="comments">
+                {% for comment in post.comments %}
+                    <div class="comment-box" data-id="{{ comment._id }}">
+                        <div class="comment-header">
+                            <span class="comment-user">{{ comment.user }}</span>
+                            <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                            {% if comment.can_delete %}
+                                <button class="delete-comment">🗑️</button>
+                            {% endif %}
+                        </div>
+                        <div class="comment-text">{{ comment.text }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="add-comment">
+                <input type="text" placeholder="Добавить комментарий" />
+                <button>Отправить</button>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="pagination">
+            {% for i in range(1, total_pages + 1) %}
+                {% if i == current_page %}
+                    <strong>{{ i }}</strong>
+                {% else %}
+                    <a href="/main_post_page?page={{ i }}">{{ i }}</a>
+                {% endif %}
             {% endfor %}
         </div>
-        <div class="add-comment">
-            <input type="text" placeholder="Добавить комментарий" />
-            <button>Отправить</button>
-        </div>
-    </div>
-    {% endfor %}
 
-    <div class="pagination">
-        {% for i in range(1, total_pages + 1) %}
-            {% if i == current_page %}
-                <strong>{{ i }}</strong>
-            {% else %}
-                <a href="/?page={{ i }}">{{ i }}</a>
-            {% endif %}
-        {% endfor %}
+        <script src="{{ url_for('static', filename='scripts/posts.js') }}"></script>
     </div>
-
-    <script src="{{ url_for('static', filename='scripts/posts.js') }}"></script>
 </body>
 </html>

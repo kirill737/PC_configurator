@@ -4,7 +4,7 @@ from database.mongodb import posts_collection, comments_collection, per_page
 from bson.objectid import ObjectId
 
 from controllers.db.user_controller import get_user_data
-from controllers.post_controller import *
+from controllers.post_controller import can_edit_comment, can_delete_post, make_content
 
 from logger_settings import setup_logger
 
@@ -26,7 +26,7 @@ def init_post(app):
         comments = comments_collection.find({"post_id": {"$in": list(post_ids.keys())}})
         comments_by_post = {post_id: [] for post_id in post_ids}
         for comment in comments:
-            comment["can_delete"] = can_edit_comment(post_ids[comment["post_id"]], comment, user_data)
+            comment["can_delete"] = can_edit_comment(post_ids[comment["post_id"]], comment, user_data) # type: ignore
             comments_by_post[comment["post_id"]].append(comment)
         
         # Добавляем количество комментариев к каждому посту
@@ -37,7 +37,7 @@ def init_post(app):
             post["can_delete"] = can_delete_post(post, user_data)
         total_pages = (posts_collection.count_documents({}) + per_page - 1) // per_page
 
-        return render_template("posts.html", posts=last_posts, current_page=page, total_pages=total_pages)
+        return render_template("posts.html", user_data=user_data, posts=last_posts, current_page=page, total_pages=total_pages)
 
 
     @app.route('/add_comment', methods=['POST'])
