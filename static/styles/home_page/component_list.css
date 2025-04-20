@@ -6,13 +6,17 @@
 }
 
 #components-drop-menu {
-    z-index: 1000;
-    position: absolute;
+    /* z-index: 1000; */
+    /* position: absolute; */
 
-    width: calc(100% - 2em);
+    /* width: calc(100% - 2em); */
     width: auto;
     top: 6rem;
 }
+/* #new-components-menu {
+    position: relative;
+    width: auto;
+} */
 
 #components-list {
     position: relative;
@@ -57,4 +61,15 @@
     background-color: var(--charcoal-hover);
 }
 
+.component-field {
+    /* border-radius: 0.2em;
+    border: solid 0.3rem var(--pearl); */
+    background-color: var(--charcoal);
+    text-align: center;
+    padding: 0.3em;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+
+    font-size: 1em;
+}
 

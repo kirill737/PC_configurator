@@ -42,17 +42,20 @@ def get_build_info(build_id) -> dict:
     cur = conn.cursor()
     
     try:
-        cur.execute(
-            "SELECT bc.component_id, c.type "
-            "FROM build_components as bc "
-            "LEFT JOIN components as c ON c.id = bc.component_id "
-            f"WHERE bc.build_id = {build_id} "
-            "ORDER BY bc.id"
-            )
+        if build_id != 0:
+            cur.execute(
+                "SELECT bc.component_id, c.type "
+                "FROM build_components as bc "
+                "LEFT JOIN components as c ON c.id = bc.component_id "
+                f"WHERE bc.build_id = {build_id} "
+                "ORDER BY bc.id"
+                )
         
-        raw_components_list = cur.fetchall()
+            raw_components_list = cur.fetchall()
         # cur.execute("SELECT name FROM")
-        components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": get_component_data(row[0])['name']  } for row in raw_components_list]
+            components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": get_component_data(row[0])['name']  } for row in raw_components_list]
+        else:
+            components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": get_component_data(row[0])['name']  } for row in raw_components_list]
         logger.debug(f"Component id list: '{components_dict}'")
         logger.info("Данные сборки получены")
         

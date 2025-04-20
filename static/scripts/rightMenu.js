@@ -2,7 +2,7 @@
 import { loadAllComponentsMenu } from "./changeComponentMenu.js";
 import { translate, setCurrentBuildId } from "./help.js";
 import { updateFieldList, saveComponentButtonFunction, loadBuildComponents } from "./rightMenuFunctions.js";
-
+import { loadNewBuildComponents } from "./createBuild.js";
 
 // Кнопка выбора сборки
 // Открывает меню выбора сборки
@@ -11,7 +11,7 @@ document.getElementById("select-build-button").addEventListener("click", async (
     // Передача id выбранной сборки в python (далее в redis)
     async function selectBuild(buildId, buildName) {
         await setCurrentBuildId(buildId);
-        loadBuildComponents(buildName);
+        loadBuildComponents(buildName, buildId);
     }
 
     const menu = document.getElementById("builds-menu");
@@ -43,8 +43,8 @@ document.addEventListener("click", function(event) {
 
 // Кнопка создания сборки
 document.getElementById("create-build-button").addEventListener("click", async () => {
-    await setCurrentBuildId(buildId);
-    loadBuildComponents(buildName);
+    // await setCurrentBuildId(0);
+    loadNewBuildComponents("buildName");
 });
 
 // Кнопка добавления новой детали
@@ -93,12 +93,12 @@ document.getElementById("create-component-button").addEventListener("click", asy
             select_type_button.textContent = ct_dict.ct_rus;
             current_ct = ct_dict.ct;
             types_drop_menu.classList.add("hidden"); // Закрываем меню после выбора
-
+            console.log("current ct:" + current_ct)
             // Запрос на получение типов деталей
             const response = await fetch("/create/component/fields", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ct })
+                body: JSON.stringify({ "ct": current_ct })
             });
             const component_fields = await response.json();
 

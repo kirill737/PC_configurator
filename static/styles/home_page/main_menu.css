@@ -67,6 +67,7 @@
 
 .component-field-name {
     font-size: 2rem;
+    text-align: center;
 }
 
 .main-menu-button {
@@ -76,6 +77,16 @@
 }
 
 #build-name-label, #select-component-type-label {
+    font-size: 2rem;
+    
+    border: 0.3rem solid var(--pearl);
+    border-radius: 0.5em;
+
+    padding: 0.5rem;
+}
+
+#build-name-input {
+    width: 40rem;
     font-size: 2rem;
     
     border: 0.3rem solid var(--pearl);

@@ -6,7 +6,7 @@ from controllers.db.user_controller import *
 
 from controllers.db.component_controller import *
 from controllers.db.build_component_controller import change_build_component, get_component_id
-
+from controllers.db.build_controller import create_build
 from logger_settings import setup_logger
 
 # Настрофка логов
@@ -62,15 +62,24 @@ def init_component_settings_menu(app):
     @app.route('/get/component_id', methods=['POST'])
     def get_component_id_view():
         dataJson = request.json
-        data = {
-            'build_id': dataJson.get('build_id'),
-            'ct': dataJson.get('ct')
-        }
         component_id = get_component_id(
-            build_id=data['build_id'], 
-            ct=data['ct']
+            build_id=dataJson.get('build_id'), 
+            ct=dataJson.get('ct')
         )
         return jsonify({"component_id": component_id})
+    
+    @app.route('/create/build/', methods=['POST'])
+    def create_build_view():
+        data = request.json
+       
+        new_build_id = create_build(
+            user_id=session['user_id'],
+            name=data.get("build_name"),
+            build_info=data.get("build_info")
+        )
+        if new_build_id is None:
+            return jsonify({"status": "error", "message": "Не удалось создать сборку"})
+        return jsonify({"status": "success"})
 
     
     

@@ -45,6 +45,12 @@ def init_options_menu(app):
 
         return jsonify(components)
     
+    @app.route("/all/new_build/components")
+    def get_all_new_build_components() -> dict:
+        ct_list = get_all_component_types()
+        return jsonify(ct_list)
+
+
     @app.route("/all/component/types")
     def get_all_component_types_view() -> dict:
         logger.info(f"Получаем все виды деталей...")

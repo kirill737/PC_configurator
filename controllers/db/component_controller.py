@@ -308,7 +308,7 @@ def get_all_component_by_type(ct: ComponentType):
         cur.close()
         conn.close()
 
-def get_all_component_types():
+def get_all_component_types() -> dict:
     logger.debug("Запуск <get_all_component_types>")
     logger.info(f"Получение всех типов комплектующих")
     all_types = []

@@ -138,11 +138,4 @@ export async function loadComponentFields(ct, build_id) {
         showSelectComponentsMenu(component_id);
     });
     container.appendChild(select_component_button);
-
-    // const saveBtn = document.createElement("button");
-    // saveBtn.textContent = "Сохранить";
-    // saveBtn.classList.add("base-button")
-    // saveBtn.classList.add("main-menu-button");
-    // saveBtn.addEventListener("click", () => saveComponentData(component.id));
-    // container.appendChild(saveBtn); 
 }

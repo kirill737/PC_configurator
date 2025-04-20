@@ -14,14 +14,14 @@ export function updateField(data) {
         name_td.classList.add("component-field-name");
         name_td.id = field.name;
 
-        const input = document.createElement("input");
+        const input = document.createElement("a");
         input.type ="text";
-        input.placeholder = await translate(field.name);
-        input.value = field.value;
+        // input.placeholder = await translate(field.name);
+        input.textContent = field.value;
         input.setAttribute("data-key", field.name);
-        input.classList.add("input-component-field");
 
         const input_td = document.createElement("td")
+        input_td.classList.add("component-field");
         input_td.appendChild(input)
         
         row.appendChild(name_td)

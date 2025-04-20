@@ -21,7 +21,7 @@ export async function updateFieldList(data) {
 
         const input_td = document.createElement("td")
 
-        const input = document.createElement("a");
+        const input = document.createElement("input");
         input.type ="text";
         input.placeholder = data.fields_rus[i];
         input.classList.add("input-component-field");
@@ -62,10 +62,8 @@ export async function saveComponentButtonFunction(ct) {
 };
 
 // Загрузка видов всех комплектующих в левое меню
-export async function loadBuildComponents(buildName) {
-    let data = await getCurrentBuildId();
-    let build_id = data['build_id'];
-    console.log("build_id в load: " + build_id)
+export async function loadBuildComponents(buildName, buildId) {
+    console.log("build_id в load: " + buildId)
 
     const container = document.getElementById("left-menu-container");
     container.innerHTML = "";
@@ -74,8 +72,8 @@ export async function loadBuildComponents(buildName) {
     build_name_label.textContent = buildName;
     build_name_label.id = "build-name-label";
     build_name_label.type = "text";
-    loadBuildInfo(build_id);
-    build_name_label.addEventListener("click", () => loadBuildInfo(build_id));
+    loadBuildInfo(buildId);
+    build_name_label.addEventListener("click", () => loadBuildInfo(buildId));
     container.appendChild(build_name_label);
 
     let response = await fetch(`/all/component/types`); // NOW
@@ -86,7 +84,7 @@ export async function loadBuildComponents(buildName) {
         component_btn.className = "component-button";
         component_btn.textContent = ct_dict.ct_rus;
         component_btn.href = "#";
-        component_btn.addEventListener("click", () => loadComponentFields(ct_dict.ct, build_id));
+        component_btn.addEventListener("click", () => loadComponentFields(ct_dict.ct, buildId));
 
         component_btn.addEventListener("click", function () {
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
