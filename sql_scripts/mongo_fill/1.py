@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 from pymongo import MongoClient
+import json
+
 client = MongoClient("mongodb://localhost:27017/")
 
 db = client['mongo_db']
 posts_collection = db['posts']
-
-import json
 
 posts_collection.delete_many({})
 
