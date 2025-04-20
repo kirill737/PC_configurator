@@ -4,13 +4,20 @@ document.querySelectorAll('.post').forEach(post => {
     const addCommentBlock = post.querySelector('.add-comment');
     const input = post.querySelector('input');
     const commentCount = post.querySelector('.comment-count');
-
     const sendButton = addCommentBlock.querySelector('button');
+
+    const post_title = post.querySelector('.post-title');
+    const post_data = post.querySelector('.post-data');
+    const post_comments_container = post.querySelector('.post-comments-container');
 
     post.addEventListener('click', function () {
         content.style.display = 'block';
         commentsBlock.style.display = 'block';
         addCommentBlock.style.display = 'block';
+    });
+    post_title.addEventListener('click', function () {
+        post_data.classList.toggle("hidden");
+        post_comments_container.classList.toggle("hidden");
     });
 
     sendButton.addEventListener('click', async function (e) {

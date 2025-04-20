@@ -13,7 +13,7 @@ with open("posts.ndjson", "r", encoding="utf-8") as f:
     for i, l in enumerate(f):
         d = json.loads(l)
         d["created_at"] = datetime.now() - timedelta(days=i)
-        d["author"] = "krll"
+        d["author"] = "name2"
         posts_collection.insert_one(d)
 
 

@@ -1,6 +1,7 @@
 @import "colors.css";
 
 #posts-container {
+    overflow-y: auto;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -16,16 +17,64 @@
     /* background-color: #c00; */
 }
 
+.border-hor {
+    position: relative;
+    width: 100%;
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
+    border: solid 0.3rem var(--charcoal-hover);
+    border-radius: 0.5rem;
+}
 
 .post {
-    background: #fff;
-    border: 1px solid #ddd;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+.post-title-container {
+    position: relative;
+}
+.post-data {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.post-description {
+    position: relative;
+    width: 50%;
+}
+
+.post-build-info {
+    position: relative;
+    width: 50%;
+    text-align: left;
+}
+.post-comments-container {
+    position: relative;
+}
+/* Структура поста */
+.post-title {
+    font-size: 2rem;
+}
+.post-contnent {
+    text-align: left;
+}
+.comment-input {
+    font-size: 1rem;
+    width: 20rem;
+}
+.post {
+    background: var(--charcoal);
+    border: 0.2rem solid var(--pearl);
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
     position: relative;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     transition: box-shadow 0.3s ease;
+    
 }
 
 .post:hover {
@@ -36,27 +85,27 @@
     position: absolute;
     bottom: 10px;
     right: 15px;
-    color: gray;
     font-size: 12px;
 }
 
 .content {
     margin-top: 10px;
     padding: 10px;
-    background-color: #f4f7fc;
+    background-color: var(--charcoal);
     border-left: 4px solid #6ca0dc;
     border-radius: 4px;
     animation: fadeIn 0.3s ease;
 }
 
 .comments {
+    /* width: 60%; */
     margin-top: 10px;
     max-height: 150px;
     overflow-y: auto;
-    background: #fdfdfd;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
+    background: var(--charcoal);
+    /* border: 0.2rem solid var(--pearl); */
+    /* padding: 10px; */
+    /* border-radius: 4px; */
     animation: fadeIn 0.3s ease;
 }
 
@@ -66,6 +115,7 @@
 }
 
 .add-comment {
+    text-align: left;
     margin-top: 10px;
     display: flex;
     gap: 10px;
@@ -75,22 +125,17 @@
 .add-comment input {
     flex: 1;
     padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
-.add-comment button {
+/* .add-comment button {
     padding: 6px 12px;
     background-color: #6ca0dc;
     border: none;
     color: white;
     border-radius: 4px;
     cursor: pointer;
-}
+} */
 
-.add-comment button:hover {
-    background-color: #558cc0;
-}
 
 .hidden {
     display: none;
@@ -104,12 +149,11 @@
 .pagination a, .pagination strong {
     margin: 0 5px;
     text-decoration: none;
-    color: #555;
     font-weight: bold;
 }
 
 .pagination strong {
-    color: #6ca0dc;
+    color: var(--gray);
 }
 
 @keyframes fadeIn {
@@ -128,37 +172,38 @@
 .post-controls button {
     font-size: 12px;
     padding: 4px 8px;
-    background-color: #eee;
+
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .post-controls button:hover {
-    background-color: #ccc;
+
 }
 
 .comment-box {
-    border: 1px solid #ddd;
+    border-left: 0.2rem solid var(--gray);
     padding: 8px;
     margin-bottom: 8px;
-    border-radius: 6px;
-    background-color: #f9f9f9;
+    text-align: left;
+    /* border-radius: 6px; */
+
     position: relative;
 }
 
 .comment-header {
     display: flex;
+    /* color: var(--gray); */
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 1.2rem;
     margin-bottom: 4px;
-    color: #555;
+
 }
 
 .comment-text {
     font-size: 15px;
-    color: #333;
 }
 
 .delete-comment {
@@ -169,7 +214,6 @@
     border: none;
     cursor: pointer;
     font-size: 16px;
-    color: #888;
     transition: color 0.2s ease;
 }
 

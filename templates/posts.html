@@ -7,14 +7,14 @@
     
     <meta charset="UTF-8">
     <title>Лента записей</title>
-    <style>
+    <!-- <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         .post { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; position: relative; cursor: pointer; }
         .comment-count { position: absolute; bottom: 10px; right: 10px; color: gray; font-size: 12px; }
         .content, .comments, .add-comment { display: none; margin-top: 10px; }
         .pagination { margin-top: 20px; }
         .pagination a { margin: 0 5px; text-decoration: none; }
-    </style>
+    </style> -->
 </head>
     <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
     <div id="top-menu-container">
@@ -34,40 +34,54 @@
         </div>
     </div>
     <div id="posts-container">
+        
         {% for post in posts %}
         <div class="post" data-id="{{ post._id }}">
-            <strong>{{ post.title }}</strong>
-            <div class="comment-count">{{ post.comments|length }} комментариев</div>
-        
-            {% if post.can_edit %}
-                <div class="post-controls">
-                    <button class="delete-post">🗑️ Удалить</button>
-                </div>
-            {% endif %}
-            {% if post.content %}
-                <div>{{ post.content|safe }}</div>
-            {% endif %}
-            {% if post.setup %}
-                <div class="content">{{ post.setup|safe }}</div>
-            {% endif %}
-            <div class="comments">
-                {% for comment in post.comments %}
-                    <div class="comment-box" data-id="{{ comment._id }}">
-                        <div class="comment-header">
-                            <span class="comment-user">{{ comment.user }}</span>
-                            <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
-                            {% if comment.can_delete %}
-                                <button class="delete-comment">🗑️</button>
-                            {% endif %}
-                        </div>
-                        <div class="comment-text">{{ comment.text }}</div>
+            <div class="post-title-container">
+                <a class="post-title">{{ post.title }}</a>
+                {% if post.can_edit %}
+                    <div class="post-controls">
+                        <button class="delete-post">🗑️ Удалить</button>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
-            <div class="add-comment">
-                <input type="text" placeholder="Добавить комментарий" />
-                <button>Отправить</button>
+            
+            <div class="post-data hidden">
+                <div class="post-description">
+                    {% if post.content %}
+                        <div class="post-contnent">{{ post.content|safe }}</div>
+                    {% endif %}
+                </div>
+                <div class="post-build-info">
+                    {% if post.setup %}
+                        <div class="content">{{ post.setup|safe }}</div>
+                    {% endif %}
+                </div>
+                <div class="border-hor"></div>
+                <div class="post-comments-container hidden">
+                    <div class="comments">
+                        {% for comment in post.comments %}
+                            <div class="comment-box" data-id="{{ comment._id }}">
+                                <div class="comment-header">
+                                    <span class="comment-user">{{ comment.user }}</span>
+                                    <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                    {% if comment.can_delete %}
+                                        <button class="delete-comment">🗑️</button>
+                                    {% endif %}
+                                </div>
+                                <div class="comment-text">{{ comment.text }}</div>
+                            </div>
+                        {% endfor %}
+                        <div class="comment-count">{{ post.comments|length }} комментариев</div>
+                    </div>
+                    <div class="add-comment">
+                        <input class="comment-input" type="text" placeholder="Добавить комментарий" />
+                        <button class="base-button">Отправить</button>
+                    </div>
+                </div>
             </div>
+            
+            
         </div>
         {% endfor %}
 
