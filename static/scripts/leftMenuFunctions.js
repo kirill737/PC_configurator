@@ -27,7 +27,7 @@ export async function loadBuildInfo() {
         row.classList.add("drop-container");
 
         const name_td = document.createElement("td"); 
-        name_td.textContent = current_component.rus_type;
+        name_td.textContent = current_component.ct_rus;
         row.appendChild(name_td);
 
         // Кнопка выпадающего меню

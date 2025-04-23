@@ -4,11 +4,11 @@ from database.mongodb import posts_collection, comments_collection, per_page
 from bson.objectid import ObjectId
 
 from controllers.db.user_controller import get_user_data
-from controllers.post_controller import can_edit_comment, can_delete_post, make_content
+from controllers.post_controller import can_edit_comment, can_delete_post, make_content, create_post
 
 from logger_settings import setup_logger
 
-logger = setup_logger("post")
+logger = setup_logger("post_view")
 logger.info("Запуск страницы постов")
 
 
@@ -31,7 +31,8 @@ def init_post(app):
         
         # Добавляем количество комментариев к каждому посту
         for post in last_posts:
-            post["title"] = f"""{post["author"]}: {post["title"]}"""
+            logger.debug(post)
+            post["title"] = f"""{post["author_id"]}: {post["title"]}"""
             post["content"], post["setup"] = make_content(post)
             post["comments"] = comments_by_post[post["_id"]]
             post["can_delete"] = can_delete_post(post, user_data)
@@ -72,6 +73,24 @@ def init_post(app):
             "created_at": new_comment["created_at"].strftime('%d.%m.%Y %H:%M'),
             "can_delete": True  # всегда true для автора в момент создания
         })
+
+    @app.route('/create/post', methods=['POST'])
+    def create_post_view():
+        data = request.json
+        post_dict = {
+            "title": data.get("title"),
+            "content": data.get("content")
+        }
+
+        result = create_post(
+            post=post_dict,
+            author_id=session.get("user_id"),
+            build_id=data.get("build_id")
+        )
+        
+        if result:
+            return jsonify({"status": "success"})
+        return jsonify({"status": "error", "message": "Failed to create component"})
 
 
     @app.route('/delete_post', methods=['POST'])

@@ -58,7 +58,7 @@ h2 {
 input {
     background-color: var(--pearl);
     color: var(--charcoal);
-    width: 80%;
+    /* width: 80%; */
 }
 
 input:focus {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+< lang="ru">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/post.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
@@ -17,6 +17,7 @@
     </style> -->
 </head>
     <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/posts.js') }}" defer></script>
     <div id="top-menu-container">
         <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
         <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
@@ -32,14 +33,27 @@
                 <a href="{{ url_for('logout') }}" class="profile-menu-button">Выход</a>
             </div>
         </div>
+        
+    </div>
+    <div id="create-post-menu" class="hidden"> 
+        <div id="post-title-container">
+            <input id="post-title-input" name="post-title" placeholder="Название поста">
+            <textarea id="post-text-area" rows="4" style="resize: none;"></textarea>
+        </div>
+        <button id="post-select-build-button" class="post-build-button">Выбрать сборку</button>
+        <div id="builds-menu" class="hidden">
+            <ul id="builds-list"></ul>
+        </div>
+        <div id="post-build-container">
+            <button id="publish-post" class="base-button">Опубликовать</button>
+        </div>
     </div>
     <div id="posts-container">
-        
         {% for post in posts %}
         <div class="post" data-id="{{ post._id }}">
             <div class="post-title-container">
                 <a class="post-title">{{ post.title }}</a>
-                {% if post.can_edit %}
+                {% if post.can_delete %}
                     <div class="post-controls">
                         <button class="delete-post">🗑️ Удалить</button>
                     </div>
@@ -72,19 +86,21 @@
                                 <div class="comment-text">{{ comment.text }}</div>
                             </div>
                         {% endfor %}
-                        <div class="comment-count">{{ post.comments|length }} комментариев</div>
                     </div>
-                    <div class="add-comment">
-                        <input class="comment-input" type="text" placeholder="Добавить комментарий" />
-                        <button class="base-button">Отправить</button>
+                    <div class="post-bottom-container">
+                        <div class="add-comment">
+                            <input class="comment-input" type="text" placeholder="Добавить комментарий" />
+                            <button class="base-button">Отправить</button>
+                        </div>
+                        <div class="comment-count">Комментариев: {{ post.comments|length }}</div>
                     </div>
                 </div>
             </div>
-            
-            
         </div>
         {% endfor %}
-
+        <div>
+            <button id="create-post-button" class="base-button">Создать пост</button>
+        </div>
         <div class="pagination">
             {% for i in range(1, total_pages + 1) %}
                 {% if i == current_page %}

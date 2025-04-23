@@ -82,7 +82,7 @@ export async function loadBuildComponents(buildName, buildId) {
     build_components.forEach(async ct_dict => {
         const component_btn = document.createElement("a");
         component_btn.className = "component-button";
-        component_btn.textContent = ct_dict.rus_type;
+        component_btn.textContent = ct_dict.ct_rus;
         component_btn.href = "#";
         component_btn.addEventListener("click", () => loadComponentFields(ct_dict.type, buildId));
 

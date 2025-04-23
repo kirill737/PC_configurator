@@ -63,7 +63,7 @@ def get_build_info(build_id) -> list:
                     {
                         "id": row[0],
                         "type": row[1],
-                        "rus_type": prepareType(row[1]),
+                        "ct_rus": prepareType(row[1]),
                         "name": get_component_data(row[0])['name'] 
                     }
                 )
@@ -73,7 +73,7 @@ def get_build_info(build_id) -> list:
                     {
                         "id": None,
                         "type": ct['ct'],
-                        "rus_type": ct['ct_rus'],
+                        "ct_rus": ct['ct_rus'],
                         "name": None 
                     }
                 )
