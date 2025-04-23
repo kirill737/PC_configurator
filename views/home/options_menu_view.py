@@ -35,7 +35,7 @@ def init_options_menu(app):
     #     return '', 204
     
     # Выдаёт список всех комплектующих
-    @app.route("/all/builds/components")
+    @app.route("/all/build/components")
     def get_build_components() -> dict:
         build_id = session['build_id']
         logger.info(f"Попытка получить данные сборки {build_id}...")

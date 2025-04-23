@@ -6,7 +6,10 @@ import { updateField } from "./leftMenu.js";
 
 // Загрузка краткой информации о сборке
 export async function loadBuildInfo() {
-    let response = await fetch(`/all/builds/components`);
+    let response = await fetch(`/all/component/types`); // NOW
+    const all_types = await response.json();
+    
+    response = await fetch(`/all/build/components`);
     let current_components = await response.json();
     console.log(current_components);
     

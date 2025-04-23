@@ -76,15 +76,15 @@ export async function loadBuildComponents(buildName, buildId) {
     build_name_label.addEventListener("click", () => loadBuildInfo(buildId));
     container.appendChild(build_name_label);
 
-    let response = await fetch(`/all/component/types`); // NOW
-    const types = await response.json();
+    response = await fetch(`/all/build/components`);
+    let build_components = await response.json();
 
-    types.forEach(async ct_dict => {
+    build_components.forEach(async ct_dict => {
         const component_btn = document.createElement("a");
         component_btn.className = "component-button";
-        component_btn.textContent = ct_dict.ct_rus;
+        component_btn.textContent = ct_dict.rus_type;
         component_btn.href = "#";
-        component_btn.addEventListener("click", () => loadComponentFields(ct_dict.ct, buildId));
+        component_btn.addEventListener("click", () => loadComponentFields(ct_dict.type, buildId));
 
         component_btn.addEventListener("click", function () {
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));

@@ -44,7 +44,7 @@ async function loadNewComponentFields(component) {
 }
 
 async function loadNewBuildInfo() {
-    let response = await fetch(`/all/builds/components`);
+    let response = await fetch(`/all/build/components`);
     const current_components = await response.json();
     console.log(current_components);
     
