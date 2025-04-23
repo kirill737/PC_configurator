@@ -68,7 +68,7 @@ async function loadAllComponentWithType(ct) {
         a.addEventListener("click", async function () {
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
             this.classList.add("active");
-
+            console.log("component.id:" + component.id)
             showSelectComponentsMenu(component.id);
             // drop_btn.textContent = component.name;
             // drop_menu.classList.add("hidden"); // Закрываем меню после выбора

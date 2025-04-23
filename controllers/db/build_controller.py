@@ -1,7 +1,7 @@
 from database.psql import get_psql_db_connection
 
 from logger_settings import setup_logger
-from controllers.db.component_controller import prepareType, get_component_data
+from controllers.db.component_controller import prepareType, get_component_data, get_all_component_types
 from controllers.db.build_component_controller import connect_build_and_component
 
 class AddBuildError(Exception):
@@ -34,7 +34,7 @@ def delete_build(build_id: int) -> None:
         cur.close()
         conn.close()
         
-def get_build_info(build_id) -> dict:
+def get_build_info(build_id) -> list:
     logger.debug("Запуск <get_build_info>")
     logger.info(f"Получение комплектующих сборки '{build_id}'")
     
@@ -49,15 +49,40 @@ def get_build_info(build_id) -> dict:
             f"WHERE bc.build_id = {build_id} "
             "ORDER BY bc.id"
             )
-    
+        all_types = get_all_component_types()
         raw_components_list = cur.fetchall()
         # cur.execute("SELECT name FROM")
-        components_dict = [{"id": row[0], "type": row[1], "rus_type": prepareType(row[1]), "name": get_component_data(row[0])['name']  } for row in raw_components_list]
-    
-        logger.debug(f"Component id list: '{components_dict}'")
+        all_presented_types = [row[1] for row in raw_components_list]
+        
+        component_dicts = []
+        row_index = 0
+        for ct in all_types:
+            if ct['ct'] in all_presented_types:
+                row = raw_components_list[row_index]
+                component_dicts.append(
+                    {
+                        "id": row[0],
+                        "type": row[1],
+                        "rus_type": prepareType(row[1]),
+                        "name": get_component_data(row[0])['name'] 
+                    }
+                )
+                row_index += 1
+            else:
+                component_dicts.append(
+                    {
+                        "id": None,
+                        "type": ct['ct'],
+                        "rus_type": ct['ct_rus'],
+                        "name": None 
+                    }
+                )
+
+
+        logger.debug(f"Component id list: '{component_dicts}'")
         logger.info("Данные сборки получены")
         
-        return components_dict
+        return component_dicts
     except Exception as e:
         logger.error(f"Ошибка при получении деталей сборки: {e}")
         

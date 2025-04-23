@@ -38,6 +38,8 @@ def change_build_component(build_id: int, old_id: int, new_id: int):
         if old_id == new_id:
             logger.info(f"Выбрана текущая деталь")
             return True
+        elif old_id is None:
+            connect_build_and_component(build_id, new_id)
         if not compare_components_type(old_id, new_id):
             raise Exception(f"Типы деталей с id {old_id} и {new_id} не совпадают")
 

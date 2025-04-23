@@ -76,7 +76,7 @@ export async function loadBuildComponents(buildName, buildId) {
     build_name_label.addEventListener("click", () => loadBuildInfo(buildId));
     container.appendChild(build_name_label);
 
-    response = await fetch(`/all/build/components`);
+    let response = await fetch(`/all/build/components`);
     let build_components = await response.json();
 
     build_components.forEach(async ct_dict => {
@@ -90,8 +90,9 @@ export async function loadBuildComponents(buildName, buildId) {
             document.querySelectorAll(".component-button").forEach(b => b.classList.remove("active"));
             this.classList.add("active");
         });
-
-        container.appendChild(component_btn);
+        if (ct_dict.id)  {
+            container.appendChild(component_btn);
+        }
     });
 
     let menu = document.getElementById("builds-menu");

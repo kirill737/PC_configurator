@@ -2,13 +2,13 @@ import { getCurrentBuildId, setCurrentCT} from "./help.js";
 import { showSelectComponentsMenu } from "./selectComponentMenu.js";
 import { updateBuildComponent, translate } from "./help.js";
 import { updateField } from "./leftMenu.js";
-
+import { loadBuildComponents } from "./rightMenuFunctions.js";
 
 // Загрузка краткой информации о сборке
 export async function loadBuildInfo() {
     let response = await fetch(`/all/component/types`); // NOW
     const all_types = await response.json();
-    
+
     response = await fetch(`/all/build/components`);
     let current_components = await response.json();
     console.log(current_components);
@@ -35,7 +35,11 @@ export async function loadBuildInfo() {
 
         const drop_btn = document.createElement("button"); // Кнопка
         // drop_btn.textContent = data["name"]; // HERE Тут имя детали
-        drop_btn.textContent = current_component.name;
+        if (current_component.name) {
+            drop_btn.textContent = current_component.name;
+        } else {
+            drop_btn.textContent = "Выбрать";
+        }
         drop_btn.classList.add("drop-btn");
         component_drop_td.appendChild(drop_btn);
 
@@ -56,10 +60,15 @@ export async function loadBuildInfo() {
                 a.textContent = component.name;
                 a.addEventListener("click", async function () {
                     let current_data = await getCurrentBuildId();
-
+                    
                     updateBuildComponent(current_data['build_id'], current_component.id, component.id);
+                    // if (!current_component.id) {
+                    //     loadBuildComponents("11", current_data['build_id'])
+                    // }
                     current_component.id = component.id
                     drop_btn.textContent = component.name;
+                    
+                    
                     drop_menu.classList.add("hidden"); // Закрываем меню после выбора
                 });
                 drop_menu.appendChild(a);
