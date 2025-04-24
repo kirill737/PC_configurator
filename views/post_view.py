@@ -73,7 +73,7 @@ def init_post(app):
         if not post_id or not text:
             return jsonify({"error": "Недостаточно данных"}), 400
 
-        user_data = get_session_data(session["user_id"])
+        user_data = get_session_data(session["session_id"])
         new_comment = {
             "post_id": ObjectId(post_id),
             "text": text,
@@ -128,7 +128,7 @@ def init_post(app):
         if not post:
             return jsonify({"error": "Пост не найден"}), 404
 
-        user_data = get_session_data(session["user_id"])
+        user_data = get_session_data(session["session_id"])
 
         if not can_delete_post(post, user_data):
             return jsonify({"error": "Нет доступа"}), 403
@@ -153,7 +153,7 @@ def init_post(app):
         if not comment:
             return jsonify({"error": "Комментарий не найден"}), 404
 
-        user_data = get_session_data(session["user_id"])
+        user_data = get_session_data(session["session_id"])
         
         if not can_edit_comment(post, comment, user_data):
             return jsonify({"error": "Нет доступа"}), 403
