@@ -144,7 +144,6 @@ def get_user_data(user_id: int, withPswd: bool = False) -> dict:
             "user_id": user_id,
             "username": f"{username}",
             "email": f"{email}",
-            # 'created_at': created_at,
             "role": f"{role}"
         }
         if withPswd:

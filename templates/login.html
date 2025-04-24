@@ -7,6 +7,7 @@
     <link rel="icon" href="{{ url_for('static', filename='images/hoodwink.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/login_register.css') }}">
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <script src="{{ url_for('static', filename='scripts/guestLogin.js') }}"></script>
 </head>
 <body>
     <div id="login-container">
@@ -22,7 +23,7 @@
         <form action="/open_register_page">
             <button type="submit" class="redirect">Зарегистрироваться</button>
         </form>
-        <a class="base-button" href="{{ url_for('posts_view')}}">Войти как гость</a>
+        <a class="base-button" href="javascript:void(0)" onclick="guestLogin()">Войти как гость</a>
 
     </div>
 </body>

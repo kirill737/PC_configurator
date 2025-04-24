@@ -59,4 +59,17 @@ def init_login(app):
         return render_template("login.html", error=None)
     
 
-    # def guest_login()
+    @app.route("/guest_login", methods=["POST"])
+    def guest_login():
+        try:
+            session_id = create_session()
+            session["session_id"] = session_id
+            logger.info(f"ГОСТЕВАЯ сессия {session_id} - началась")
+
+            user_data = get_session_data(session_id)
+            logger.debug(f"user_data: {user_data}")
+            
+            # После выполнения функции, можно сделать редирект
+            return "", 200  # Возвращаем успешный статус
+        except Exception as e:
+            return str(e), 500
