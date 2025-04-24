@@ -190,10 +190,6 @@
     cursor: pointer;
 }
 
-/* .post-controls button:hover {
-
-} */
-
 .comment-box {
     border-left: 0.2rem solid var(--gray);
     padding: 8px;

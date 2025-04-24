@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, url_for
 
-from controllers.session_controller import create_session
+from controllers.session_controller import create_session, get_session_data
 from controllers.db.user_controller import *
 
 
@@ -31,9 +31,12 @@ def init_login(app):
                 session_id = create_session(user_id)
                 
                 logger.info(f"Сессия {session_id} - началась")
-                session["user_id"] = get_user_id(email)
-                
-                return redirect('/home')
+                session["user_id"] = user_id
+                user_data = get_user_data(get_user_id(email))
+  
+                logger.debug(f"user role: {user_data['role']}")
+                logger.debug(f"user_data: {user_data}")
+                return redirect(url_for('home', user_data=user_data))
             elif login_code == -1:
                 logger.info(f"Пользователь с почтой {email} не найден")
                 return render_template('login.html', error='Пользователь не найден')

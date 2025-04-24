@@ -120,7 +120,7 @@ def get_user_id(email: str) -> int:
         cur.close()
     return None
 
-def get_user_data(user_id: int) -> dict:
+def get_user_data(user_id: int, withPswd: bool = False) -> dict:
     logger.debug("Запуск <get_user_data>")
     logger.info(f"Получение информации пользователя {user_id}...")
 
@@ -141,13 +141,15 @@ def get_user_data(user_id: int) -> dict:
         role = user_data[4]
         password_hash = user_data[5]
         result = {
-            'user_id': user_id,
-            'username': username,
-            'email': email,
+            "user_id": user_id,
+            "username": f"{username}",
+            "email": f"{email}",
             # 'created_at': created_at,
-            'role': role,
-            'password_hash': password_hash
+            "role": f"{role}"
         }
+        if withPswd:
+            result["password_hash"] = password_hash
+        logger.debug(result)
         return result
     except Exception as e:
         logger.error(f"get_user_id({email}): {e}")
@@ -327,7 +329,7 @@ def change_user_data_by_user_id(user_id: int, new_user_data: dict) -> dict:
             change_password(new_user_data['password'])
 
     logger.info(f"Получение прежней информации пользователя {user_id}")
-    old_user_data = get_user_data(user_id)
+    old_user_data = get_user_data(user_id, True)
     logger.info(f"Информация получена")
     try:
         compare_data(old_user_data, new_user_data)

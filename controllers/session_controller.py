@@ -20,13 +20,19 @@ def create_session(user_id: int) -> int:
     redis_client.expire(session_key, 3600)  # Сессия истечёт через 1 час (3600 секунд)
     
     redis_client.set(f"user:{user_id}:session", session_id, ex=3600)
+    
     logger.info(f"Сессии пользователя: '{session_id}' создана")
     return session_id
 
-def get_session_data(session_id: int) -> dict:
+def get_session_data(session_id: str) -> dict:
     logger.debug("Запуск <get_session_data>")
     session_key = f"user_session:{session_id}"
-    return redis_client.hgetall(session_key)
+    session_data = redis_client.hgetall(session_key)
+    # session_data = {k.decode(): v.decode() for k, v in raw_data.items()}
+    logger.debug(f"Session data for {session_id}: {session_data}")
+    return session_data
+
+
 
 def delete_session(session_id: int) -> None:
     logger.debug("Запуск <delete_session>")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-< lang="ru">
+<lang="ru">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/post.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
@@ -19,21 +19,30 @@
     <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
     <script type="module" src="{{ url_for('static', filename='scripts/posts.js') }}" defer></script>
     <div id="top-menu-container">
-        <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
-        <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
-        <a href="/main_post_page" class="top-menu-button">Посты</a>
+        {% if user_data.role != 'guest' %}
+        <a href="{{ url_for('home', user_data=user_data | tojson) }}" class="top-menu-button">Сборки</a>
+        {% endif %}
+        
+        <!-- <a href="{{ url_for('posts_view') }}" class="top-menu-button">Посты</a> -->
+        <a href="{{ url_for('posts_view', user_data=user_data | tojson) }}" class="top-menu-button">Посты</a>
+
         <div id="profile-container">
             <a id="profile-icon">
                 <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggle_menu()">
             </a>
             <div id="profile-menu">
+                {% if user_data.role != 'guest' %}
                 <a class="profile-menu-button"> {{ user_data['username'] }}</a>
                 <a href="/profile" class="profile-menu-button">Профиль</a>
-                <a href="{{ url_for('open_settings_page') }}" class="profile-menu-button">Настройки</a>
-                <a href="{{ url_for('logout') }}" class="profile-menu-button">Выход</a>
+                <a href="{{ url_for('open_settings_page', user_data=user_data | tojson) }}" class="profile-menu-button">Настройки</a>
+                <a href="{{ url_for('logout', user_data=user_data | tojson) }}" class="profile-menu-button">Выход</a>
+                {% endif %}
+
+                {% if user_data.role == 'guest' %}
+                <a href="/login" class="profile-menu-button">Войти</a>
+                {% endif %}
             </div>
         </div>
-        
     </div>
     <div id="create-post-menu" class="hidden"> 
         <div id="post-title-container">
@@ -106,7 +115,7 @@
                 {% if i == current_page %}
                     <strong>{{ i }}</strong>
                 {% else %}
-                    <a href="/main_post_page?page={{ i }}">{{ i }}</a>
+                    <a href="/posts?page={{ i }}">{{ i }}</a>
                 {% endif %}
             {% endfor %}
         </div>

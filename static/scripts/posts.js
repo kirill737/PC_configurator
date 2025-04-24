@@ -97,7 +97,6 @@ document.querySelectorAll('.post').forEach(post => {
             const currentCount = parseInt(commentCount.textContent) || 0;
             commentCount.textContent = `Комментариев: ${currentCount + 1}`;
             
-
             input.value = '';
         }
     });

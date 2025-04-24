@@ -15,18 +15,28 @@
     <script src="{{ url_for('static', filename='scripts/leftMenu.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/selectComponentMenu.js') }}" defer></script> -->
     <div id="top-menu-container">
-        <a href="{{ url_for('open_builds') }}" class="top-menu-button">Сборки</a>
-        <a href="{{ url_for('open_wishlists') }}"  class="top-menu-button">Вишлист</a>
-        <a href="/main_post_page" class="top-menu-button">Посты</a>
+        {% if user_data.role != 'guest' %}
+        <a href="{{ url_for('home', user_data=user_data | tojson) }}" class="top-menu-button">Сборки</a>
+        {% endif %}
+        
+        <!-- <a href="{{ url_for('posts_view') }}" class="top-menu-button">Посты</a> -->
+        <a href="{{ url_for('posts_view', user_data=user_data | tojson) }}" class="top-menu-button">Посты</a>
+
         <div id="profile-container">
             <a id="profile-icon">
                 <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggle_menu()">
             </a>
             <div id="profile-menu">
+                {% if user_data.role != 'guest' %}
                 <a class="profile-menu-button"> {{ user_data['username'] }}</a>
                 <a href="/profile" class="profile-menu-button">Профиль</a>
-                <a href="{{ url_for('open_settings_page') }}" class="profile-menu-button">Настройки</a>
-                <a href="{{ url_for('logout') }}" class="profile-menu-button">Выход</a>
+                <a href="{{ url_for('open_settings_page', user_data=user_data | tojson) }}" class="profile-menu-button">Настройки</a>
+                <a href="{{ url_for('logout', user_data=user_data | tojson) }}" class="profile-menu-button">Выход</a>
+                {% endif %}
+
+                {% if user_data.role == 'guest' %}
+                <a href="/login" class="profile-menu-button">Войти</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -47,8 +57,10 @@
             </div>
             <button id="create-build-button" class="base-button build-button">Создать сборку</button>
             <button id="delete-build-button" class="hidden base-button build-button">Удалить сборку</button>
-            <button id="create-component-button" class="base-button build-button">Добавить комплектующую</button>
-            <button id="change-component-button" class="base-button build-button">Изменить комплектующие</button>
+            {% if user_data.role == 'admin' %}
+                <button id="create-component-button" class="base-button build-button">Добавить комплектующую</button>
+                <button id="change-component-button" class="base-button build-button">Изменить комплектующие</button>
+            {% endif %}
         </div>
         {% block content %}{% endblock %}
     </div>

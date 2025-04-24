@@ -3,6 +3,7 @@ from flask import redirect, session, jsonify
 from controllers.db.user_controller import *
 from controllers.db.build_controller import get_user_builds, get_build_info
 from controllers.db.component_controller import *
+from controllers.session_controller import get_user_data
 from views.home.main_menu_view import init_component_settings_menu
 
 from logger_settings import setup_logger
@@ -14,10 +15,6 @@ def init_options_menu(app):
 
     @app.route('/open_builds')
     def open_builds():
-        return redirect('/home')
-
-    @app.route('/open_wishlists')
-    def open_wishlists():
         return redirect('/home')
     
     # Боковое меню

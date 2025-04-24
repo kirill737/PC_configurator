@@ -19,12 +19,15 @@ def make_content(post: dict):
     return beggining, setup
 
 
-def can_delete_post(post, user):
-    return user["role"] == "admin" or post.get("author_id") == session['user_id']
+def can_delete_post(post, user_data):
+    return user_data["role"] == "admin" or post.get("author_id") == user_data['user_id']
 
 
-def can_edit_comment(post, comment, user):
-    return user["role"] == "admin" or any(v == user["username"] for v in [comment.get("user"), post.get("author")])
+def can_edit_comment(post, comment, user_data):
+    logger.debug(user_data)
+    if user_data["role"] == 'guest':
+        return False
+    return user_data["role"] == "admin" or any(v == user_data["username"] for v in [comment.get("user"), post.get("author_id")])
 
 def create_post(post: dict, author_id: str, build_id: int):
     new_post = post.copy()
