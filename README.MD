@@ -22,7 +22,7 @@ CREATE USER kirill WITH PASSWORD 'root';
 ```
 4) Выдаёшь своему пользователю права для бдхи
 ```
-GRANT ALL PRIVILEGES ON DATABASE my_datapc_config_dbbase TO kirill
+GRANT ALL PRIVILEGES ON DATABASE pc_config_db TO kirill;
 ```
 5) Всё, можно выходить из psql
 ```
