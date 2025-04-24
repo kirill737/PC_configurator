@@ -6,7 +6,8 @@ document.querySelectorAll('.post').forEach(post => {
     const addCommentBlock = post.querySelector('.add-comment');
     const input = post.querySelector('input');
     const commentCount = post.querySelector('.comment-count');
-    const sendButton = addCommentBlock.querySelector('button');
+
+    const sendButton = addCommentBlock?.querySelector('.send-button');
 
     const post_title = post.querySelector('.post-title');
     const post_data = post.querySelector('.post-data');
@@ -22,84 +23,86 @@ document.querySelectorAll('.post').forEach(post => {
         post_comments_container.classList.toggle("hidden");
     });
 
-    sendButton.addEventListener('click', async function (e) {
-        e.stopPropagation();
-        const text = input.value.trim();
-        const postId = post.dataset.id;
-        if (!text) return;
+    if (sendButton) {
+        sendButton.addEventListener('click', async function (e) {
+            e.stopPropagation();
+            const text = input.value.trim();
+            const postId = post.dataset.id;
+            if (!text) return;
 
-        const response = await fetch('/add_comment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ post_id: postId, text })
-        });
+            const response = await fetch('/add_comment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: postId, text })
+            });
 
-        if (response.ok) {
-            const result = await response.json();
+            if (response.ok) {
+                const result = await response.json();
 
-            const newCommentBox = document.createElement('div');
-            newCommentBox.classList.add('comment-box');
-            newCommentBox.dataset.id = result.comment_id;
+                const newCommentBox = document.createElement('div');
+                newCommentBox.classList.add('comment-box');
+                newCommentBox.dataset.id = result.comment_id;
 
-            const header = document.createElement('div');
-            header.classList.add('comment-header');
+                const header = document.createElement('div');
+                header.classList.add('comment-header');
 
-            const userSpan = document.createElement('span');
-            userSpan.classList.add('comment-user');
-            userSpan.textContent = result.user;
+                const userSpan = document.createElement('span');
+                userSpan.classList.add('comment-user');
+                userSpan.textContent = result.user;
 
-            const dateSpan = document.createElement('span');
-            dateSpan.classList.add('comment-date');
-            dateSpan.textContent = result.created_at;
+                const dateSpan = document.createElement('span');
+                dateSpan.classList.add('comment-date');
+                dateSpan.textContent = result.created_at;
 
-            header.appendChild(userSpan);
-            header.appendChild(dateSpan);
+                header.appendChild(userSpan);
+                header.appendChild(dateSpan);
 
-            const textDiv = document.createElement('div');
-            textDiv.classList.add('comment-text');
-            textDiv.textContent = text;
+                const textDiv = document.createElement('div');
+                textDiv.classList.add('comment-text');
+                textDiv.textContent = text;
 
-            newCommentBox.appendChild(header);
-            newCommentBox.appendChild(textDiv);
+                newCommentBox.appendChild(header);
+                newCommentBox.appendChild(textDiv);
 
-            // Добавляем кнопку удаления, если разрешено
-            if (result.can_delete) {
-                const deleteButton = document.createElement('button');
-                deleteButton.classList.add('delete-comment');
-                deleteButton.textContent = '🗑️';
+                // Добавляем кнопку удаления, если разрешено
+                if (result.can_delete) {
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-comment');
+                    deleteButton.textContent = '🗑️';
 
-                // обработчик удаления
-                deleteButton.addEventListener('click', async function (e) {
-                    e.stopPropagation();
-                    const confirmed = confirm("Удалить комментарий?");
-                    if (!confirmed) return;
-                    
-                    const resp = await fetch('/delete_comment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ comment_id: result.comment_id })
+                    // обработчик удаления
+                    deleteButton.addEventListener('click', async function (e) {
+                        e.stopPropagation();
+                        const confirmed = confirm("Удалить комментарий?");
+                        if (!confirmed) return;
+                        
+                        const resp = await fetch('/delete_comment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ comment_id: result.comment_id })
+                        });
+
+                        if (resp.ok) {
+                            newCommentBox.remove();
+                            // commentCount.textContent = `Комментариев: ${currentCount}`;
+                        } else {
+                            alert("Ошибка при удалении комментария");
+                        }
                     });
 
-                    if (resp.ok) {
-                        newCommentBox.remove();
-                        // commentCount.textContent = `Комментариев: ${currentCount}`;
-                    } else {
-                        alert("Ошибка при удалении комментария");
-                    }
-                });
+                    newCommentBox.appendChild(deleteButton);
+                }
 
-                newCommentBox.appendChild(deleteButton);
+                commentsBlock.appendChild(newCommentBox);
+
+                // Обновляем счётчик
+                const currentCount = parseInt(commentCount.textContent) || 0;
+                commentCount.textContent = `Комментариев: ${currentCount + 1}`;
+                
+                input.value = '';
             }
-
-            commentsBlock.appendChild(newCommentBox);
-
-            // Обновляем счётчик
-            const currentCount = parseInt(commentCount.textContent) || 0;
-            commentCount.textContent = `Комментариев: ${currentCount + 1}`;
-            
-            input.value = '';
-        }
-    });
+        });
+    }
 });
 
 

@@ -97,19 +97,23 @@
                         {% endfor %}
                     </div>
                     <div class="post-bottom-container">
+                        <!-- {% if user_data.role != 'guest' %} -->
                         <div class="add-comment">
                             <input class="comment-input" type="text" placeholder="Добавить комментарий" />
-                            <button class="base-button">Отправить</button>
+                            <button class="send-button base-button">Отправить</button>
                         </div>
+                        <!-- {% endif %} -->
                         <div class="comment-count">Комментариев: {{ post.comments|length }}</div>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
+        {% if user_data.role != 'guest' %}
         <div>
             <button id="create-post-button" class="base-button">Создать пост</button>
         </div>
+        {% endif %}
         <div class="pagination">
             {% for i in range(1, total_pages + 1) %}
                 {% if i == current_page %}
@@ -120,7 +124,7 @@
             {% endfor %}
         </div>
 
-        <script src="{{ url_for('static', filename='scripts/posts.js') }}"></script>
+        <script type="module" src="{{ url_for('static', filename='scripts/posts.js') }}"></script>
     </div>
 </body>
 </html>

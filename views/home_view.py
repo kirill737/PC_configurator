@@ -10,7 +10,7 @@ from flask import (
 )
 
 from controllers.session_controller import (
-    delete_session_by_user_id, 
+    delete_session, 
     get_session_data,
 )
 from controllers.db.component_controller import translate
@@ -46,7 +46,7 @@ def init_home(app):
     
     @app.route("/logout")
     def logout():
-        delete_session_by_user_id(session["session_id"])
+        delete_session(session["session_id"])
         return redirect("/login")
 
     
