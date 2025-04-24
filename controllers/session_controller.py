@@ -9,6 +9,7 @@ logger = setup_logger("sessions")
 
 logger.info("Запуск логера сессий")
 
+
 def create_session(user_id: int) -> int:
     logger.debug("Запуск <create_session>")
     logger.info(f"Создание сессии пользователя: '{user_id}'")
@@ -24,14 +25,13 @@ def create_session(user_id: int) -> int:
     logger.info(f"Сессии пользователя: '{session_id}' создана")
     return session_id
 
+
 def get_session_data(session_id: str) -> dict:
     logger.debug("Запуск <get_session_data>")
     session_key = f"user_session:{session_id}"
     session_data = redis_client.hgetall(session_key)
-    # session_data = {k.decode(): v.decode() for k, v in raw_data.items()}
     logger.debug(f"Session data for {session_id}: {session_data}")
     return session_data
-
 
 
 def delete_session(session_id: int) -> None:
@@ -39,6 +39,7 @@ def delete_session(session_id: int) -> None:
     session_key = f"user_session:{session_id}"
     redis_client.delete(session_key)
     logger.info(f"Сессия '{session_id}' - окончена")
+
 
 def delete_session_by_user_id(user_id: int) -> None:
     logger.debug("Запуск <delete_session_by_user_id>")
@@ -49,4 +50,3 @@ def delete_session_by_user_id(user_id: int) -> None:
         redis_client.delete(f"user_session:{session_id}")
         redis_client.delete(f"user:{user_id}:session")
         logger.info(f"Сессия '{session_id}' - окончена")
-

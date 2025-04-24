@@ -40,7 +40,6 @@ def init_home(app):
                 user_data = user_data.replace("'", '"')
                 user_data = json.loads(user_data)
     
-
         # Проверка роли пользователя
         if user_data['role'] != 'guest':
             user_id = user_data['user_id']
@@ -51,6 +50,8 @@ def init_home(app):
             return render_template('home.html', user_data=get_user_data(user_id))
         else:
             return redirect(url_for('posts_view', user_data=json.dumps({"role": "guest", "user_id": None})))
+    
+    
     @app.route('/logout')
     def logout():
         raw_user_data = request.args.get('user_data', '{"role": "guest", "user_id": null}')
@@ -66,6 +67,7 @@ def init_home(app):
 
         return redirect('/login')
 
+    
     @app.route('/translate', methods=['POST'])
     def translate_view():
         data = request.json
