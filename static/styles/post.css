@@ -163,7 +163,7 @@
 }
 
 .pagination strong {
-    color: var(--gray);
+    color: var(--pearl);
 }
 
 @keyframes fadeIn {
@@ -276,5 +276,14 @@
     border-radius: 0.5rem;
 
     margin: 1rem;
+
+}
+
+.page-index {
+    color: var(--gray);
+
+}
+.page-index:visited {
+    color: var(--gray);
 
 }

@@ -119,7 +119,7 @@
                 {% if i == current_page %}
                     <strong>{{ i }}</strong>
                 {% else %}
-                    <a href="/posts?page={{ i }}">{{ i }}</a>
+                    <a class="page-index" href="/posts?page={{ i }}">{{ i }}</a>
                 {% endif %}
             {% endfor %}
         </div>

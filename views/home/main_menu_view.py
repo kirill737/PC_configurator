@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, session, jsonify
 
 
 from controllers.db.user_controller import *
-
+from controllers.session_controller import get_session_data
 from controllers.db.component_controller import *
 from controllers.db.build_component_controller import change_build_component, get_component_id
 from controllers.db.build_controller import create_build
@@ -73,7 +73,7 @@ def init_component_settings_menu(app):
         data = request.json
        
         new_build_id = create_build(
-            user_id=session['user_id'],
+            user_id=get_session_data(session["session_id"])["user_id"],
             name=data.get("build_name"),
             build_info=data.get("build_info")
         )

@@ -37,11 +37,11 @@ print(setups)
 users = [1, 2, 3, 5, 6]
 for i in range(2, 102):
     d = deepcopy(random.choice(setups))
-    title, content = generate_random_text(0, 3), generate_random_text(0, 40)
+    title, content = generate_random_text(1, 3 + 1), generate_random_text(0, 40)
     if title:
-        d["title"] = "TEMP_NAME: " + title
+        d["title"] = title
     if content:
-        d["content"] = "TEMP_CONTENT: " + content
+        d["content"] = content
     d["created_at"] = datetime.now() - timedelta(days=random.randint(0, i//2))
     d["author_id"] = random.choice(users)
     print(posts_collection.insert_one(d))

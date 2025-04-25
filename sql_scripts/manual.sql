@@ -24,4 +24,4 @@
 
 -- SELECT * FROM components
 -- WHERE id in (1, 2);
-SELECT * FROM builds;
+SELECT * FROM users;

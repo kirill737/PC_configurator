@@ -17,3 +17,12 @@
     
     width: 30em;
 }
+
+#guest-login-button {
+    text-decoration: none;
+    font-size: 2rem;
+
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 1rem;
+}

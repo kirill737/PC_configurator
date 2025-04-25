@@ -3,7 +3,7 @@ from flask import redirect, session, jsonify
 from controllers.db.user_controller import *
 from controllers.db.build_controller import get_user_builds, get_build_info
 from controllers.db.component_controller import *
-from controllers.session_controller import get_user_data
+from controllers.session_controller import get_session_data
 from views.home.main_menu_view import init_component_settings_menu
 
 from logger_settings import setup_logger
@@ -22,7 +22,7 @@ def init_options_menu(app):
     @app.route("/all/builds")
     def get_builds():
         logger.info("Нажали на кнопку выбора сборки")
-        builds = get_user_builds(session['user_id'])
+        builds = get_user_builds(get_session_data(session["session_id"])["user_id"])
         return jsonify(builds)
     
     # @app.route("/select/build/<int:build_id>")

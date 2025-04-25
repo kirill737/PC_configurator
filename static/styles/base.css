@@ -73,7 +73,7 @@ input, button.submit {
     border: none;
     border-radius: 0.5rem;
 
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 button.submit {
@@ -94,11 +94,11 @@ button.submit:hover {
     color: var(--pearl);
     background-color: var(--gray);
     border: none;
-    border-radius: 0.5em;
+    border-radius: 0.5rem;
 
-    margin-bottom: 0.5em;
-    margin-top: 0.5em;
-    padding: 0.5em;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
 
     transition: all 0.2s ease-in-out;
     cursor: pointer;

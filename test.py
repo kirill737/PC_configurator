@@ -3,6 +3,7 @@ from controllers.session_controller import create_session, get_session_data, del
 from controllers.db.component_controller import *
 from controllers.db.build_controller import *
 from test_components import components
+import json
 from controllers.db.build_component_controller import *
 # add_user('user1', 'kirill737apple@gmail.com', 'home9999', 'admin')
 
@@ -49,8 +50,14 @@ def create_builds():
         # print(build
         create_build(i + 1, build_names[i], build)
 
-create_users()
-create_components()
-create_builds()
+with open("builds.json", "w", encoding="utf-8") as f:
+    builds = []
+    for build_id in range(1, 4):
+        build_info = get_build_info(build_id)
+        builds.append(build_info)
+    json.dump(builds, f, ensure_ascii=False, indent=4)
+# create_users()
+# create_components()
+# create_builds()
 
 
