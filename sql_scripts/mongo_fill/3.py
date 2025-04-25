@@ -16,5 +16,5 @@ for post in posts_collection.find():
 print()
 
 
-# for comment in comments_collection.find():
-#     print(comment)
+for comment in comments_collection.find():
+    print(comment)

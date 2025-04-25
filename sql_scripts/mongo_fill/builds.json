@@ -1,0 +1,224 @@
+[
+    [
+        {
+            "id": 1,
+            "type": "cpu",
+            "ct_rus": "Процессор",
+            "name": "AMD Ryzen 7 5800X"
+        },
+        {
+            "id": 26,
+            "type": "motherboard",
+            "ct_rus": "Материнская плата",
+            "name": "ASUS Prime Z790-A"
+        },
+        {
+            "id": 15,
+            "type": "gpu",
+            "ct_rus": "Видеокарта",
+            "name": "NVIDIA RTX 4070 Ti"
+        },
+        {
+            "id": 28,
+            "type": "ram",
+            "ct_rus": "Оперативная память",
+            "name": "Crucial Ballistix"
+        },
+        {
+            "id": 5,
+            "type": "case",
+            "ct_rus": "Корпус",
+            "name": "Fractal Design Meshify C"
+        },
+        {
+            "id": 18,
+            "type": "headphones",
+            "ct_rus": "Наушники",
+            "name": "Razer BlackShark V2 Pro"
+        },
+        {
+            "id": 7,
+            "type": "keyboard",
+            "ct_rus": "Клавиатура",
+            "name": "Razer Huntsman Elite"
+        },
+        {
+            "id": 32,
+            "type": "mouse",
+            "ct_rus": "Мышь",
+            "name": "Glorious Model O"
+        },
+        {
+            "id": 9,
+            "type": "microphone",
+            "ct_rus": "Микрофон",
+            "name": "Shure SM7B"
+        },
+        {
+            "id": 10,
+            "type": "monitor",
+            "ct_rus": "Монитор",
+            "name": "ASUS ROG Swift PG259QN"
+        },
+        {
+            "id": 11,
+            "type": "storage",
+            "ct_rus": "Накопитель",
+            "name": "WD Black SN850"
+        },
+        {
+            "id": 12,
+            "type": "power_supply",
+            "ct_rus": "Блок питания",
+            "name": "EVGA SuperNOVA 1000 G5"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "type": "cpu",
+            "ct_rus": "Процессор",
+            "name": "AMD Ryzen 7 5800X"
+        },
+        {
+            "id": 2,
+            "type": "motherboard",
+            "ct_rus": "Материнская плата",
+            "name": "MSI MAG B660M Mortar"
+        },
+        {
+            "id": 3,
+            "type": "gpu",
+            "ct_rus": "Видеокарта",
+            "name": "AMD Radeon RX 7900 XTX"
+        },
+        {
+            "id": 4,
+            "type": "ram",
+            "ct_rus": "Оперативная память",
+            "name": "G.Skill Trident Z RGB"
+        },
+        {
+            "id": 5,
+            "type": "case",
+            "ct_rus": "Корпус",
+            "name": "Fractal Design Meshify C"
+        },
+        {
+            "id": 6,
+            "type": "headphones",
+            "ct_rus": "Наушники",
+            "name": "HyperX Cloud Alpha"
+        },
+        {
+            "id": 7,
+            "type": "keyboard",
+            "ct_rus": "Клавиатура",
+            "name": "Razer Huntsman Elite"
+        },
+        {
+            "id": 8,
+            "type": "mouse",
+            "ct_rus": "Мышь",
+            "name": "Logitech G Pro X Superlight"
+        },
+        {
+            "id": 9,
+            "type": "microphone",
+            "ct_rus": "Микрофон",
+            "name": "Shure SM7B"
+        },
+        {
+            "id": 10,
+            "type": "monitor",
+            "ct_rus": "Монитор",
+            "name": "ASUS ROG Swift PG259QN"
+        },
+        {
+            "id": 11,
+            "type": "storage",
+            "ct_rus": "Накопитель",
+            "name": "WD Black SN850"
+        },
+        {
+            "id": 12,
+            "type": "power_supply",
+            "ct_rus": "Блок питания",
+            "name": "EVGA SuperNOVA 1000 G5"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "type": "cpu",
+            "ct_rus": "Процессор",
+            "name": "AMD Ryzen 7 5800X"
+        },
+        {
+            "id": 2,
+            "type": "motherboard",
+            "ct_rus": "Материнская плата",
+            "name": "MSI MAG B660M Mortar"
+        },
+        {
+            "id": 3,
+            "type": "gpu",
+            "ct_rus": "Видеокарта",
+            "name": "AMD Radeon RX 7900 XTX"
+        },
+        {
+            "id": 4,
+            "type": "ram",
+            "ct_rus": "Оперативная память",
+            "name": "G.Skill Trident Z RGB"
+        },
+        {
+            "id": 5,
+            "type": "case",
+            "ct_rus": "Корпус",
+            "name": "Fractal Design Meshify C"
+        },
+        {
+            "id": 6,
+            "type": "headphones",
+            "ct_rus": "Наушники",
+            "name": "HyperX Cloud Alpha"
+        },
+        {
+            "id": 7,
+            "type": "keyboard",
+            "ct_rus": "Клавиатура",
+            "name": "Razer Huntsman Elite"
+        },
+        {
+            "id": 8,
+            "type": "mouse",
+            "ct_rus": "Мышь",
+            "name": "Logitech G Pro X Superlight"
+        },
+        {
+            "id": 9,
+            "type": "microphone",
+            "ct_rus": "Микрофон",
+            "name": "Shure SM7B"
+        },
+        {
+            "id": 10,
+            "type": "monitor",
+            "ct_rus": "Монитор",
+            "name": "ASUS ROG Swift PG259QN"
+        },
+        {
+            "id": 11,
+            "type": "storage",
+            "ct_rus": "Накопитель",
+            "name": "WD Black SN850"
+        },
+        {
+            "id": 12,
+            "type": "power_supply",
+            "ct_rus": "Блок питания",
+            "name": "EVGA SuperNOVA 1000 G5"
+        }
+    ]
+]

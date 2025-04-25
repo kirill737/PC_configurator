@@ -28,7 +28,7 @@ def init_settings(app):
     def save_settings():
     
         if request.method == "POST":
-            logger.info("Сохроняем данные...")
+            logger.info("Сохраняем данные...")
 
             new_user_data = {
                 "username": request.form.get("username"),

@@ -88,8 +88,8 @@ def init_post(app):
 
         return jsonify({
             "success": True,
-            "comment_id": str(new_comment["_id"]),
-            "user": new_comment["user"],
+            "comment_id": str(result.inserted_id),
+            "user": user_data["username"],
             "created_at": new_comment["created_at"].strftime("%d.%m.%Y %H:%M"),
             "can_delete": True,  # Всегда true для автора в момент создания
         })

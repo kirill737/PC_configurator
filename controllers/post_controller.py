@@ -27,9 +27,11 @@ def can_delete_post(post, user_data):
 def can_edit_comment(post, comment, user_data):
     logger.debug(user_data)
     return (
-        (user_data["role"] != "guest") and 
-        (user_data["role"] == "admin") or 
-        any(v == user_data["username"] for v in [comment.get("user"), post.get("author_id")])
+        (user_data["role"] != "guest") and (
+            (user_data["role"] == "admin") or 
+            (comment.get("user") == user_data["username"]) or
+            (post.get("author_id") == user_data["user_id"])
+        )
     )
 
 
