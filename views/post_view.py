@@ -48,7 +48,7 @@ def init_post(app):
         # Добавляем количество комментариев к каждому посту
         for post in last_posts:
             logger.debug(post)
-            post["title"] = f"""{post["title"]}"""
+            post["title"] = post.get("title", "")
             post["content"], post["setup"] = make_content(post)
             post["comments"] = comments_by_post[post["_id"]]
             post["can_delete"] = can_delete_post(post, user_data)
