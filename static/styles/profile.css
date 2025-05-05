@@ -1,0 +1,68 @@
+@import 'colors.css';
+@import 'base.css';
+
+#profile-container {
+    z-index: 1100;
+    position: fixed;
+    top: 0em;
+    right: 0em;
+    
+    width: auto;
+    height: auto;
+    
+}
+
+#profile-icon img {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+
+    width: 4rem;
+    height: 4rem;
+
+    border-radius: 50%;
+    border: 0.25rem solid var(--charcoal-hover);
+    background-color: var(--pearl);
+
+    transition: background-color 0.2s, border 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#profile-icon:hover img {
+    border-radius: 50%;
+    border: 0.25rem solid var(--pearl);
+}
+
+#profile-menu {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+
+    top: 5.5em;
+    right: 0.5em;
+
+    border: 0.2em solid var(--pearl);
+    border-radius: 8px;
+    width: 150px;
+
+    background-color: var(--charcoal);
+    color: var(--pearl);
+
+    
+}
+
+.profile-menu-button {
+    text-decoration: none;
+    display: block;
+
+    font-size: 1.3em;
+    padding: 1em;
+    
+    color: var(--pearl);
+    
+    transition: all 0.2s ease-in-out;   
+}
+
+.profile-menu-button:hover {
+    text-decoration: underline;
+}

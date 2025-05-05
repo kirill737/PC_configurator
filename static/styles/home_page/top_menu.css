@@ -1,0 +1,36 @@
+@import '../colors.css';
+
+#top-menu-container {
+    position: fixed;
+    z-index: 2000;
+    display: flex;
+    justify-content: center; /* Центрирование элементов по горизонтали */
+    align-items: center;
+
+    top: 0em;
+    left: 0em;
+
+    width: 100%;
+    height: 5rem;
+
+    background-color: var(--charcoal-hover);
+}
+
+#top-menu-container a {
+    padding: 0.5em;
+}
+
+.top-menu-button{
+    font-size: 2em;
+    
+    color: var(--pearl);
+
+    text-decoration: none;
+
+    border-bottom: 0.2em solid transparent;
+
+    transition: all 0.2s ease-in-out;
+}
+.top-menu-button:hover {
+    border-bottom: 0.2em solid var(--light);
+}

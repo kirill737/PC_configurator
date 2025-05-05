@@ -1,0 +1,27 @@
+@import 'base.css';
+@import 'colors.css';
+
+input.settings {
+    width: 15em;
+}
+
+td.text {
+    width: 10em;
+}
+
+#settings-container.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(-light);
+
+    padding: 2em;
+    margin: 2em auto;
+    border-radius: 1em;
+    
+    font-size: 1em;
+    
+    width: 80%;
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<lang="ru">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
+
+    
+    <meta charset="UTF-8">
+    <title>Лента записей</title>
+    <!-- <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .post { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; position: relative; cursor: pointer; }
+        .comment-count { position: absolute; bottom: 10px; right: 10px; color: gray; font-size: 12px; }
+        .content, .comments, .add-comment { display: none; margin-top: 10px; }
+        .pagination { margin-top: 20px; }
+        .pagination a { margin: 0 5px; text-decoration: none; }
+    </style> -->
+</head>
+    <script src="{{ url_for('static', filename='scripts/profileMenu.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/posts.js') }}" defer></script>
+    <div id="top-menu-container">
+        {% if user_data.role != 'guest' %}
+        <a href="{{ url_for('home', user_data=user_data | tojson) }}" class="top-menu-button">Сборки</a>
+        {% endif %}
+        
+        <!-- <a href="{{ url_for('posts_view') }}" class="top-menu-button">Посты</a> -->
+        <a href="{{ url_for('posts_view', user_data=user_data | tojson) }}" class="top-menu-button">Посты</a>
+
+        <div id="profile-container">
+            <a id="profile-icon">
+                <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Профиль" onclick="toggle_menu()">
+            </a>
+            <div id="profile-menu">
+                {% if user_data.role != 'guest' %}
+                <a class="profile-menu-button"> {{ user_data['username'] }}</a>
+                <a href="/profile" class="profile-menu-button">Профиль</a>
+                <a href="{{ url_for('open_settings_page', user_data=user_data | tojson) }}" class="profile-menu-button">Настройки</a>
+                <a href="{{ url_for('logout', user_data=user_data | tojson) }}" class="profile-menu-button">Выход</a>
+                {% endif %}
+
+                {% if user_data.role == 'guest' %}
+                <a href="/login" class="profile-menu-button">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div id="create-post-menu" class="hidden"> 
+        <div id="post-title-container">
+            <input id="post-title-input" name="post-title" placeholder="Название поста">
+            <textarea id="post-text-area" rows="4" style="resize: none;"></textarea>
+        </div>
+        <button id="post-select-build-button" class="post-build-button">Выбрать сборку</button>
+        <div id="builds-menu" class="hidden">
+            <ul id="builds-list"></ul>
+        </div>
+        <div id="post-build-container">
+            <button id="publish-post" class="base-button">Опубликовать</button>
+        </div>
+    </div>
+    <div id="posts-container">
+        {% for post in posts %}
+        <div class="post" data-id="{{ post._id }}">
+            <div class="post-title-container">
+                <a class="post-title">{{ post.title }}</a>
+                {% if post.can_delete %}
+                    <div class="post-controls">
+                        <button class="delete-post">🗑️ Удалить</button>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="post-data hidden">
+                <div class="post-description">
+                    {% if post.content %}
+                        <div class="post-contnent">{{ post.content|safe }}</div>
+                    {% endif %}
+                </div>
+                <div class="post-build-info">
+                    {% if post.setup %}
+                        <div class="content">{{ post.setup|safe }}</div>
+                    {% endif %}
+                </div>
+                <div class="border-hor"></div>
+                <div class="post-comments-container hidden">
+                    <div class="comments">
+                        {% for comment in post.comments %}
+                            <div class="comment-box" data-id="{{ comment._id }}">
+                                <div class="comment-header">
+                                    <span class="comment-user">{{ comment.user }}</span>
+                                    <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                    {% if comment.can_delete %}
+                                        <button class="delete-comment">🗑️</button>
+                                    {% endif %}
+                                </div>
+                                <div class="comment-text">{{ comment.text }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="post-bottom-container">
+                        <!-- {% if user_data.role != 'guest' %} -->
+                        <div class="add-comment">
+                            <input class="comment-input" type="text" placeholder="Добавить комментарий" />
+                            <button class="send-button base-button">Отправить</button>
+                        </div>
+                        <!-- {% endif %} -->
+                        <div class="comment-count">Комментариев: {{ post.comments|length }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if user_data.role != 'guest' %}
+        <div>
+            <button id="create-post-button" class="base-button">Создать пост</button>
+        </div>
+        {% endif %}
+        <div class="pagination">
+            {% for i in range(1, total_pages + 1) %}
+                {% if i == current_page %}
+                    <strong>{{ i }}</strong>
+                {% else %}
+                    <a class="page-index" href="/posts?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <script type="module" src="{{ url_for('static', filename='scripts/posts.js') }}"></script>
+    </div>
+</body>
+</html>
